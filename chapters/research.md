@@ -52,23 +52,30 @@ Toch verschillen macros met functies. Zo kunnen macros een variabel aantal param
 de compiler de betekenis van de code interpreteert.
 [[2]](https://doc.rust-lang.org/reference/influences.html)[[3]](https://doc.rust-lang.org/book/ch19-06-macros.html)
 
-
-[comment]: # (TODO: dit klopt niet)
-
-
+Naast de `if` en `else` controle structuren is er ook `match` en `if let`. `match` is vergelijkbaar met een `switch` statement
+uit andere talen. Het neemt een waarde en test het tegen een serie van patronen. Op basis van welk patroon er overeen komt 
+wordt de code uitgevoerd. Patronen kunnen opgemaakt worden uit waarden, variabel namen, wildcards, en veel meer. De power van
+`match` komt van het feit dat de compiler bevestigd dat alle mogelijke gevallen zijn afgehandeld. Soms wil je niet alle 
+gevallen expliciet afhandelen en wil je slechts een patroon afhandelen terwijl je de rest negeert. In dat geval kan je `if let` gebruiken, het is minder boilerplate code dan `match`.
+[[4]](https://doc.rust-lang.org/book/ch06-02-match.html)[[5]](https://doc.rust-lang.org/book/ch06-03-if-let.html)
 ```rust
-fn factorial(i: u64) -> u64 {
-    match i {
-        0 => 1,
-        n => n * factorial(n-1)
+    let config_max = Some(3u8);
+    match config_max {
+        Some(max) => println!("The maximum is configured to be {}", max),
+        _ => (),
     }
-}
+
+    let config_max = Some(3u8);
+    if let Some(max) = config_max {
+        println!("The maximum is configured to be {}", max);
+    }
 ```
 
-Een *struct* in Rust is gelijkaardig als een `Object` in object georienteerde programmeertalen.
+Een *struct* [[4]](https://doc.rust-lang.org/book/ch05-01-defining-structs.html#defining-and-instantiating-structs) 
+in Rust is gelijkaardig als een `Object` in object georienteerde programmeertalen.
 Het wordt gebruikt om samenhorende waarden te groeperen en optioneel kan men *associated functions*
-implementeren. Associated functions die geen `self` als hun eerste parameter zijn geen methodes en 
-kunnen gebruikt worden voor constructors die een nieuwe instantie retourneren van de struct.
+implementeren. Associated functions die geen `self` als hun eerste parameter hebben zijn geen methodes 
+en kunnen gebruikt worden als constructors die een nieuwe instantie retourneren van de struct.
 
 ```rust
 #[derive(Debug)]
@@ -100,7 +107,7 @@ fn main() {
 }
 ```
 
-Rust heeft geen null pointers [[4]](https://doc.rust-lang.org/std/option/#options-and-pointers-nullable-pointers) 
+Rust heeft geen null pointers [[5]](https://doc.rust-lang.org/std/option/#options-and-pointers-nullable-pointers) 
 tenzij men een null pointer wilt dereferentieren (dan moet die in een `unsafe` blok worden geplaatst).
 Als alternatief voor `null` maakt Rust gebruik van een `Option` type waarmee gekeken kan worden of een pointer 
 wel `Some` of geen `None` waarde bevat. Dit kan afgehandeld worden door syntactische sugar, zoals de `if let`
