@@ -4,9 +4,9 @@
 
 #### Intro
 
-- history
-- Rust high level uitleggen
-- ...
+- [ ] history
+- [x] Rust high level uitleggen
+- [ ] ...
 
 [comment]: # (TODO: parafraseren)
 
@@ -26,19 +26,17 @@ worden. Verder staat Rust ook geen null-pointers, dangling-pointers of data-race
 
 #### Syntax
 
-- marcros
-- match control flow
-- correct geen null values
-- structs
-- functioneel programmeren / oop
-- traits / attributes
+- [x] marcros
+- [x] match control flow
+- [x] correct geen null values
+- [x] structs
+- [ ] traits
+- [ ] attributes
 
 Voor velen die zich niet herkennen in programmeertalen zoals **C++**, **Haskell** of **OCaml** lijkt Rust
 een aparte syntax te hebben in tegenstelling tot conventionele talen. Laat ons even kijken naar een paar 
-basis syntactische voorbeelden in Rust. 
-[[2]](https://doc.rust-lang.org/reference/influences.html) 
-
-Hier een simpel voorbeeld dat "Hello World!" schrijft naar de standaard output.
+syntactische voorbeelden in Rust. [[2]](https://doc.rust-lang.org/reference/influences.html) Hier een 
+simpel voorbeeld dat "Hello World!" schrijft naar de standaard output.
 
 ```rust
 fn main() {
@@ -51,25 +49,6 @@ handig voor het verminderen van code dat u zelf hoeft to schrijven en onderhoude
 Toch verschillen macros met functies. Zo kunnen macros een variabel aantal parameters hebben en worden ze uitgebreid vooraleer 
 de compiler de betekenis van de code interpreteert.
 [[2]](https://doc.rust-lang.org/reference/influences.html)[[3]](https://doc.rust-lang.org/book/ch19-06-macros.html)
-
-Naast de `if` en `else` controle structuren is er ook `match` en `if let`. `match` is vergelijkbaar met een `switch` statement
-uit andere talen. Het neemt een waarde en test het tegen een serie van patronen. Op basis van welk patroon er overeen komt 
-wordt de code uitgevoerd. Patronen kunnen opgemaakt worden uit waarden, variabel namen, wildcards, en veel meer. De power van
-`match` komt van het feit dat de compiler bevestigd dat alle mogelijke gevallen zijn afgehandeld. Soms wil je niet alle 
-gevallen expliciet afhandelen en wil je slechts een patroon afhandelen terwijl je de rest negeert. In dat geval kan je `if let` gebruiken, het is minder boilerplate code dan `match`.
-[[4]](https://doc.rust-lang.org/book/ch06-02-match.html)[[5]](https://doc.rust-lang.org/book/ch06-03-if-let.html)
-```rust
-    let config_max = Some(3u8);
-    match config_max {
-        Some(max) => println!("The maximum is configured to be {}", max),
-        _ => (),
-    }
-
-    let config_max = Some(3u8);
-    if let Some(max) = config_max {
-        println!("The maximum is configured to be {}", max);
-    }
-```
 
 Een *struct* [[4]](https://doc.rust-lang.org/book/ch05-01-defining-structs.html#defining-and-instantiating-structs) 
 in Rust is gelijkaardig als een `Object` in object georienteerde programmeertalen.
@@ -110,7 +89,7 @@ fn main() {
 Rust heeft geen null pointers [[5]](https://doc.rust-lang.org/std/option/#options-and-pointers-nullable-pointers) 
 tenzij men een null pointer wilt dereferentieren (dan moet die in een `unsafe` blok worden geplaatst).
 Als alternatief voor `null` maakt Rust gebruik van een `Option` type waarmee gekeken kan worden of een pointer 
-wel `Some` of geen `None` waarde bevat. Dit kan afgehandeld worden door syntactische sugar, zoals de `if let`
+wel `Some` of geen `None` waarde bevat. Dit kan afgehandeld worden door syntactische sugar, zoals het `if let`
 statement om toegang te krijgen tot thet innerlijke type, in dit geval een string:
 ```rust
 fn main() {
@@ -122,11 +101,34 @@ fn main() {
 }
 ```
 
+Naast de `if` en `else` controle structuren is er ook `match` en `if let`. `match` is vergelijkbaar met een `switch` statement
+uit andere talen. Het neemt een waarde en test het tegen een serie van patronen. Op basis van welk patroon er overeen komt 
+wordt de code uitgevoerd. Patronen kunnen opgemaakt worden uit waarden, variabel namen, wildcards, en veel meer. De power van
+`match` komt van het feit dat de compiler zal bevestigen bij het compileren dat alle mogelijke gevallen zijn afgehandeld. 
+Soms wil je niet alle gevallen expliciet afhandelen en wil je slechts een patroon afhandelen terwijl je de rest negeert. 
+In dat geval kan je `if let` gebruiken, wat minder boilerplate code is dan `match`.
+[[4]](https://doc.rust-lang.org/book/ch06-02-match.html)[[5]](https://doc.rust-lang.org/book/ch06-03-if-let.html)
+```rust
+let message = match maybe_digit {
+    Some(x) if x < 10 => process_digit(x),
+    Some(x) => process_other(x),
+    None => panic!(),
+};
+
+let config_max = Some(3u8);
+if let Some(max) = config_max {
+    println!("The maximum is configured to be {}", max);
+}
+```
+
+
+
+
 #### Geheugen
 
-- Ownership
-- Borrowing
-- Lifetimes
+- [ ] Ownership
+- [ ] Borrowing
+- [ ] Lifetimes
 
 Wat Rust uniek maakt is het *Ownership* systeem dat geheugen veiligheid kan garanderen zonder een garbage collector
 nodig te hebben. Hiervoor gebruikt Rust een lijst van regels dat bepaald hoe een Rust programma zijn geheugen beheert 
@@ -144,21 +146,10 @@ Rust maakt gebruik van een *Ownership* model dat geheugen veiligheid garandeerd 
 
 #### Ecosysteem
 
-- packages / modules
-- cargo
-- crates.io
+- [ ] packages / modules
+- [ ] cargo
+- [ ] crates.io
 
-
-
-
-#### Slot
-- stack overflows meest geliefde taal
-- waar wordt het momenteel gebruikt?
-  - discord, AWS
-- voor wie is Rust?
-
-De programmeertaal is al 5 jaar op een rij als "meest geliefde programmeertaal" verkozen in de Stack 
-Overflow Developer Survey. Wat maakt Rust zo geliefd bij programmeurs? Laat ons eens
 
 ## Wat is WebAssembly & hoe werkt het?
 
@@ -169,3 +160,13 @@ Overflow Developer Survey. Wat maakt Rust zo geliefd bij programmeurs? Laat ons 
 ## Hoe bouw je een API in Rust?
 
 ## Is Rust klaar voor productie?
+
+#### Slot
+- stack overflows meest geliefde taal
+- waar wordt het momenteel gebruikt?
+  - discord, AWS
+- voor wie is Rust?
+
+De programmeertaal is al 5 jaar op een rij als "meest geliefde programmeertaal" verkozen in de Stack 
+Overflow Developer Survey. Wat maakt Rust zo geliefd bij programmeurs? Laat ons eens
+
