@@ -126,11 +126,55 @@ if let Some(max) = config_max {
 
 #### Geheugen
 
+- [ ] Stack 
+- [ ] Heap
 - [ ] Ownership
 - [ ] Borrowing
 - [ ] Lifetimes
 
-Wat Rust uniek maakt is het *Ownership* systeem dat geheugen veiligheid kan garanderen zonder een garbage collector
+##### Stack
+Een stack is een deel van het computergeheugen met een die tijdelijke variabelen opslaat
+Een stack is een datastructuur voor de opslag van een wisselend aantal elementen, waarvoor geldt dat, net als
+bij een gewone stapel, het element dat het laatst werd teogevoegd, het eerst weer wordt opgehaald. Dit principe
+wordt ook wel LIFO (Last in First Out) genoemd.
+
+##### Heap
+Een heap is een abstracte datastructuur 
+
+stack sneller
+
+heap trager
+
+met ownership hoef niet zo vaak meer over de stack en heap na te denken
+
+String wordt opgeslagen op de heap sinds we de grootte niet kennen voor het compileren
+
+
+ownership rules
+- Elke waarde in Rust heeft een variabel dat zijn *owner* wordt genoemd
+- Er kan maar een owner teglijk zijn
+- Wanneer een owner buiten zijn scope gaat, zal de waarde wegvallen
+
+```rust
+{
+    let s = String::from("hello"); // s is valid from this point forward
+
+    // do stuff with s
+}                                  // this scope is now over, and s is no
+                                   // longer valid
+```
+
+##### Ownership
+Ownership is een set van regels die bepalen hoe een Rust programma omgaat met geheugen. 
+Als een van de regels overtreden wordt zal het programma niet compileren.
+
+##### Lifetimes
+
+##### Borrowing
+
+Rust is ontworpen om geheugenveilig te zijn. Het staat geen null pointers, dangling pointers, of data races toe. Waarden
+kunnen alleen geinitialiseerd worden door middel een vaste set van 
+Wat Rust uniek maakt is het *Ownership* systeem dat geheugenveiligheid kan garanderen zonder een garbage collector
 nodig te hebben. Hiervoor gebruikt Rust een lijst van regels dat bepaald hoe een Rust programma zijn geheugen beheert 
 tijdens het uitvoeren: 
 - Elke waarde in Rust heeft een variabel dat zijn *owner* wordt genoemd
@@ -153,13 +197,185 @@ Rust maakt gebruik van een *Ownership* model dat geheugen veiligheid garandeerd 
 
 ## Wat is WebAssembly & hoe werkt het?
 
+- [ ] history
+- [ ] wat is het?
+- [ ] hoe werkt het?
+- [ ] waarvoor wordt het gebruikt?
+  - [ ] wasmer
+  - [ ] wasi
+
+#### bronnen
+-
+-
+-
+
+
 ## Welke front- & backend frameworks zijn er ter beschikking?
 
+Om efficient web applicaties te bouwen heb je natuurlijk een goed framework nodig die voor jou al 
+het zware werk doet. Gelukkig heeft Rust mits zijn jonge jaren, al een aardig aantal frameworks
+ter beschikking voor het bouwen van web applicaties. Dit zijn de top 3 front- en backend frameworks. 
+Gerankschikt naar mate van hun popularitiet.
+
+
+### Front-end 
+
+#### yew - 21k
+**Yew** is momenteel het populairste front-end framework met over 21k github stars. Het is een 
+component gebaseerd framework vergelijkbaar met React en Elm, met support voor multi-threading, 
+component gebaseerde patronen. Het ondersteunt JavaScript-interoperabiliteit, waardoor 
+ontwikkelaars NPM packages kunnen gebruiken en integreren met bestaande JavaScript applicaties.
+
+#### dixous - 3.4k
+**Dioxus** is een UI library die elegant is ontworpen om React-achtig te zijn - het is 
+gebouwd rond een virtuele DOM ter ondersteuning van het bouwen van platformonafhankelijke apps 
+voor web, mobiel en desktop. Het biedt ondersteuning voor op componenten gebaseerde architectuur, 
+concurrency en async, props, een ingebouwde foutafhandelaar, state management en meer.
+
+#### seed - 3.2k
+**Seed** is een frontend-framework voor het maken van prestatiegerichte en betrouwbare web-apps 
+die ook een Elm-achtige architectuur heeft. Het heeft een minimale configuratie en boilerplate,
+en heeft duidelijke documentatie die het voor iedereen gemakkelijk maakt om mee te beginnen.
+
+### Back-end
+
+#### actix-web
+Actix heeft een architectonisch patroon gebaseerd op Rust's acteurssysteem en is goed uitgerust 
+voor het bouwen van schrijfservices en micro-apps. Het heeft ondersteuning voor routering, 
+middleware, testen, WebSockets, databasea en automatisch herladen van de server, en kan worden 
+gehost op NGINX. Actix kan worden gebruikt om volledige web-app en API te bouwen.
+
+#### warp
+#### axum
+
+Reden dat ik Yew gekozen heb is github stars, popularitiet en eigenlijk excate clone van React.
+- populariteit -> meer packages
+- community +
+- functional components 
+- hooks
+
+
+bronnen:
+- [The current state of Rust web frameworks](https://blog.logrocket.com/current-state-rust-web-frameworks/) 
+- [Are we web yet](https://www.arewewebyet.org/)
+
 ## Hoe bouw je een Web applicatie in Rust?
+
+Sinds **Yew** het populairste framework is en ook gebruikt is als framework voor het bouwen van de 
+speed typing applicatie, zal de vraag "Hoe bouw je een Web applicatie in Rust" beantwoord worden
+met Yew als framework. Het bouwen van een web applicatie in een ander framework zal in grote lijnen
+hetzelfde zijn. Dit zal een praktische kijk zijn op hoe we Yew kunnen gebruiken voor het bouwen van Web
+applicaties.
+
+
+### Tools installeren
+NOTE: de installatie handleiding is geschreven voor UNIX systemen.
+
+Om een web applicatie te bouwen in **Yew** heb je een aantal tools nodig voor het builden, packagen
+en debuggen van jouw Yew applicatie.
+
+#### Rust
+Om Rust te installeren hebben we de `rustup` toolchain installer nodig. Met het onderstaand script 
+kan je het installeren op jouw UNIX machine. Als je Rust al hebt staan maak dan zeker dat je de 
+laatste versie hebt door `rustup update` uit te voeren.
+```sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+#### WebAssembly
+Rust kan source codes compileren voor verschillende "targets" (m.a.w verschillende processors).
+Het compilatie target voor een browser gebaseerd WebAssembly heet `wasm32-unkown-unkown`. Het
+volgende commando zal het WebAssembly target toevoegen aan je development environment.
+
+```sh
+rustup target add wasm32-unknown-unknown
+```
+
+#### Trunk
+De documentatie van Yew raad aan om **Trunk** te gebruiken voor het beheren van deployment en packaging.
+
+```sh
+cargo install --locked trunk
+```
+
+Nu ons development enviroment opgezet is, kunnen we een nieuw cargo project aanmaken.
+
+```sh
+cargo new yew-app
+cd yew-app
+```
+
+Om te verifieren dat het Rust environment juist is opgezet, voer je het initiele project uit  met de cargo build tool.
+Na de output van de het build process, zou je normaal "Hello, world!" te zien krijgen.
+```sh
+cargo run
+```
+
+#### Statische pagina
+
+Om deze simpele command line applicatie naar een basis Yew web applicatie te convertern, zijn er een paar 
+aanpassingen nodig. Pas de volgende bestanden aan als volgt:
+
+`Cargo.toml`
+```toml
+[package]
+name = "yew-app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+yew = "0.19"
+```
+
+`src/main.rs`
+```rust
+use yew::prelude::*;
+
+#[function_component(App)]
+fn app() -> Html {
+    html! {
+        <h1>{ "Hello World" }</h1>
+    }
+}
+
+fn main() {
+    yew::start_app::<App>();
+}
+```
+
+Maak nu een `index.html` aan in de root folder van het project.
+
+`index.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head> </head>
+    <body> </body>
+</html>
+```
+
+#### Start de development server
+
+Voer het volgende commando uit om de applicatie te builden en lokaal te draaien.
+```sh
+trunk serve --open
+```
+
+Trunk zal nu je applicatie openen in je standaard browser, luisteren naar veranderingen en behulpzaam je 
+applicatie herbouwen als je source bestanden aanpast. 
 
 ## Hoe bouw je een API in Rust?
 
 ## Is Rust klaar voor productie?
+
+#### performance vergelijken met ander propulaire frameworks
+
+- kan DOM niet direct aanspreken
+- wordt al in miroservices gebruikt
+- WebAssembly wordt ook al in productie gebruikt
+- maar om een volledige web applicatie in Rust applicatie te bouwen heeft het nog wat nadelen
+- pros 
+- cons
 
 #### Slot
 - stack overflows meest geliefde taal
