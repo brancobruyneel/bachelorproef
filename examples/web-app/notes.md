@@ -1,0 +1,8 @@
+- first static page
+- building HTML
+  - converting classic HTML
+  - using Rust language construtcs in the markup
+- components
+  - making it interactive
+  - handling state
+- fetching data (using external REST API)
