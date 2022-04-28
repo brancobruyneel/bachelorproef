@@ -366,6 +366,13 @@ applicatie herbouwen als je source bestanden aanpast.
 
 ## Hoe bouw je een API in Rust?
 
+- Bouwen van HTML
+- Components
+  - Interactief
+  - State hanlden
+Fetching data
+
+
 ## Is Rust klaar voor productie?
 
 #### performance vergelijken met ander propulaire frameworks
