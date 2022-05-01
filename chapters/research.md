@@ -340,7 +340,7 @@ edition = "2021"
 yew = "0.19"
 ```
 
-`src/main.rs`
+`main.rs`
 
 ```rust
 use yew::prelude::*;
@@ -426,6 +426,8 @@ We willen een layout bouwen die er ongeveer zo uitziet in ruwe HTML:
 Laten we nu deze HTML in `html!` omzetten. Type (of kopieer/plak) het volgende knipsel in de body van de app functie,
 zodat de waarde van html! wordt geretourneerd door de functie
 
+`app.rs`
+
 ```rust
 #[function_component]
 pub fn App() -> Html {
@@ -470,6 +472,8 @@ In deze tutorial zullen we function components gebruiken.
 Laten we nu onze `App` component opsplitsen in kleinere componenten. We kunnen onze Todo lijst opspliten in
 2 components genaamd `Task` en `TaskList`.
 
+`task.rs`
+
 ```Rust
 #[derive(Properties, Debug, PartialEq)]
 pub struct TaskProps {
@@ -505,6 +509,8 @@ Let op de parameters van onze Task function component. Een function component he
 één argument dat zijn "props" (kort voor "properties") definieert. Props worden gebruikt om gegevens
 door te geven van een ouder component naar een kind component. In dit geval is TaskProps een struct die de props definieert.
 
+`task_list.rs`
+
 ```rust
 #[derive(Properties, PartialEq)]
 pub struct TaskListProps {
@@ -522,6 +528,8 @@ pub fn TaskList(TaskListProps { children }: &TaskListProps) -> Html {
 ```
 
 Nu kunnen we onze `App` component updaten met onze nieuwe components `Task` & `TaskList`.
+
+`app.rs`
 
 ```rust
 #[function_component]
@@ -571,6 +579,8 @@ die gebruikt worden in de closure scope hun waarden worden verplaatst binnen de 
 
 Daarnaast kunnen we ook een css class meegeven met de `classes!` macro van yew,
 die conditioneel het html label zal doorstrepen al dan niet.
+
+`task.rs`
 
 ```rust
 #[function_component]
@@ -652,6 +662,8 @@ pub struct TaskProps {
 Als laatste stap moeten we onze `App` component updaten om de fetch request te maken in plaats van
 hardcoded data te gebruiken.
 
+`app.rs`
+
 ```rust
 #[function_component]
 pub fn App() -> Html {
@@ -709,7 +721,10 @@ Maak een nieuw Rust project aan met de volgende dependencies.
 
 ```sh
 cargo new api
+cd api/
 ```
+
+`Cargo.toml`
 
 ```toml
 [dependencies]
@@ -733,13 +748,13 @@ binary is, en geen directe invloed heeft op de code van je project, voegen we he
 Cargo.toml. In plaats daarvan installeren we het gewoon op ons systeem.
 
 ```
-cargo install diesel_cli
+cargo install diesel_cli --no-default-features --features sqlite
 ```
 
 We moeten Diesel vertellen waar ze onze database kan vinden. Dit doen we door de `DATABASE_URL`
 environment variabele in te stellen. Op onze development machines zullen we waarschijnlijk meerdere
-projecten hebben lopen, en we willen onze environment niet vervuilen. We kunnen de url in plaats daarvan
-in een .env bestand zetten.
+projecten hebben lopen, en we willen ons environment niet vervuilen. We kunnen de url in plaats daarvan
+in een .env bestand zetten. In ons geval is dit de bestandsnaam van de SQLite database.
 
 ```
 echo DATABASE_URL=todo.db > .env
@@ -749,6 +764,279 @@ Nu kan Diesel CLI alles voor ons opzetten.
 
 ```
 diesel setup
+```
+
+Dit zal onze database aanmaken (als die nog niet bestond), en een lege migrations directory aanmaken
+die we kunnen gebruiken om ons schema te beheren.
+
+Diesel support momenteel alleen een database-first aanpak. Hierbij maken we eerst het database schema
+om dan met migrations het schema naar Rust om te zetten. Dat gezegd zijnde, laat ons een eerste
+migration aanmaken.
+
+```
+diesel migration generate create_tasks
+```
+
+Diesel CLI zal twee lege bestanden (`up.sql` en `down.sql`) voor ons aanmaken in de vereiste structuur.
+In deze bestanden schrijven we SQL voor de `Task` tabel aan te maken in `up.sql` en als we de migration
+willen ongedaan maken in `down.sql`.
+
+`up.sql`
+
+```sql
+CREATE TABLE tasks (
+  id VARCHAR NOT NULL PRIMARY KEY,
+  title VARCHAR NOT NULL,
+  completed INTEGER NOT NULL DEFAULT 0
+)
+```
+
+`down.sql`
+
+```sql
+DROP TABLE tasks
+```
+
+Nu kunnen we onze eerste migration uitvoeren met:
+
+```
+diesel migration run
+```
+
+Dit zal onze SQL migration uitvoeren op de `todo.db` database en het nodige Rust schema genereren met de
+nodige types. In het Rust schema wordt met de `table!` macro een hoop code gegeneerd gebaseerd op het
+database schema om alle tabellen en kolommen weer te geven. Zo kunnen we nu gebruik maken van Rust
+zijn krachtig typesysteem om volledige SQL queries te gaan bouwen met code. We zullen in het volgende
+voorbeeld zien hoe we dat precies kunnen gebruiken.
+
+Telkens wanneer we een migratie uitvoeren of terugdraaien, wordt dit bestand automatisch bijgewerkt.
+
+`schema.rs`
+
+```rust
+table! {
+    tasks (id) {
+        id -> Text,
+        title -> Text,
+        completed -> Integer,
+    }
+}
+```
+
+### Opzet API
+
+Om de basis functionaliteiten van onze Todo applicatie in de front-end te ondersteunen, zal onze
+API een nieuwe taak kunnen aanmaken en de lijst met taken ophalen. Dus zullen we de volgende
+endpoints hebben:
+
+- `GET /tasks` - retourneert alle taken
+- `POST /tasks` - voegt een nieuwe taak toe
+
+Bij het opzetten van ons project heeft cargo een al een `main.rs` bestand aangemaakt. Laten we dat bewerken
+en onze eerste "Hello World!" route schrijven.
+
+`main.rs`
+
+```rust
+use actix_web::{web, App, HttpServer};
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| {
+        App::new()
+            .route("/hello", web::get().to(|| async { "Hello World!" }))
+    })
+    .bind(("127.0.0.1", 5000))?
+    .run()
+    .await
+}
+```
+
+Het eerste belangrijke punt dat we hier moeten opmerken is dat we een Result type teruggeven bij de `main` functie.
+Dit stelt ons in staat om de `?` operator in `main` te gebruiken, die elke fout die door de geassocieerde functie
+wordt teruggegeven naar de aanroeper koppelt.
+
+Het tweede ding om op te merken is `async/await`. Dit zijn constructies op taalniveau die native ondersteuning
+toevoegen voor het overdragen van de controle van de huidige thread naar een andere thread die kan draaien
+terwijl de huidige blokkeert.
+
+Let op het gebruik van de annotatie `#[actix_web::main]` in onze `main` functie. Actix actors hebben een runtime
+nodig die deze actors plant en uitvoert. Dit wordt bereikt met de `actix_web` crate. We markeren onze `main` functie
+om te worden uitgevoerd door de actix runtime met behulp van het `actix_web::main` attribuut. In onze `main`,
+instantiëren we een `HttpServer`, voegen er een `App` aan toe en draaien het op localhost op een gegeven poort.
+
+`handlers.rs`
+
+```rust
+// dependencies
+
+#[get("/task")]
+async fn get_tasks() -> Result<HttpResponse, Error> {
+  todo!()
+}
+
+#[post("/task")]
+async fn add_task() -> Result<HttpResponse, Error> {
+  todo!()
+}
+```
+
+`main.rs`
+
+```rust
+#[macro_use]
+extern crate diesel;
+
+use actix_cors::Cors;
+use actix_web::http::header;
+use actix_web::{middleware, web, App, HttpServer};
+use diesel::prelude::*;
+use diesel::r2d2::{self, ConnectionManager};
+
+use crate::handlers::{get_tasks, add_task};
+
+mod models;
+mod handlers;
+mod schema;
+mod db;
+
+type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    dotenv::dotenv().ok();
+
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+
+    let server_port = if let Ok(port) = std::env::var("PORT") {
+        port.parse::<u16>().expect("Could not convert PORT env to string!")
+    } else {
+        5000
+    };
+
+    // set up database connection pool
+    let conn_spec = std::env::var("DATABASE_URL").expect("DATABASE_URL");
+    let manager = ConnectionManager::<SqliteConnection>::new(conn_spec);
+    let pool = r2d2::Pool::builder()
+        .build(manager)
+        .expect("Failed to create pool.");
+
+
+    log::info!("{}", format!("starting HTTP server at http://localhost:{server_port}"));
+
+    // Start HTTP server
+    HttpServer::new(move || {
+        App::new()
+            .wrap(
+                Cors::default()
+                    .allowed_origin("http://127.0.0.1:8080")
+                    .allowed_methods(vec!["GET", "POST"])
+                    .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
+                    .allowed_header(header::CONTENT_TYPE)
+                    .supports_credentials()
+                    .max_age(3600),
+            )
+            .app_data(web::Data::new(pool.clone()))
+            .wrap(middleware::Logger::default())
+            .service(
+                web::scope("/api")
+                .service(get_tasks)
+                .service(add_task)
+            )
+        })
+    .bind(("127.0.0.1", server_port))?
+    .run()
+    .await
+}
+```
+
+`handlers.rs`
+
+```rust
+use actix_web::{web, get, post, HttpResponse, Error};
+
+use crate::{DbPool, db, models};
+
+
+#[get("/task")]
+async fn get_tasks(
+    pool: web::Data<DbPool>,
+) -> Result<HttpResponse, Error> {
+    let tasks = web::block(move || {
+        let conn = pool.get()?;
+        db::list_all_tasks(&conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    if let Some(tasks) = tasks {
+        Ok(HttpResponse::Ok().json(tasks))
+    } else {
+        let res = HttpResponse::NotFound().body("No tasks found!".to_string());
+        Ok(res)
+    }
+}
+
+#[post("/task")]
+async fn add_task(
+    pool: web::Data<DbPool>,
+    form: web::Json<models::NewTask>,
+) -> Result<HttpResponse, Error> {
+    let task = web::block(move || {
+        let conn = pool.get()?;
+        db::insert_new_task(&form.title, &conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Created().json(task))
+}
+
+```
+
+`db.rs`
+
+```rust
+use diesel::prelude::*;
+use uuid::Uuid;
+
+use crate::models::{Task, TaskView};
+
+type DbError = Box<dyn std::error::Error + Send + Sync>;
+
+pub fn list_all_tasks(conn: &SqliteConnection) -> Result<Option<Vec<TaskView>>, DbError> {
+    use crate::schema::tasks::dsl::*;
+
+    let all_tasks = tasks.load::<Task>(conn).optional()?;
+
+    if let Some(all) = all_tasks {
+        let all_views: Vec<TaskView> = all.into_iter().map(|task| task.into()).collect();
+        Ok(Some(all_views))
+    } else {
+        Err("Something went wrong!".into())
+    }
+}
+
+pub fn insert_new_task(t: &str, conn: &SqliteConnection) -> Result<TaskView, DbError> {
+    use crate::schema::tasks::dsl::*;
+
+    let new_task = Task {
+        id: Uuid::new_v4().to_string(),
+        title: t.to_owned(),
+        completed: 0,
+    };
+
+    let result = diesel::insert_into(tasks).values(&new_task).execute(conn);
+
+    match result {
+        Ok(_) => Ok(TaskView {
+            id: new_task.id,
+            title: new_task.title,
+            completed: false,
+        }),
+        Err(_) => Err("Something went wrong!".into()),
+    }
+}
 ```
 
 ## Is Rust klaar voor productie?
@@ -771,3 +1059,5 @@ diesel setup
 
 De programmeertaal is al 5 jaar op een rij als "meest geliefde programmeertaal" verkozen in de Stack
 Overflow Developer Survey. Wat maakt Rust zo geliefd bij programmeurs? Laat ons eens
+
+wat ging er niet goed geen tijd voor error, handling, authentication, complexere database, etc..
