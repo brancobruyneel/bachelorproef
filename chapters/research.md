@@ -756,7 +756,7 @@ environment variabele in te stellen. Op onze development machines zullen we waar
 projecten hebben lopen, en we willen ons environment niet vervuilen. We kunnen de url in plaats daarvan
 in een .env bestand zetten. In ons geval is dit de bestandsnaam van de SQLite database.
 
-```
+```sh
 echo DATABASE_URL=todo.db > .env
 ```
 
@@ -832,6 +832,16 @@ endpoints hebben:
 - `GET /tasks` - retourneert alle taken
 - `POST /tasks` - voegt een nieuwe taak toe
 
+Om onze code overzichtelijklijk te houden, zullen we de volgende structuur hanteren:
+
+`src/`
+
+- `main.rs`
+- `models.r`
+- `schema.rs`
+- `handlers.rs`
+- `db.rs`
+
 Bij het opzetten van ons project heeft cargo een al een `main.rs` bestand aangemaakt. Laten we dat bewerken
 en onze eerste "Hello World!" route schrijven.
 
@@ -852,18 +862,21 @@ async fn main() -> std::io::Result<()> {
 }
 ```
 
-Het eerste belangrijke punt dat we hier moeten opmerken is dat we een Result type teruggeven bij de `main` functie.
+Onze main functie heeft nu het `#[actix_web::main]` attribuut, die zal onze `main` functie markeren als start functie
+en uitvoeren in de runtime van `actix_web`.
+
+Een belangrijk punt om op te merken is dat we een `Result` type teruggeven.
 Dit stelt ons in staat om de `?` operator in `main` te gebruiken, die elke fout die door de geassocieerde functie
 wordt teruggegeven naar de aanroeper koppelt.
 
-Het tweede ding om op te merken is `async/await`. Dit zijn constructies op taalniveau die native ondersteuning
-toevoegen voor het overdragen van de controle van de huidige thread naar een andere thread die kan draaien
-terwijl de huidige blokkeert.
+Het tweede ding om op te merken is `async/await`. Hiermee geven we aan dat Rust onze functies asynchroon kan
+uitvoeren zonder andere threads te blokkeren.
 
-Let op het gebruik van de annotatie `#[actix_web::main]` in onze `main` functie. Actix actors hebben een runtime
-nodig die deze actors plant en uitvoert. Dit wordt bereikt met de `actix_web` crate. We markeren onze `main` functie
-om te worden uitgevoerd door de actix runtime met behulp van het `actix_web::main` attribuut. In onze `main`,
-instantiëren we een `HttpServer`, voegen er een `App` aan toe en draaien het op localhost op een gegeven poort.
+In onze `main`, instantiëren we een `HttpServer`, voegen er een `App` aan toe die dient als een Application factory
+en voegen onze eerste route er aan toe.
+
+Als alles goed gaat zou je nu de API kunnen opstarten met `cargo run` en bij een GET request naar `localhost:8080/hello`
+`Hello world!` als repons te zien krijgen.
 
 `handlers.rs`
 
@@ -881,24 +894,139 @@ async fn add_task() -> Result<HttpResponse, Error> {
 }
 ```
 
+In de module `handlers` zullen we onze requests per endpoint afhandelen.
+Voorlopig gebruiken we hier nog de `todo!` macro sinds we nog geen communicatie
+maken de database. Laat ons dat eerst aanpakken.
+
+Onze eerste migration die we eerder hebben uitgevoerd heeft voor ons al een `schema.rs` module aangemaakt, zodat
+diesel onze queries kan controleren tijdens het compileren. Om met queries te kunnen werken in Rust hebben we models
+nodig. Zo kunnen we het resultaat van een query mappen naar een model of een model gebruiken voor nieuwe data in te voegen.
+
+Met de traits `Queryable` en `Insertable` zorgen we er voor dat de struct `Task` als resultaat voor een query kan gebruikt
+worden en als `struct` om nieuwe data in te voegen.
+
+`Deserialize` en `Serialize` komen van de crate `serde`, zij zorgen ervoor dat we de models kunnen omzetten naar json
+en andersom.
+
+`models.rs`
+
+```rust
+use serde::{Deserialize, Serialize};
+
+use crate::schema::tasks;
+
+#[derive(Debug, Serialize, Deserialize, Queryable, Insertable)]
+pub struct Task {
+    pub id: String,
+    pub title: String,
+    pub completed: bool,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct InputTask {
+    pub title: String,
+}
+```
+
+Nu we onze models hebben kunnen we in `db` functies schrijven om tasks op te vragen en aan te maken.
+De functies spreken voorzich, we gebruiken diesel zijn sql implementaties om met onze database te communiceren.
+
+Merk op dat we bij elke functie `schema::tasks::dsl::*` opnieuw toevoegen aan de lokale scope. Dit is puur
+conventie sinds we maar 1 tabel hebben `Tasks`, moesten we meerdere tabellen hebben zouden we onze
+scope kunnen vervuilen door bijvoorbeeld zelfde kolomnamen die elkaar overschrijven.
+
+`db.rs`
+
+```rust
+use diesel::prelude::*;
+use uuid::Uuid;
+
+use crate::models::Task;
+
+type DbError = Box<dyn std::error::Error + Send + Sync>;
+
+pub fn list_all_tasks(conn: &SqliteConnection) -> Result<Option<Vec<Task>>, DbError> {
+    use crate::schema::tasks::dsl::*;
+
+    Ok(tasks.load::<Task>(conn).optional()?)
+}
+
+pub fn insert_new_task(t: &str, conn: &SqliteConnection) -> Result<Task, DbError> {
+    use crate::schema::tasks::dsl::*;
+
+    let new_task = Task {
+        id: Uuid::new_v4().to_string(),
+        title: t.to_owned(),
+        completed: false,
+    };
+
+    diesel::insert_into(tasks).values(&new_task).execute(conn)?;
+
+    Ok(new_task)
+}
+```
+
+Nu we onze helper functies geschreven hebben kunnen we de requests afhandelen in `handlers` als volgt:
+
+Elke handler functie krijgt een connection pool als parameter, die we later zullen definieren in `main`.
+De connection pool zal verschillende connecties met de database openhouden zodat ze efficient kunnen hergebruikt
+worden door anderen. Om te voorkomen dat een andere thread de connectie gebruikt tijdens het uitvoeren van een `db`
+functie blokkeren we deze thread met `web::block`. Als alles goed verloopt geven we de resultaten terug, indien niet
+geven we een `InternalServerError` terug.
+
+`handlers`
+
+```rust
+use actix_web::{web, get, post, HttpResponse, Error};
+
+use crate::{DbPool, db, models};
+
+#[get("/task")]
+async fn get_tasks(
+    pool: web::Data<DbPool>,
+) -> Result<HttpResponse, Error> {
+    let tasks = web::block(move || {
+        let conn = pool.get()?;
+        db::list_all_tasks(&conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    if let Some(tasks) = tasks {
+        Ok(HttpResponse::Ok().json(tasks))
+    } else {
+        let res = HttpResponse::NotFound().body("No tasks found!".to_string());
+        Ok(res)
+    }
+}
+
+#[post("/task")]
+async fn add_task(
+    pool: web::Data<DbPool>,
+    form: web::Json<models::InputTask>,
+) -> Result<HttpResponse, Error> {
+    let task = web::block(move || {
+        let conn = pool.get()?;
+        db::insert_new_task(&form.title, &conn)
+    })
+    .await?
+    .map_err(actix_web::error::ErrorInternalServerError)?;
+
+    Ok(HttpResponse::Created().json(task))
+}
+```
+
+Wat ons nu nog rest te doen, is onze connection pool instantiëren en de handler functies
+linken aan onze `App`. Vooraleer dat we dat doen laden we eerst ons `.env` bestand in het
+enviroment met de `dotenv` crate en loggen we `info` over de applicatie naar `stdout` met
+`env_logger`. Daarna kunnen we onze connection pool opzetten met de `DATABASE_URL` uit het
+enviroment. Ten slotte voegen we onze hanlder functies toe aan een nieuwe `service` met als
+scope `/api` zodat al onze routes worden ge prefixed met `/api`.
+
 `main.rs`
 
 ```rust
-#[macro_use]
-extern crate diesel;
-
-use actix_cors::Cors;
-use actix_web::http::header;
-use actix_web::{middleware, web, App, HttpServer};
-use diesel::prelude::*;
-use diesel::r2d2::{self, ConnectionManager};
-
-use crate::handlers::{get_tasks, add_task};
-
-mod models;
-mod handlers;
-mod schema;
-mod db;
+// dependencies
 
 type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
 
@@ -927,15 +1055,6 @@ async fn main() -> std::io::Result<()> {
     // Start HTTP server
     HttpServer::new(move || {
         App::new()
-            .wrap(
-                Cors::default()
-                    .allowed_origin("http://127.0.0.1:8080")
-                    .allowed_methods(vec!["GET", "POST"])
-                    .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
-                    .allowed_header(header::CONTENT_TYPE)
-                    .supports_credentials()
-                    .max_age(3600),
-            )
             .app_data(web::Data::new(pool.clone()))
             .wrap(middleware::Logger::default())
             .service(
@@ -947,95 +1066,6 @@ async fn main() -> std::io::Result<()> {
     .bind(("127.0.0.1", server_port))?
     .run()
     .await
-}
-```
-
-`handlers.rs`
-
-```rust
-use actix_web::{web, get, post, HttpResponse, Error};
-
-use crate::{DbPool, db, models};
-
-
-#[get("/task")]
-async fn get_tasks(
-    pool: web::Data<DbPool>,
-) -> Result<HttpResponse, Error> {
-    let tasks = web::block(move || {
-        let conn = pool.get()?;
-        db::list_all_tasks(&conn)
-    })
-    .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
-
-    if let Some(tasks) = tasks {
-        Ok(HttpResponse::Ok().json(tasks))
-    } else {
-        let res = HttpResponse::NotFound().body("No tasks found!".to_string());
-        Ok(res)
-    }
-}
-
-#[post("/task")]
-async fn add_task(
-    pool: web::Data<DbPool>,
-    form: web::Json<models::NewTask>,
-) -> Result<HttpResponse, Error> {
-    let task = web::block(move || {
-        let conn = pool.get()?;
-        db::insert_new_task(&form.title, &conn)
-    })
-    .await?
-    .map_err(actix_web::error::ErrorInternalServerError)?;
-
-    Ok(HttpResponse::Created().json(task))
-}
-
-```
-
-`db.rs`
-
-```rust
-use diesel::prelude::*;
-use uuid::Uuid;
-
-use crate::models::{Task, TaskView};
-
-type DbError = Box<dyn std::error::Error + Send + Sync>;
-
-pub fn list_all_tasks(conn: &SqliteConnection) -> Result<Option<Vec<TaskView>>, DbError> {
-    use crate::schema::tasks::dsl::*;
-
-    let all_tasks = tasks.load::<Task>(conn).optional()?;
-
-    if let Some(all) = all_tasks {
-        let all_views: Vec<TaskView> = all.into_iter().map(|task| task.into()).collect();
-        Ok(Some(all_views))
-    } else {
-        Err("Something went wrong!".into())
-    }
-}
-
-pub fn insert_new_task(t: &str, conn: &SqliteConnection) -> Result<TaskView, DbError> {
-    use crate::schema::tasks::dsl::*;
-
-    let new_task = Task {
-        id: Uuid::new_v4().to_string(),
-        title: t.to_owned(),
-        completed: 0,
-    };
-
-    let result = diesel::insert_into(tasks).values(&new_task).execute(conn);
-
-    match result {
-        Ok(_) => Ok(TaskView {
-            id: new_task.id,
-            title: new_task.title,
-            completed: false,
-        }),
-        Err(_) => Err("Something went wrong!".into()),
-    }
 }
 ```
 
