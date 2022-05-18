@@ -375,7 +375,7 @@ betekent dat Axum gratis timeouts, tracing, compressie, authorisatie en meer kri
 
 Dit alles maakt met zijn jonge 1-jarige leeftijd toch een library om naar uit te kijken. 
 
-\section{Hoe bouw je een web frontend in Rust?}
+\section{Hoe bouw je een web app in Rust?}
 
 Sinds Yew het populairste framework is en ook is gebruikt als framework voor het bouwen van de speed
 typing applicatie, zal de vraag "Hoe bouw je een Webapplicatie in Rust" beantwoord worden met Yew
@@ -820,13 +820,14 @@ pub struct TaskProps {
 Als laatste stap moeten we onze App component updaten om de fetch request te maken in plaats van
 hardcoded data te gebruiken.
 
-Hier gebruiken we de \mintinline{rust}{use_effect_with_deps} hook met lege dependencies als tweede parameter om de
-tasks slechts eenmaal op te halen bij de eerste render van het App component. In de closure
-gebruiken we wasm-bindgen-futures om de Javascript Promise die de \mintinline{rust}{Request::get} genereert om te
-zetten naar een Future type. Met de \mintinline{rust}{Request::get} halen we de JSON todos op en slaan ze op als een
-vec met \mintinline{rust}{TaskProps}. Vervolgens vullen we onze tasks state met de
-\mintinline{rust}{fetched_tasks} en zullen de tasks
-worden weergeven in de browser!
+Hier gebruiken we de \mintinline{rust}{use_effect_with_deps} hook met lege dependencies als tweede
+parameter om de tasks slechts eenmaal op te halen bij de eerste render van het App component. In de
+closure gebruiken we \mintinline{rust}{wasm-bindgen-futures} om de Javascript Promise die de
+\mintinline{rust}{Request::get} genereert om te zetten naar een Future type. Met de
+\mintinline{rust}{Request::get} halen we de JSON todos op en slaan ze op als een
+\mintinline{rust}{vec} met \mintinline{rust}{TaskProps}. Vervolgens vullen we onze
+\mintinline{rust}{tasks} state met de \mintinline{rust}{fetched_tasks} en zullen de tasks worden
+weergeven in de browser!
 
 \begin{listing}
 \begin{minted}{rust}
@@ -875,7 +876,78 @@ let tasks = use_state(std::vec::Vec::new);
 
 \clearpage
 
-
 \section{Hoe bouw je een API in Rust?}
 
+Volgend op de Todo applicatie die we gebouwd hebben in "Hoe bouw je een web app in Rust?",
+zullen we een REST API bouwen die de taken uit een database zal halen en opslaan. Als API framework
+zullen we Actix-web gebruiken, samen met diesel.rs als ORM voor het beheren van de database. Om het
+simpel te houden gebruiken we net zoals in de speed typing test applicatie SQLite als database.
+
+\clearpage
+
 \section{Is Rust productie klaar?}
+
+Wanneer een taal “productie klaar” benoemd kan worden is eigenlijk een moeilijke vraag om te
+beantwoorden. Wat “productie klaar” betekent hangt af van verschillende factoren voor een specifiek
+domein. Rust schittert bijvoorbeeld in productief veilige en performante applicaties te bouwen. Top
+bedrijven zoals Amazon, Google, Microsoft kunnen dit beamen sinds ze ondertussen al een aantal jaar
+Rust gebruiken. Zo heeft Amazon in 2018 Firecracker gelanceerd. Een open source
+virtualisatietechnologie die AWS Lambda en andere serverloze aanbiedingen aandrijft. Daarnaast
+gebruiken ze Rust ook voor services te leveren zoals Amazon Simple Storage Service (Amazon S3),
+Amazon Elastic Compute Cloud (Amazon EC2), Amazon CloudFront, en meer. Amazon heeft dan ook samen
+met Google, Microsoft, Huawei en Mozilla de Rust foundation opgericht in 2020, met een missie om het
+developen van Rust te ondersteunen. We kunnen dus concluderen dat de taal op zich wel een stabiele
+omgeving is. Dit onderzoek gaat natuurlijk wel over hoe we Rust kunnen gebruiken voor het bouwen van
+webapplicaties. We richten onze focus dan ook op dit domein. We zullen de onderzoeksvraag “Is Rust
+productie klaar?” opsplitsen in twee delen namelijk frontend en backend. 
+
+\subsection{Backend }
+
+Laten we beginnen met de backend. Bij het bouwen van hedendaagse webapplicaties heb je over het
+algemeen 2 zaken nodig, een API en een database. Uiteraard is dit niet altijd het geval maar laten
+we onze focus hierop leggen. 
+
+Om een web API te bouwen gebruik je gewoonlijk een web framework. Het huidige rust ecosysteem heeft
+een aantal stabiele web frameworks ter beschikking. Uit de onderzoeksvraag “Hoe bouw je een API in
+Rust?” hebben we gekozen voor Actix-web te gebruiken als framework. Actix-web voorziet alles wat je
+kan verwachten van een web framework, van routing en middleware, tot templating en JSON/form
+afhandeling. Het is ook een van de snelste web frameworks ter beschikking. Zo staat actix momenteel
+op de 5de plaats bij een benchmark ranking van alle populaire web frameworks (ook andere
+programmeertalen dan Rust). 
+
+Het actix framework ondersteunt verschillende soorten databases zoals mongodb, postgres, redis,
+sqlite, graphql, elasticsearch en meer. De ene database heeft meer ondersteuning dan de andere, maar
+naarmate de tijd vordert zal de ondersteuning alleen maar verbeteren. 
+
+\subsection{Frontend}
+
+Bij de frontend komt er wat meer bij kijken. Er zijn namelijk twee opties waarvoor Rust gebruikt kan
+worden: 
+\begin{itemize}
+  \item Een gedeelde in Rust schrijven en compileren naar wasm om vervolgens te importeren als een node
+  \item module in een bestaande Javascript applicatie. 
+  \item Een volledige frontend in Rust schrijven met een web framework als Yew en compileren naar wasm 
+\end{itemize}
+
+\clearpage
+
+De eerste optie is meteen ook de optie waarvoor wasm het meest zal gebruikt worden. Zo kan je
+Javascript blijven gebruiken voor de UI en wasm voor de logica van de applicatie. Om mogelijks meer
+performatie te winnen en correctere code te schrijven. Deze optie wordt al volop in productie
+gebruikt door meerdere bedrijven: 
+\begin{itemize}
+  \item 1Password – gebruikt wasm om hun browser plugin te versnellen 
+  \item Figma – gebruikt wasm om hun originele C++ applicatie te exporteren naar de browser 
+  \item SketchUp – gebruikt wasm om een 3d modelling tool op het web te draaien, wat snelle en
+    voorspelbare prestaties verreist 
+\end{itemize}
+
+De andere optie, een volledige frontend bouwen met Rust, is een optie die momenteel meer gebruikt
+wordt voor hobby projecten dan voor productie. Een van de redenen hiervoor is dat het ecosysteem nog
+zeer jong is. Het is bijvoorbeeld niet te vergelijken met het ecosysteem van populaire JS
+frameworks, wat ook logisch is. Toch kan een bedrijf er een voordeel uithalen. Bijvoorbeeld als hun
+volledige stack geschreven is in Rust, kunnen ze delen van hun codebase zoals database entiteiten
+hergebruiken in de frontend. Nog een voordeel is dat beide teams maar een taal hoeven te kennen en
+zo elkaar kunnen helpen bij veelvoorkomende fouten.  
+
+Het heeft natuurlijk ook zijn nadelen. De compileer tijd kan soms op lopen tot enkele minuten. 
