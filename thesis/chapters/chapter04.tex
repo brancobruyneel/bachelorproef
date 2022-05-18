@@ -1,4 +1,83 @@
 \chapter{Reflectie}
-In de figurenlijst staan alle figuren die je in je bachelorproef gebruikt
-opgesomd. Wanneer je van de functie ‘Bijschrift invoegen…’ in Word gebruik 
-maakt, kun je de lijst automatisch genereren.
+
+Het doel van de module "Research Project" was om onderzoek te doen naar de vraag "Wat is de huidige
+status van Rust voor het bouwen van webapplicaties?". In dit hoofdstuk reflecteer ik op het
+resultaat van het onderzoek en vergelijk de bevindingen uit de praktijk. Daarvoor heb ik contact
+opgenomen met twee core maintainers van het gebruikte web framework genaamd Yew. Zij hebben beide
+ook professionele ervaring met het bouwen van webapplicaties in Rust.
+
+De eerste core maintainer is Julius Lungys, hij is een Rust developer bij het Fintech bedrijf
+Nikulipe. Al hun software is geschreven met Rust, de software is voornamelijk backend gericht
+maar voor de admin websites gebruiken ze Yew. Julius was ook te gast bij "The Rustacean Station Podcast"
+met een episode over Yew, waar ik interessante inzichten gekregen heb over dit onderzoek.
+
+Cecile Tonglet is de tweede core maintainer, in het dagelijkse leven ook een Rust developer
+bij HMI Hydronics. Ze maken hydraulische ventielen, inclusief een "slimme" ventiel met wat embedded
+code. Cecile werkt niet aan de niet aan de embedded software maar werkt aan een web app die draait 
+op het slimme ventiel.
+
+Naast de core maintainers heb ik ook gereflecteerd met Emiel Van Severen, een laatstejaarsstudent
+Industrieel Ingeineur in de Informatica. Hij heeft nog geen professionele ervaring met Rust maar
+is zich zeer bekend in het ecosysteem en heeft een aantal hobby projecten in Rust.
+
+Ook was er tijdens het onderzoek ook aardig wat feedback van de Yew community. Yew heeft een
+relatief kleine maar zeer actieve community. Zo kreeg ik in hun discord instant feedback bij
+problemen of vragen.
+
+
+\clearpage
+
+\section{Wat zijn de sterke en zwakke punten van het resultaat uit jouw researchproject?}
+
+\subsection{Sterke}
+
+rust package management
+
+sterk typesystem + compiler
+
+rust verzekert dat alle edge cases worden afgehandeld
+
+bv het unrwappen van een Result of option
+
+
+performance gewijs hetzelfde
+
+
+\subsection{Zwakke}
+
+veel boiler plate om het zelfde te kunnen bereiken dan met react + typescript
+
+ecosysteem nog niet ontwikkeld
+
+de frameworks hebben vaak nog geen 1.0 versie
+
+
+\section{Is ‘het projectresultaat’ (incl. methodiek) bruikbaar in de bedrijfswereld}
+
+cargo workspace
+
+er zijn geen testen
+
+gzipped content
+
+
+\section{Wat zijn de mogelijke implementatiehindernissen voor een bedrijf?}
+
+
+
+
+\section{Wat is de meerwaarde voor het bedrijf?}
+
+als het bedrijf al rust gebruikt bij hun andere services
+
+
+\section{Welke alternatieven/suggesties geven bedrijven en/of community?}
+
+
+\section{Is er een economische meerwaarde aanwezig?}
+
+
+\section{Wat zijn jouw suggesties voor een (eventueel) vervolgonderzoek?}
+
+ci/cd deployment
+
