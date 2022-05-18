@@ -31,11 +31,19 @@ framework.
 Om de huidige status van Full Stack web development in te onderzoeken heb ik gekozen voor een speed
 typing test webapp te maken.
 
+\includegraphics[width=\textwidth]{./figures/vim.png}
+
 Het is een simpele applicatie waarbij de gebruiker een random code snippet krijgt die hij zo snel
 mogelijk moet overtypen. Tijdens het typen wordt er live zijn tijd en words per minute (WPM)
 bijgehouden. Als de gebruiker de volledige snippet heeft overgetypt krijgt hij een resultaten pagina
 te zien. Daar kan hij zijn statistieken bekijken zoals: WPM, verlopen tijd, accuraatheid en het
 aantal fouten. Daarna kan de gebruiker opnieuw spelen door op de letter ‘r’ in te drukken. 
+
+\begin{wrapfigure}{l}{0.5\linewidth}
+  \centering
+  \includegraphics[width=0.78\linewidth]{./figures/result.png}
+\end{wrapfigure}
+
 
 Ik had voor ogen om bij dit project nog een aantal features eraan toe te voegen. Zoals authenticatie
 met SSO, de statistieken opslaan in de database zodat er een lijn grafiek kon getoond op basis van
@@ -44,7 +52,11 @@ Het leren van Rust en WebAssembly nam meer tijd in beslag dan verwacht. Sinds ik
 van Rust of een gelijkaardige systeem level programmeertaal was dit project al een hele uitdaging op
 zich.
 
+\clearpage
+
 \section{Opbouw/structuur}
+
+\includegraphics[width=\textwidth]{./figures/structuur.png}
 
 De frontend van de applicatie is volledig geschreven in Rust. Dit is mogelijk gemaakt door het
 gebruik van Yew als framework. Daarbij heb ik Tailwindcss gebruikt als CSS framework. Tailwindcss is
@@ -64,6 +76,9 @@ er diesel gebruikt als ORM framework.
 
 
 \section{Werking frontend}
+
+\includegraphics[width=\textwidth]{./figures/components.png}
+
 De startpagina is geïnspireerd door mijn favoriete editor vim. Zo krijg je een simpele versie van
 vim te zien als editor voor het typen. Hieronder zie je een schema van de compositie van de
 belangrijkste componenten.
@@ -74,12 +89,12 @@ Window: rendert de tekst samen met LineNumber
 StatusLine: toont live statistieken zoals de huidige taal, tijd, WPM, progress 
 Result: toont alle statistieken op het einde van de game
 
-\clearpage
-
 Het bouwen van de interface was redelijk eenvoudig, maar om de speed typing test te doen werken was
 het verassend moeilijk. Om de gebruiker het idee te geven dat hij tekst over typt heb ik vier html
 elementen gebruikt: een cursor met het huidige karkater, de correct getypte tekst, de foute getypte
 tekst en de resterende tekst.
+
+\includegraphics[width=\textwidth]{./figures/text.png}
 
 Bij elk keypress event wordt er gecontroleerd of de key gelijk is aan het volgende karakter. Indien
 het gelijk is wordt het huidige karakter van de cursor toegevoegd aan de string met de correcte
@@ -115,6 +130,12 @@ doorgeven. Hier is niks mis mee tenzij je een diep genest child component hebt d
 van de state. Dan heb je “prop drilling” waarbij je vanuit de parent component de props moet
 doorgeven aan zijn children die dezelfde props dan doorgeven aan hun children, en zo verder tot dat
 je bij de gewenste component bent.
+
+
+\centering
+\includegraphics[width=0.6\textwidth]{./figures/use_reducer.png}
+
+
 
 Dit heb ik opgelost door de \mintinline{rust}{use_context} hook te gebruiken samen met de
 \mintinline{rust}{use_reducer}. Zo kon ik een \mintinline{rust}{GameStateProvider} component
