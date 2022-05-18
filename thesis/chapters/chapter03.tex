@@ -57,8 +57,8 @@ utility classes toepassen op mijn components. Wat maakt voor een geweldige devel
 Om alles van frontend te kunnen compileren en uitvoeren heb ik trunk gebruikt. Trunk is een WASM web
 applicatie bundelaar. Het gebruikt een eenvoudige config voor het bouwen en bundelen van WASM, JS
 snippets en andere assets (images, css, scss) via een source HTML bestand. Met een simpel commando
-als “trunk build” bouwt hij de hele frontend en met “trunk serve --serve” draait hij de lokale dev
-server.  
+als \mintinline{bash}{trunk build} bouwt hij de hele frontend en met \mintinline{bash}{trunk serve
+--serve} draait hij de lokale dev server.  
 
 Bij het laden van de startpagina haalt de frontend een random code snippet op via de API. De API
 haalt de snippets op uit een SQLite database. Om de database in sync te houden met de Rust code werd
@@ -105,5 +105,73 @@ De \mintinline{rust}{use_reducer} hook werkt gelijkaardig maar wordt gebruikt vo
 states. Zo komt het met een dispatch functie die een argument neemt van het type Action. Wanneer
 deze wordt aangeroepen, worden de actie en de huidige waarde doorgegeven aan de reducer functie die
 een nieuwe state berekent en retourneert.
+
+Zo heb ik 5 acties gedefinieert: \mintinline{rust}{NewSnippet}, \mintinline{rust}{Keypress},
+\mintinline{rust}{Backspace}, \mintinline{rust}{Tick} en \mintinline{rust}{Reset}. In die acties zit
+de meeste logica van het spel en kan gebruikt worden in components om de state van het spel aan te
+passen. 
+
+Het probleem met de \mintinline{rust}{use_reducer} hook is dat een component de hele state opneemt.
+Als de child components een variabel nodig hebben van de state, moeten die als properties worden
+doorgeven. Hier is niks mis mee tenzij je een diep genest child component hebt die afhankelijk is
+van de state. Dan heb je “prop drilling” waarbij je vanuit de parent component de props moet
+doorgeven aan zijn children die dezelfde props dan doorgeven aan hun children, en zo verder tot dat
+je bij de gewenste component bent.
+
+Dit heb ik opgelost door de \mintinline{rust}{use_context} hook te gebruiken samen met de
+\mintinline{rust}{use_reducer}. Zo kon ik een \mintinline{rust}{GameStateProvider} component
+definiëren die de context (state) consumeert en gebruikt kan worden door alle child components. Dit
+betekent dat ik de props niet meer hoefde te “prop drillen” maar direct kon aanspreken vanuit alle
+child components onder de GameStateProvider. Helaas heeft deze methode ook zijn nadelen: 
+\begin{itemize}
+    \item als de state gebruikt wordt in een child component moet de hele state gekloond worden 
+
+    \item stel een child component gebruikt een variabele A van de globale state, als de hele state
+    wordt aangepast behalve de variabele A zal het child component toch onnodig re-renderen. 
+\end{itemize}
+
+Zo ben ik uiteindelijk geland op yewdux een state management library voor Yew die werkt met een
+globale store/state. Het is verglijkbaar met de populaire React library Redux. Yewdux gebruikt een
+CoW (clone on write) managementstrategie. Dit betekent dat de state bij elke mutatie een keer wordt
+gekloond. Door het op deze manier te doen kunnen we beknopt een precieze mutatie uitdrukken zonder
+extra boilerplate, en gebruik maken van change detection om onnodige re-renders te voorkomen. 
+
+Een voorbeeld hiervan is de \mintinline{rust}{use_selector} hook van yewdux, waarmee we een
+variabele van de state kunnen selecteren en slechts re-renderen als de variabel verandert i.p.v. de
+hele state.
+
+De werking van de backend verschilt niet veel met het voorbeeld “Todo” applicatie die we gemaakt
+hebben in “Hoe bouw je een API in Rust?”. Opnieuw werd er gekozen voor een simpele SQLite database
+om de code snippets in op te slaan. Zoals eerder gezien wordt het database schema aangemaakt door
+migrations uit te voeren met diesel CLI.  Dit is een database first aanpak, na wat onderzoek lijkt
+het me dat diesel.rs jammer genoeg geen andere aanpakken ondersteund zoals code first. Met code
+first kan je vanuit models die gedefinieerd staan in code automatisch migrations aanmaken die het
+database schema aanpassen/aanmaken. 
+
+In de speed typing database gebruiken we twee tabellen “languages” en “snippets”. Die een een op
+veel relatie met elkaar hebben. De tabel languages bevat de soorten programmeertalen en de tabel
+snippets de code. De code is hier gewoon opgeslagen als tekst in de tabel snippets. Het is wel
+belangrijk dat de code geen spaties bevat maar tabs. Daarvoor heb ik kleine parser tool geschreven
+om makkelijk code snippets te maken. Het neemt een tekstbestand als input en zet alle spaties en
+enters om naar de respectievelijke karakters “\textbackslash t” en “\textbackslash n”. Zo kan de
+frontend makkelijk de juiste enters en tabs weergeven. 
+
+De API kent een aantal routes, ik lijst ze hier even op: 
+\begin{itemize}
+    \item GET, POST, DELETE  /languages
+    \item GET, POST, DELETE /snippets 
+    \item GET /snippets/random 
+    \item GET /snippets/\{language\_id\}"
+\end{itemize}
+
+Uiteindelijk gebruikt de frontend maar een route “/snippets/random” om een random code snippet op te
+halen uit de database. Om ervoor te zorgen dat we niet eerst alle snippets op halen uit de database
+om dan een random snippet eruit te selecteren. Heb ik eerst via een SQL-query de snippets tabel
+random gesorteerd en het eerste resultaat eruit gepakt.  
+
+Standaard zal Rust of diesel het random type niet kennen. Gelukkig voorziet diesel de
+\mintinline{rust}{no_arg_sql_function} macro waarmee je SQL functies kunt mappen naar Rust types.
+
+Zo kan ik het random type importeren vanuit het schema en gebruiken in mijn SQL-query opgesteld door diesel.
 
 \section{Werking backend}
