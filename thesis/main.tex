@@ -1,0 +1,48 @@
+\documentclass[11pt,a4paper,oneside]{book}
+
+\usepackage[dutch]{babel}
+\usepackage{blindtext}
+
+\usepackage[backend=biber, style=ieee,natbib=true]{biblatex}
+\addbibresource{references.bib}
+
+\usepackage[plainpages=false]{hyperref}    % Om hyperlinks te hebben in het pdfdocument.
+\usepackage{a4wide}
+\usepackage{url}
+
+\usepackage{minted}
+\setminted{frame=single,linenos}
+
+\usepackage{csquotes}
+\usepackage{graphicx}
+\usepackage[parfill]{parskip}
+
+\usepackage[small,bf,hang]{caption2}
+
+
+\author{Branco Bruyneel}
+\title{Wat is de huidige status van Rust in webdevelopment?}
+
+\begin{document}
+
+\maketitle
+
+\chapter*{Woord vooraf}
+\chapter*{Abstract}
+
+\tableofcontents
+\addcontentsline{toc}{chapter}{Woord vooraf}
+\addcontentsline{toc}{chapter}{Abstract}
+
+\listoffigures
+
+
+\include{chapters/chapter01}
+
+\include{chapters/chapter02}
+\include{chapters/chapter03}
+\include{chapters/chapter04}
+\include{chapters/chapter05}
+\include{chapters/chapter06}
+
+\end{document}
