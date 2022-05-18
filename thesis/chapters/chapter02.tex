@@ -284,6 +284,117 @@ annotaties aan je Rust code, zal het automatisch de code maken die nodig is (aan
 complexere types te laten werken.
 
 \section{Welke front- \& backend frameworks zijn er ter beschikking?}
+Om efficiënt webapplicaties te bouwen heb je natuurlijk een degelijk framework nodig die voor jou al
+het zware werk doet. Gelukkig heeft Rust mits zijn jonge jaren, al een aardig aantal frameworks ter
+beschikking voor het bouwen van webapplicaties.  
+
+Dit zijn de top 3 front- en backend frameworks. Gerangschikt naar mate van hun populariteit (GitHub
+stars).
+
+\subsection{Frontend}
+
+\subsubsection{Yew - 21k} 
+
+Yew is het populairste frontend framework met over 21k GitHub stars. Het beschikt
+over een component-gebaseerd framework dat het makkelijk maakt om interactieve UI’s te maken.
+Ontwikkelaars die ervaring hebben met frameworks als React en Elm zouden zich helemaal thuis moeten
+voelen bij het gebruik van Yew. Naast de aangename developer experience brengt het ook geweldige
+prestaties met zich mee. Dit bereiken ze door het minimaliseren van het aanroepen naar de DOM en
+door ontwikkelaars te helpen om gemakkelijk taken te offloaden naar achtergrond threads met behulp
+van web workers. 
+
+De documentatie over de huidige release versie 19.0 is uitgebreid geschreven.  Er kan zelfs al
+gekeken worden naar de volgende release “Next”, die refereert naar de master branch. In de Next
+versie is belangrijkste nieuwe feature SSR, want de huidige versie heeft alleen maar CSR.
+
+\clearpage
+
+\subsubsection{Dixous - 3.8k}
+
+Dixous is een opkomend en jong UI framework als concurrent voor Yew. Het is net als Yew ontworpen om
+React-achtig te zijn. Zo heeft het ook een component-gebaseerde architectuur, state management,
+props en nog veel meer. Buiten de verschillende syntax tegen over Yew, heeft Dixous nog een aantal
+troeven zoals:  
+\begin{itemize}
+  \item de keuze tussen JSX-achtige of hun eigen macro gebaseerde RSX syntax als templating systeem
+    ingebouwde globale state en error handler 
+
+  \item components en hooks kunnen worden hergebruikt voor te renderen op het web, desktop, mobiel,
+    server en meer 
+
+  \item uitgebreide inline documentatie 
+
+  \item SSR 
+\end{itemize}
+
+\subsubsection{Seed - 3.3k}
+
+Seed is een frontend framework voor het maken van prestatiegerichte en betrouwbare webapps die een
+Elm-achtige architectuur heeft. Het heeft een minimale configuratie en boilerplate, en heeft
+duidelijke documentatie die het voor iedereen gemakkelijk maakt om mee te beginnen.  
+
+Ook Seed gebruikt een eigen templating systeem met een macro syntax waardoor Rustaceans zich meteen
+thuis voelen. Dit betekent dat linting, formatteren en commentaar geven zullen werken, en het is
+allemaal in Rust. Dit in tegenstelling tot een JSX-achtige syntax (zoals die van Yew) die
+afhankelijk is van IDE-extensies om de developer experience te verbeteren. 
+
+Seed beschikt niet over SSR en heeft nog geen plannen om het te implementeren. 
+
+\subsection{Backend}
+
+\subsubsection{Rocket – 17.2k}
+
+Rocket is een populair webframework dat het voor developers gemakkelijk maakt om snelle webapps te
+schrijven zonder te bezuinigen op veiligheid, flexibiliteit of functionaliteiten. Het heeft
+ondersteuning voor het testen van libraries, cookies, streams, routes, templates, databases, ORMs,
+boilerplates, en nog veel meer. Rocket heeft ook een grote en actieve community. 
+
+\subsubsection{Actix-web – 14.1k}
+
+Net als Rocket, is Actix een ander krachtig backend web framework. Actix heeft een
+architectuurpatroon gebaseerd op het actor-systeem van Rust en is goed uitgerust voor het bouwen van
+schrijfdiensten en micro apps. Het heeft ondersteuning voor routing, middleware, testen, WebSockets,
+automatisch server reloading en kan gehost worden op NGINX. Actix kan worden gebruikt om een
+volledige web app en API te bouwen. 
+
+\clearpage
+
+\subsubsection{Axum – 4.7k}
+
+Alhoewel er nog populairdere frameworks zijn dan Axum verdient het zeker een plaats in de top 3.
+Axum is deel van het populaire Tokio project, met sponsors als aws, azure en facebook. Tokio is een
+asynchrone runtime voor Rust, die de bouwstenen biedt die nodig zijn voor het schrijven van
+netwerktoepassingen. 
+
+Axum is een laag bovenop Tokio’s HTTP client genaamd hyper, die een relatief low-level library is en
+bedoeld is al bouwsteen voor libraries en applicaties. Het framework focust op ergonomie en
+modulariteit. Wat het nog onderscheidt met andere frameworks, is dat het geen eigen middleware
+systeem heeft maar gebruikt in plaats daarvan de tower::Service module van het Tokio project. Dit
+betekent dat Axum gratis timeouts, tracing, compressie, authorisatie en meer krijgt. 
+
+Dit alles maakt met zijn jonge 1-jarige leeftijd toch een library om naar uit te kijken. 
+
 \section{Hoe bouw je een web frontend in Rust?}
+
+Sinds Yew het populairste framework is en ook is gebruikt als framework voor het bouwen van de speed
+typing applicatie, zal de vraag "Hoe bouw je een Webapplicatie in Rust" beantwoord worden met Yew
+als framework. Het bouwen van een webapplicatie in een ander framework zal in grote lijnen hetzelfde
+zijn. Dit zal een praktische kijk zijn op hoe we Yew kunnen gebruiken voor het bouwen van
+Webapplicaties.  
+
+In dit voorbeeld gaan we een simpele Todo applicatie bouwen.
+
+\subsection{Tools installeren}
+
+\subsubsection{Rust}
+Rust kan source code compileren naar verschillende "targets" (m.a.w verschillende processors). Het
+compilatie target voor een browser gebaseerd op WebAssembly heet wasm32-unkown-unkown. Het volgende
+commando zal het WebAssembly target toevoegen aan je development environment. 
+
+\begin{minted}{bash}
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+\end{minted}
+
 \section{Hoe bouw je een API in Rust?}
+
 \section{Is Rust productie klaar?}
