@@ -24,12 +24,12 @@ syntactische voorbeelden in Rust.
 Hier een simpel voorbeeld dat \mintinline{rust}{"Hello world!"} schrijft naar de standaard output.
 
 \begin{listing}[h]
-  \begin{minted}{rust}
-    fn main() {
-      println!("Hello, world!");
-    }
-  \end{minted}
-  \caption{Hello, world!}
+\begin{minted}{rust}
+fn main() {
+  println!("Hello, world!");
+}
+\end{minted}
+\caption{Hello, world!}
 \end{listing}
 
 \clearpage
@@ -42,35 +42,35 @@ verschillen macro’s met functies. Zo kunnen macro’s een variabel aantal para
 ze uitgebreid vooraleer de compiler de betekenis van de code interpreteert.
 
 \begin{listing}[h]
-  \begin{minted}{rust}
-    #[derive(Debug)]
-    struct Rectangle {
-      width: u32,
-      height: u32,
-    }
+\begin{minted}{rust}
+#[derive(Debug)]
+struct Rectangle {
+  width: u32,
+  height: u32,
+}
 
-    impl Rectangle {
-      fn square(size: u32) -> Rectangle {
-        Rectangle: {
-          width: size,
-          height: size,
-        }
-      }
-      fn area(&self) -> u32 {
-        self.width * self.height
-      }
+impl Rectangle {
+  fn square(size: u32) -> Rectangle {
+    Rectangle: {
+      width: size,
+      height: size,
     }
+  }
+  fn area(&self) -> u32 {
+    self.width * self.height
+  }
+}
 
-    fn main() {
-      let rect1 = Rectangle::square(4);
-      println!(
-        "The area of the rectangle is {} square pixels.",
-        rect1.area()
-      );
-    }
+fn main() {
+  let rect1 = Rectangle::square(4);
+  println!(
+    "The area of the rectangle is {} square pixels.",
+    rect1.area()
+  );
+}
 
-  \end{minted}
-  \caption{structs}
+\end{minted}
+\caption{structs}
 \end{listing}
 
 Een \mintinline{rust}{struct} in Rust is gelijkaardig als een Object in object georiënteerde
@@ -87,16 +87,16 @@ kan afgehandeld worden door syntactische sugar, zoals het if let statement om to
 het innerlijke type, in dit geval een string:
 
 \begin{listing}[h]
-  \begin{minted}{rust}
-    fn main() {
-      let name: Option<String> = None;
-      // If name was not None, it would print here.
-      if let Some(name) = name {
-        println!("{}", name);
-      }
-    }
-  \end{minted}
-  \caption{\mintinline{rust}{Option} type}
+\begin{minted}{rust}
+fn main() {
+  let name: Option<String> = None;
+  // If name was not None, it would print here.
+  if let Some(name) = name {
+    println!("{}", name);
+  }
+}
+\end{minted}
+\caption{\mintinline{rust}{Option} type}
 \end{listing}
 
 Naast de \mintinline{rust}{if} en \mintinline{rust}{else} controlestructuren is er ook match en
@@ -110,19 +110,19 @@ afhandelen terwijl je de rest negeert. In dat geval kan je \mintinline{rust}{if 
 minder boilerplate code is dan match.
 
 \begin{listing}[h]
-  \begin{minted}{rust}
-    let message = match maybe_digit {
-      Some(x) if x < 10 => process_digit(x),
-      Some(x) => process_other(x),
-      None => panic!(),
-    };
+\begin{minted}{rust}
+let message = match maybe_digit {
+  Some(x) if x < 10 => process_digit(x),
+  Some(x) => process_other(x),
+  None => panic!(),
+};
 
-    let config_max = Some(3u8);
-    if let Some(max) = config_max {
-      println!("The maximum is configured to be {}", max);
-    }
-  \end{minted}
-  \caption{\mintinline{rust}{if let} \& \mintinline{rust}{match} operators}
+let config_max = Some(3u8);
+if let Some(max) = config_max {
+  println!("The maximum is configured to be {}", max);
+}
+\end{minted}
+\caption{\mintinline{rust}{if let} \& \mintinline{rust}{match} operators}
 \end{listing}
 
 \clearpage
@@ -190,13 +190,13 @@ programma niet compileren.
 Laat ons eens kijken naar een simpel voorbeeld.
 
 \begin{listing}[h]
-  \begin{minted}{rust}
-    {
-      let s = String::from("hello"); // s is geldig vanaf deze lijn
-      // doe iets met s
-    } // hier eindigt de scope, en s is niet langer geldig
-  \end{minted}
-  \caption{ownership}
+\begin{minted}{rust}
+{
+  let s = String::from("hello"); // s is geldig vanaf deze lijn
+  // doe iets met s
+} // hier eindigt de scope, en s is niet langer geldig
+\end{minted}
+\caption{ownership}
 \end{listing}
 
 Als we de regels volgen, wordt de variabele s owner over de string literal \mintinline{rust}{hello}.
@@ -388,13 +388,349 @@ In dit voorbeeld gaan we een simpele Todo applicatie bouwen.
 \subsection{Tools installeren}
 
 \subsubsection{Rust}
-Rust kan source code compileren naar verschillende "targets" (m.a.w verschillende processors). Het
-compilatie target voor een browser gebaseerd op WebAssembly heet wasm32-unkown-unkown. Het volgende
-commando zal het WebAssembly target toevoegen aan je development environment. 
+Om Rust te installeren hebben we de rustup toolchain installer nodig. Met het onderstaand script kan
+je het installeren op jouw UNIX machine. Als je Rust al hebt staan maak dan zeker dat je de laatste
+versie hebt door rustup update uit te voeren.
 
 \begin{minted}{bash}
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 \end{minted}
+
+\subsubsection{WebAssembly}
+
+Rust kan source codes compileren voor verschillende "targets" (m.a.w verschillende processors). Het
+compilatie target voor een browser gebaseerd WebAssembly heet wasm32-unkown-unkown. Het volgende
+commando zal het WebAssembly target toevoegen aan je development environment.
+
+\begin{minted}{bash}
+rustup target add wasm32-unknown-unknown
+\end{minted}
+
+\clearpage
+
+\subsubsection{Trunk}
+
+De documentatie van Yew raad aan om Trunk te gebruiken voor het beheren van deployment en packaging.
+
+\begin{minted}{bash}
+cargo install --locked trunk
+\end{minted}
+
+Nu ons development enviroment opgezet is, kunnen we een nieuw cargo project aanmaken.
+
+\begin{minted}{bash}
+cargo new yew-app
+cd yew-app
+\end{minted}
+
+Om te verifieren dat het Rust environment juist is opgezet, voer je het initiele project uit met de
+cargo build tool. Na de output van de het build process, zou je normaal "Hello, world!" te zien
+krijgen.
+
+\begin{minted}{bash}
+cargo run
+\end{minted}
+
+\subsubsection{Statische pagina}
+
+Om deze simpele command line applicatie naar een basis Yew web applicatie te convertern, zijn er een
+paar aanpassingen nodig. Pas de volgende bestanden aan als volgt:
+
+\begin{listing}[h]
+\begin{minted}{toml}
+[package]
+name = "yew-app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+yew = "0.19"
+\end{minted}
+\caption{Cargo.toml}
+\end{listing}
+
+\clearpage
+
+\begin{listing}[h]
+\begin{minted}{rust}
+use yew::prelude::*;
+
+#[function_component(App)]
+fn app() -> Html {
+    html! {
+        <h1>{ "Hello World" }</h1>
+    }
+}
+
+fn main() {
+    yew::start_app::<App>();
+}
+\end{minted}
+\caption{main.rs}
+\end{listing}
+
+Maak nu een index.html aan in de root folder van het project.
+
+\begin{listing}[h]
+\begin{minted}{html}
+<!DOCTYPE html>
+<html lang="en">
+  <head> </head>
+  <body></body>
+</html>
+\end{minted}
+\caption{index.html}
+\end{listing}
+
+\subsubsection{Start de development server}
+
+Voer het volgende commando uit om de applicatie te builden en lokaal te draaien.
+
+\begin{minted}{bash}
+trunk serve --open
+\end{minted}
+
+\subsection{Statische pagina}
+
+\subsubsection{Bouwen van HTML}
+
+Yew maakt gebruik van de procedurele macro's van Rust en biedt ons een syntax die lijkt op JSX (een
+uitbreiding van JavaScript waarmee u HTML-achtige code kunt schrijven in JavaScript) om de opmaak te
+maken.
+
+\clearpage
+
+\subsubsection{Converteren van HTML naar Rust}
+
+Aangezien we al een vrij goed idee hebben van hoe onze website eruit zal zien, kunnen we onze
+mentale opzet eenvoudig vertalen naar een voorstelling die compatibel is met html!. Als je
+eenvoudige HTML kunt schrijven, moet het geen probleem zijn om markeringen in html! te schrijven.
+Het is belangrijk op te merken dat de macro op een paar punten verschilt van HTML:
+\begin{itemize}
+  \item Uitdrukkingen moeten tussen accolades staan (\{ \})
+  \item Er mag maar één root node zijn. Als je
+    meerdere elementen wilt hebben zonder ze in een container te wikkelen, wordt een lege
+    tag/fragment (<> ... </>) gebruikt
+  \item Elementen moeten goed worden afgesloten.
+\end{itemize}
+
+We willen een layout bouwen die er ongeveer zo uitziet in ruwe HTML:
+
+\begin{minted}{html}
+<main>
+  <h1>My todo list</h1>
+  <ul>
+    <li>
+      <input type="checkbox" />
+      <label>Take dog out for a walk</label>
+    </li>
+    <input type="checkbox" />
+    <label>Feed the cats</label>
+    <li>
+      <input type="checkbox" />
+      <label>Take out the trash</label>
+    </li>
+    <li>
+      <input type="checkbox" />
+      <label>Water plants</label>
+    </li>
+  </ul>
+</main>
+\end{minted}
+
+\clearpage
+
+Laten we nu deze HTML in html! omzetten. Type (of kopieer/plak) het volgende knipsel in de body van
+de app functie, zodat de waarde van html! wordt geretourneerd door de functie.
+
+\begin{listing}[h]
+\begin{minted}{rust}
+#[function_component]
+pub fn App() -> Html {
+  html! {
+    <main>
+      <h1>{ "My todo list" }</h1>
+      <ul>
+        <li>
+          <input type="checkbox"/>
+          <label> { "Take dog out for a walk" } </label>
+        </li>
+          <input type="checkbox"/>
+          <label> { "Feed the cats" } </label>
+        <li>
+          <input type="checkbox"/>
+          <label> { "Take out the trash" } </label>
+        </li>
+        <li>
+          <input type="checkbox"/>
+          <label> { "Water plants" } </label>
+        </li>
+      </ul>
+    </main>
+  }
+}
+\end{minted}
+\caption{app.rs}
+\end{listing}
+
+\clearpage
+
+\subsubsection{Components}
+
+Components zijn de bouwstenen van Yew applicaties. Door components te combineren, die weer uit
+andere components kunnen worden opgebouwd, bouwen we onze applicatie. Door onze components te
+structureren voor herbruikbaarheid en ze generiek te houden, kunnen we ze in meerdere delen van onze
+applicatie gebruiken zonder code of logica te hoeven dupliceren.
+
+In feite is de app functie die we tot nu toe hebben gebruikt een component, genaamd App. Het is een
+"function component". Er zijn twee verschillende soorten componenten in Yew:
+\begin{itemize}
+  \item Struct Components 
+  \item Function Components
+\end{itemize}
+
+In deze tutorial zullen we function components gebruiken.
+
+Laten we nu onze App component opsplitsen in kleinere componenten. We kunnen onze Todo lijst
+opspliten in 2 components genaamd Task en TaskList.
+
+\begin{listing}[h]
+\begin{minted}{rust}
+#[derive(Properties, Debug, PartialEq)]
+pub struct TaskProps {
+  pub id: String,
+  pub title: String,
+  pub completed: bool,
+}
+
+#[function_component]
+pub fn Task(
+  TaskProps {
+    id,
+    title,
+    completed,
+  }: &TaskProps,
+) -> Html {
+  html! {
+    <li>
+      <input
+        type="checkbox"
+        id={id.clone()}
+        checked={*completed}
+      />
+      <label
+        for={id.clone()}>{title.clone()}
+      </label>
+    </li>
+  }
+}
+\end{minted}
+\caption{task.rs}
+\end{listing}
+
+\clearpage
+
+Let op de parameters van onze Task function component. Een function component heeft slechts één
+argument dat zijn "props" (kort voor "properties") definieert. Props worden gebruikt om gegevens
+door te geven van een ouder component naar een kind component. In dit geval is TaskProps een struct
+die de props definieert.
+
+\begin{listing}[h]
+\begin{minted}{rust}
+#[derive(Properties, PartialEq)]
+pub struct TaskListProps {
+  pub children: Children,
+}
+
+#[function_component]
+pub fn TaskList(TaskListProps { children }: &TaskListProps) -> Html {
+  html! {
+    <ul>
+      { for children.iter() }
+    </ul>
+  }
+}
+\end{minted}
+\caption{task\_list.rs}
+\end{listing}
+
+Nu kunnen we onze App component updaten met onze nieuwe components Task \& TaskList.
+
+\begin{listing}[h]
+\begin{minted}{rust}
+#[function_component]
+pub fn App() -> Html {
+    let tasks = vec![
+        html! { 
+          <Task 
+            id={"1"}
+            title={"Take dog out for a walk"}
+            completed={true}
+          /> 
+        },
+        html! { 
+          <Task 
+            id={"2"}
+            title={"Feed the cats"}
+            completed={false}
+          /> 
+        },
+        html! { 
+          <Task 
+            id={"3"}
+            title={"Water the plants"}
+            completed={false}
+          /> 
+        },
+    ];
+    html! {
+        <main>
+            <h1>{ "My todo list" }</h1>
+            <TaskList>
+                {tasks}
+            </TaskList>
+        </main>
+    }
+}
+\end{minted}
+\caption{app.rs}
+\end{listing}
+
+\clearpage
+
+\subsubsection{Interactief}
+Momenteel doet onze applicatie niet veel anders dan onze voor gedefineerde lijst te tonen.
+Uiteindlijk willen we onze taken uit de todo lijst kunnen schrappen. Om deze interactie te laten
+werken zullen we een aantal zaken aanpassen.
+
+Om bij te houden of de gebruiker de taak geschrapt heeft al dan niet, zullen we een
+\mintinline{rust}{completed_state} gebruiken met de \mintinline{rust}{use_state} hook. Zo verliezen
+we niet de waarde van de variabele \mintinline{rust}{completed_state} mocht het component
+re-renderen.
+
+\begin{minted}{rust}
+#[function_component]
+pub fn Task(
+    ...
+) -> Html {
+    let completed_state = use_state(|| *completed);
+    ...
+}
+\end{minted}
+
+Het volgende is natuurlijk het onclick event afhandelen als de gebruiker op het label of input
+element klikt. Hiervoor hebben we een Callback functie nodig die onze
+\mintinline{rust}{completed_state} aanpast naargelang de vorige state. Voor we de
+\mintinline{rust}{completed_state} kunnen gebruiken in onze Callback closure functie moeten we die
+eerst clonen. De reden hiervoor is het keyword move die voor de closure parameters staat, move zorgt
+ervoor dat alle references die gebruikt worden in de closure scope hun waarden worden verplaatst
+binnen de scope. Dus om te voorkomen dat we onze \mintinline{rust}{completed_state} nergens meer
+kunenn gebruiken clonen we eerst de state.
+
+Daarnaast kunnen we ook een css class meegeven met de classes! macro van yew, die conditioneel het
+html label zal doorstrepen al dan niet.
+
+\subsubsection{Data extern ophalen}
 
 \subsubsection{Bash}
 
