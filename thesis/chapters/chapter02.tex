@@ -718,21 +718,163 @@ pub fn Task(
 }
 \end{minted}
 
-Het volgende is natuurlijk het onclick event afhandelen als de gebruiker op het label of input
-element klikt. Hiervoor hebben we een Callback functie nodig die onze
-\mintinline{rust}{completed_state} aanpast naargelang de vorige state. Voor we de
+Het volgende is natuurlijk het \mintinline{rust}{onclick} event afhandelen als de gebruiker op het
+label of input element klikt. Hiervoor hebben we een \mintinline{rust}{Callback} functie nodig die
+onze \mintinline{rust}{completed_state} aanpast naargelang de vorige state. Voor we de
 \mintinline{rust}{completed_state} kunnen gebruiken in onze Callback closure functie moeten we die
-eerst clonen. De reden hiervoor is het keyword move die voor de closure parameters staat, move zorgt
+eerst clonen. De reden hiervoor is het keyword \mintinline{rust}{move} die voor de closure
+parameters staat, \mintinline{rust}{move} zorgt
 ervoor dat alle references die gebruikt worden in de closure scope hun waarden worden verplaatst
 binnen de scope. Dus om te voorkomen dat we onze \mintinline{rust}{completed_state} nergens meer
 kunenn gebruiken clonen we eerst de state.
 
-Daarnaast kunnen we ook een css class meegeven met de classes! macro van yew, die conditioneel het
-html label zal doorstrepen al dan niet.
+Daarnaast kunnen we ook een css class meegeven met de \mintinline{rust}{classes!} macro van yew, die
+conditioneel het html label zal doorstrepen al dan niet.
+
+\clearpage
+
+\begin{listing}
+\begin{minted}{rust}
+#[function_component]
+pub fn Task(
+    TaskProps {
+        id,
+        title,
+        completed,
+    }: &TaskProps,
+) -> Html {
+    let completed_state = use_state(|| *completed);
+
+    let onclick = {
+        let completed_state = completed_state.clone();
+
+        Callback::from(move |_| {
+            if *completed_state {
+                completed_state.set(false);
+            } else {
+                completed_state.set(true);
+            }
+        })
+    };
+
+    let completed_class = {
+        if *completed_state {
+            "line-through"
+        } else {
+            ""
+        }
+    };
+
+    html! {
+        <li>
+            <input
+                {onclick}
+                type="checkbox"
+                id={id.clone()}
+                checked={*completed_state}
+            />
+            <label
+                class={classes!(completed_class)}
+                for={id.clone()}>{title.clone()}
+            </label>
+        </li>
+    }
+}
+\end{minted}
+\caption{task.rs}
+\end{listing}
+
+\clearpage
 
 \subsubsection{Data extern ophalen}
 
-\subsubsection{Bash}
+In de speed typing applicatie komen de code snippets van een API in plaats van hard gecodeerd te
+zijn in de frontend. Laten we onze todo lijst ophalen van een externe bron. Hiervoor moeten we de
+volgende crates toevoegen:
+\begin{itemize}
+  \item reqwasm voor het maken van de fetch call.
+  \item serde met derive functies Voor het de-serialiseren van het JSON antwoord
+  \item wasm-bindgen-futures voor het uitvoeren van Rust Future als een Promise
+\end{itemize}
+
+Laten we de dependencies in het Cargo.toml bestand bijwerken:
+
+\begin{minted}{toml}
+[dependencies]
+yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
+serde = { version = "1.0", features = ["derive"] }
+wasm-bindgen-futures = "0.4"
+\end{minted}
+
+Pas de \mintinline{rust}{TaskProps} struct aan om de \mintinline{rust}{Deserialize} trait af te leiden.
+
+\begin{minted}{rust}
+#[derive(Properties, Debug, PartialEq, Deserialize)]
+pub struct TaskProps {
+  pub id: String,
+  pub title: String,
+  pub completed: bool,
+}
+\end{minted}
+
+Als laatste stap moeten we onze App component updaten om de fetch request te maken in plaats van
+hardcoded data te gebruiken.
+
+Hier gebruiken we de \mintinline{rust}{use_effect_with_deps} hook met lege dependencies als tweede parameter om de
+tasks slechts eenmaal op te halen bij de eerste render van het App component. In de closure
+gebruiken we wasm-bindgen-futures om de Javascript Promise die de \mintinline{rust}{Request::get} genereert om te
+zetten naar een Future type. Met de \mintinline{rust}{Request::get} halen we de JSON todos op en slaan ze op als een
+vec met \mintinline{rust}{TaskProps}. Vervolgens vullen we onze tasks state met de
+\mintinline{rust}{fetched_tasks} en zullen de tasks
+worden weergeven in de browser!
+
+\begin{listing}
+\begin{minted}{rust}
+#[function_component]
+pub fn App() -> Html {
+let tasks = use_state(std::vec::Vec::new);
+  {
+    let tasks = tasks.clone();
+    use_effect_with_deps(move |_| {
+      wasm_bindgen_futures::spawn_local(async move {
+        let fetched_tasks: Vec<TaskProps> = Request::get("url")
+          .send()
+          .await
+          .unwrap()
+          .json()
+          .await
+          .unwrap();
+
+        tasks.set(fetched_tasks.iter().take(10).map(|props| {
+            html! { 
+              <Task 
+                id={props.id.clone()} 
+                title={props.title.clone()} 
+                completed={props.completed} 
+              /> 
+            }
+          }).collect()
+        );
+      });
+      || ()
+    }, ());
+  }
+
+  html! {
+      <main>
+          <h1>{ "My todo list" }</h1>
+          <TaskList>
+              { (*tasks).clone() }
+          </TaskList>
+      </main>
+  }
+}
+\end{minted}
+\caption{app.rs}
+\end{listing}
+
+\clearpage
+
 
 \section{Hoe bouw je een API in Rust?}
 
