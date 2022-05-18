@@ -883,6 +883,343 @@ zullen we een REST API bouwen die de taken uit een database zal halen en opslaan
 zullen we Actix-web gebruiken, samen met diesel.rs als ORM voor het beheren van de database. Om het
 simpel te houden gebruiken we net zoals in de speed typing test applicatie SQLite als database.
 
+
+\subsection{Opzet project}
+
+Maak een nieuw Rust project aan met de volgende dependencies.
+
+\begin{minted}{bash}
+cargo new api
+cd api/
+\end{minted}
+
+\begin{listing}[h]
+\begin{minted}{toml}
+[dependencies]
+diesel = { version = "1.4.8", features = ["sqlite", "r2d2"] }
+dotenv = "0.15.0"
+actix-web = "4"
+actix-cors = "0.6.1"
+uuid = { version = "0.8", features = ["serde", "v4"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+log = "0.4"
+env_logger = "0.9.0"
+\end{minted}
+\caption{Cargo.toml}
+\end{listing}
+
+We zullen uitleggen waarom we deze dependencies nodig hebben als we verder gaan.
+
+\subsubsection{Database}
+
+Diesel biedt een aparte CLI tool om je project te helpen beheren. Omdat het een standalone binary
+is, en geen directe invloed heeft op de code van je project, voegen we het niet toe aan Cargo.toml.
+In plaats daarvan installeren we het gewoon op ons systeem.
+
+\begin{minted}{bash}
+echo DATABASE_URL=todo.db > .env
+\end{minted}
+
+Nu kan Diesel CLI alles voor ons opzetten.
+
+\begin{minted}{bash}
+diesel setup
+\end{minted}
+
+Dit zal onze database aanmaken (als die nog niet bestond), en een lege migrations directory aanmaken
+die we kunnen gebruiken om ons schema te beheren.
+
+Diesel support momenteel alleen een database-first aanpak. Hierbij maken we eerst het database
+schema om dan met migrations het schema naar Rust om te zetten. Dat gezegd zijnde, laat ons een
+eerste migration aanmaken.
+
+\begin{minted}{bash}
+diesel migration generate create_tasks
+\end{minted}
+
+Diesel CLI zal twee lege bestanden (\mintinline{rust}{up.sql} en \mintinline{rust}{down.sql}) voor
+ons aanmaken in de vereiste structuur. In deze bestanden schrijven we SQL voor de Task tabel aan te
+maken in \mintinline{rust}{up.sql} en als we de migration willen ongedaan maken in
+\mintinline{rust}{down.sql}.
+
+\begin{listing}
+\begin{minted}{sql}
+CREATE TABLE tasks (
+  id VARCHAR NOT NULL PRIMARY KEY,
+  title VARCHAR NOT NULL,
+  completed INTEGER NOT NULL DEFAULT 0
+)
+\end{minted}
+\caption{up.sql}
+\end{listing}
+
+\begin{listing}
+\begin{minted}{sql}
+DROP TABLE tasks
+\end{minted}
+\caption{down.sql}
+\end{listing}
+
+Nu kunnen we onze eerste migration uitvoeren met:
+
+\begin{minted}{bash}
+diesel migration run
+\end{minted}
+
+Dit zal onze SQL migration uitvoeren op de \mintinline{bash}{todo.db} database en het nodige Rust
+schema genereren met de nodige types. In het Rust schema wordt met de \mintinline{rust}{table!}
+macro een hoop code gegeneerd gebaseerd op het database schema om alle tabellen en kolommen weer te
+geven. Zo kunnen we nu gebruik maken van Rust zijn krachtig typesysteem om volledige SQL queries te
+gaan bouwen met code. We zullen in het volgende voorbeeld zien hoe we dat precies kunnen gebruiken.
+
+Telkens wanneer we een migratie uitvoeren of terugdraaien, wordt dit bestand automatisch bijgewerkt.
+
+\clearpage
+
+\subsection{API}
+
+Om de basis functionaliteiten van onze Todo applicatie in de front-end te ondersteunen, zal onze API
+een nieuwe taak kunnen aanmaken en de lijst met taken ophalen. Dus zullen we de volgende endpoints
+hebben:
+\begin{itemize}
+  \item GET /tasks - retourneert alle taken
+  \item POST /tasks - voegt een nieuwe taak toe
+\end{itemize}
+
+
+Om onze code overzichtelijklijk te houden, zullen we de volgende structuur hanteren:
+\dirtree{%
+.1 src/.
+.2 main.rs.
+.2 models.rs.
+.2 schema.rs.
+.2 handlers.rs.
+.2 db.rs.
+}
+
+Bij het opzetten van ons project heeft cargo een al een \mintinline{bash}{main.rs} bestand
+aangemaakt. Laten we dat bewerken en onze eerste \mintinline{rust}{"Hello World!"} route schrijven.
+
+\begin{listing}[h]
+\begin{minted}{rust}
+use actix_web::{web, App, HttpServer};
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+  HttpServer::new(|| {
+    App::new()
+      .route("/hello", web::get().to(|| async { "Hello World!" }))
+  })
+  .bind(("127.0.0.1", 5000))?
+  .run()
+  .await
+}
+\end{minted}
+\caption{main.rs}
+\end{listing}
+\clearpage
+
+Onze main functie heeft nu het \mintinline{rust}{#[actix_web::main]} attribuut, die zal onze main
+functie markeren als start functie en uitvoeren in de runtime van \mintinline{rust}{actix_web}.
+
+Een belangrijk punt om op te merken is dat we een \mintinline{rust}{Result} type teruggeven. Dit
+stelt ons in staat om de \mintinline{rust}{?} operator in main te gebruiken, die elke fout die door
+de geassocieerde functie wordt teruggegeven naar de aanroeper koppelt.
+
+Het tweede ding om op te merken is \mintinline{rust}{async/await}. Hiermee geven we aan dat Rust
+onze functies asynchroon kan uitvoeren zonder andere threads te blokkeren.
+
+In onze main, instantiëren we een \mintinline{rust}{HttpServer}, voegen er een
+\mintinline{rust}{App} aan toe die dient als een
+Application factory en voegen onze eerste route er aan toe.
+
+Als alles goed gaat zou je nu de API kunnen opstarten met \mintinline{bash}{cargo run} en bij een
+GET request naar \mintinline{bash}{localhost:8080/hello} \mintinline{rust}{"Hello world!"} als repons 
+te zien krijgen.
+
+\begin{listing}[h]
+\begin{minted}{rust}
+#[get("/task")]
+async fn get_tasks() -> Result<HttpResponse, Error> {
+  todo!()
+}
+
+#[post("/task")]
+async fn add_task() -> Result<HttpResponse, Error> {
+  todo!()
+}
+\end{minted}
+\caption{handlers.rs}
+\end{listing}
+
+In de module \mintinline{rust}{handlers} zullen we onze requests per endpoint afhandelen. Voorlopig
+gebruiken we hier nog de \mintinline{rust}{todo}! macro sinds we nog geen communicatie maken de
+database. Laat ons dat eerst aanpakken.
+
+Onze eerste migration die we eerder hebben uitgevoerd heeft voor ons al een
+\mintinline{rust}{schema.rs} module aangemaakt, zodat diesel onze queries kan controleren tijdens
+het compileren. Om met queries te kunnen werken in Rust hebben we models nodig. Zo kunnen we het
+resultaat van een query mappen naar een model of een model gebruiken voor nieuwe data in te voegen.
+
+Met de traits \mintinline{rust}{Queryable} en \mintinline{rust}{Insertable} zorgen we er voor dat de
+struct \mintinline{rust}{Task} als resultaat voor een query kan gebruikt worden en als struct om
+nieuwe data in te voegen.
+
+\mintinline{rust}{Deserialize} en \mintinline{rust}{Serialize} komen van de crate
+\mintinline{rust}{serde}, zij zorgen ervoor dat we de models kunnen omzetten naar json en andersom.
+
+\clearpage
+
+\begin{listing}[h]
+\begin{minted}{rust}
+#[derive(Debug, Serialize, Deserialize, Queryable, Insertable)]
+pub struct Task {
+  pub id: String,
+  pub title: String,
+  pub completed: bool,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct InputTask {
+  pub title: String,
+}
+\end{minted}
+\caption{models.rs}
+\end{listing}
+
+Nu we onze models hebben kunnen we in \mintinline{rust}{db} functies schrijven om tasks op te vragen
+en aan te maken. De functies spreken voorzich, we gebruiken diesel zijn sql implementaties om met
+onze database te communiceren.
+
+Merk op dat we bij elke functie \mintinline{rust}{schema::tasks::dsl::*} opnieuw toevoegen aan de
+lokale scope. Dit is puur conventie sinds we maar 1 tabel hebben \mintinline{rust}{Tasks}, moesten
+we meerdere tabellen hebben zouden we onze scope kunnen vervuilen door bijvoorbeeld zelfde
+kolomnamen die elkaar overschrijven.
+
+\begin{listing}[h]
+\begin{minted}{rust}
+type DbError = Box<dyn std::error::Error + Send + Sync>;
+
+pub fn list_all_tasks(conn: &SqliteConnection) 
+  -> Result<Option<Vec<Task>>, DbError> {
+  use crate::schema::tasks::dsl::*;
+  Ok(tasks.load::<Task>(conn).optional()?)
+}
+pub fn insert_new_task(t: &str, conn: &SqliteConnection) 
+  -> Result<Task, DbError> {
+  use crate::schema::tasks::dsl::*;
+  let new_task = Task {
+    id: Uuid::new_v4().to_string(),
+    title: t.to_owned(),
+    completed: false,
+  };
+  diesel::insert_into(tasks).values(&new_task).execute(conn)?;
+  Ok(new_task)
+}
+\end{minted}
+\caption{db.rs}
+\end{listing}
+
+\clearpage
+
+Nu we onze helper functies geschreven hebben kunnen we de requests afhandelen in
+\mintinline{rust}{handlers} als volgt:
+
+Elke handler functie krijgt een connection pool als parameter, die we later zullen definieren in
+main. De connection pool zal verschillende connecties met de database openhouden zodat ze efficient
+kunnen hergebruikt worden door anderen. Om te voorkomen dat een andere thread de connectie gebruikt
+tijdens het uitvoeren van een \mintinline{rust}{db} functie blokkeren we deze thread met
+\mintinline{rust}{web::block}. Als alles goed verloopt geven we de resultaten terug, indien niet
+geven we een \mintinline{rust}{InternalServerError} terug.
+
+\begin{listing}[h]
+\begin{minted}{rust}
+#[get("/task")]
+async fn get_tasks(
+  pool: web::Data<DbPool>,
+) -> Result<HttpResponse, Error> {
+  let tasks = web::block(move || {
+    let conn = pool.get()?;
+    db::list_all_tasks(&conn)
+  })
+  .await?
+  .map_err(actix_web::error::ErrorInternalServerError)?;
+
+  if let Some(tasks) = tasks {
+    Ok(HttpResponse::Ok().json(tasks))
+  } else {
+    let res = HttpResponse::NotFound().body("No tasks found!".to_string());
+    Ok(res)
+  }
+}
+#[post("/task")]
+async fn add_task(
+  pool: web::Data<DbPool>,
+  form: web::Json<models::InputTask>,
+) -> Result<HttpResponse, Error> {
+  let task = web::block(move || {
+    let conn = pool.get()?;
+    db::insert_new_task(&form.title, &conn)
+  })
+  .await?
+  .map_err(actix_web::error::ErrorInternalServerError)?;
+
+  Ok(HttpResponse::Created().json(task))
+}
+\end{minted}
+\caption{handler.rs}
+\end{listing}
+
+\clearpage
+
+Wat ons nu nog rest te doen, is onze connection pool instantiëren en de handler functies linken aan
+onze App. Vooraleer dat we dat doen laden we eerst ons .env bestand in het enviroment met de
+\mintinline{rust}{dotenv} crate en loggen we info over de applicatie naar \mintinline{bash}{stdout}
+met \mintinline{rust}{env_logger}. Daarna kunnen we onze connection pool opzetten met de
+\mintinline{bash}{DATABASE_URL} uit het enviroment. Ten slotte voegen we onze hanlder functies toe
+aan een nieuwe service met als scope \mintinline{bash}{/api} zodat al onze routes worden ge prefixed
+met \mintinline{bash}{/api}.
+
+\begin{listing}[h]
+\begin{minted}{rust}
+type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+  dotenv::dotenv().ok();
+  env_logger::init_from_env(
+    env_logger::Env::new().default_filter_or("info")
+  );
+  // set up database connection pool
+  let conn_spec = std::env::var("DATABASE_URL").expect("DATABASE_URL");
+  let manager = ConnectionManager::<SqliteConnection>::new(conn_spec);
+  let pool = r2d2::Pool::builder()
+    .build(manager)
+    .expect("Failed to create pool.");
+  log::info!(
+    "{}",
+    format!("starting HTTP server at http://localhost:5000"
+  ));
+  // Start HTTP server
+  HttpServer::new(move || {
+    App::new()
+      .app_data(web::Data::new(pool.clone()))
+      .wrap(middleware::Logger::default())
+      .service(
+        web::scope("/api")
+        .service(get_tasks)
+        .service(add_task)
+      )
+    })
+  .bind(("127.0.0.1", 5000))?
+  .run()
+  .await
+}
+\end{minted}
+\caption{main.rs}
+\end{listing}
+
+
 \clearpage
 
 \section{Is Rust productie klaar?}
@@ -927,7 +1264,7 @@ worden:
   \item Een gedeelde in Rust schrijven en compileren naar wasm om vervolgens te importeren als een node
   \item module in een bestaande Javascript applicatie. 
   \item Een volledige frontend in Rust schrijven met een web framework als Yew en compileren naar wasm 
-\end{itemize}
+\end{itemize}               
 
 \clearpage
 
@@ -951,3 +1288,5 @@ hergebruiken in de frontend. Nog een voordeel is dat beide teams maar een taal h
 zo elkaar kunnen helpen bij veelvoorkomende fouten.  
 
 Het heeft natuurlijk ook zijn nadelen. De compileer tijd kan soms op lopen tot enkele minuten. 
+
+\blindtext
