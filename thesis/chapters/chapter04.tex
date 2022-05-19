@@ -32,34 +32,43 @@ problemen of vragen.
 
 \subsection{Sterke}
 
-Tijdens het leren van Rust vond ik dat het een steile leercurve had in vergelijking met 
-andere talen. Cecile ziet het anders uit personlijke ervaringen, ze is namelijk een mentor
-van Yohan die heeft leren programeren van nul met Rust.
+Tijdens het interview met Julius Lungys, stelde ik vraag waarom hij zo enthousiast over Rust is. 
+Hij antwoorde dat de taal alles heeft wat hij wilt, een eigen equivalent van npm (Cargo), ingebouwde
+code formatter, tests, docs, geen garbage collector en macros.
 
-Tijdens het interview met Cecile reflecteerden we over dat Rust een steile leercruve heeft.
+Dit kon ik alleen maar beamen, Cargo is een geweldige package manager en maakt het beheren van
+packages zeer eenvoudig. Cargo is ongetwijfeld een van Rust zijn sterkte punten en zal een positieve
+impact hebben op de groei van het ecosysteem.
 
+Rust is correct met een krachtig typesysteem, dit betekent dat alle edge cases in de code worden
+opgevangen. Denk maar aan het unwrappen van een \mintinline{rust}{Option} of
+\mintinline{rust}{Result} type. Gelukkig heeft Rust een intelligente compiler die suggesties geeft,
+wanneer er iets fout loopt tijdens het compileren. Dit zorgt ervoor als de applicatie compileert, je
+er zeker van kan zijn dat de meeste voorkomende bugs er uit zijn.
 
-Rust is een pioneer in hoe ze hun packages en crates managen. Cargo voorziet 
-
-rust package management
-
-sterk typesystem + compiler
-
-rust verzekert dat alle edge cases worden afgehandeld
-
-bv het unrwappen van een Result of option
-
-
-performance gewijs hetzelfde
-
+In deelvraag \ref{productie} \enquote{Is Rust productie klaar?} zagen we bij de benchmark resultaten dat
+Rust efficiënter omgaat met het geheugen dan de normale Javascript frameworks. Wat natuurlijk ook
+logisch is sinds Javascript een dynamische getypeerde taal is en gebruik maakt van een garbage
+collector wat zorgt voor veel overhead. Samen met WebAssembly opent dit de deuren om allerhande
+rekenkrachtige applicaties op het web te draaien die ervoor niet mogelijk waren.
 
 \subsection{Zwakke}
 
-veel boiler plate om het zelfde te kunnen bereiken dan met react + typescript
+Momenteel het grootste nadeel om productief te zijn in het bouwen van webapplicaties met Rust, is
+het beperkte ecosysteem er rond. Hoe sneller een bedrijf een web app kan uitbrengen hoe minder
+kosten ze hebben. Dat is een van de redenen waarom er bijvoorbeeld veel voor gestijlde component
+libraries op de markt zijn voor Javascript. Yew voorziet al een paar copies van zo'n bekende
+Javascript libraries maar die zijn allemaal nog te jong om te kunnen gebruiken in productie.
 
-ecosysteem nog niet ontwikkeld
+Samen met Rust is WebAssembly nog jong en volop in beweging. Zoals besproken in de deelvraag
+\ref{productie} \enquote{Is Rust productie klaar?} is wasm nog niet perfect.
 
-de frameworks hebben vaak nog geen 1.0 versie
+\textbf{TODO: eerst het wasm hoofdstuk nog afwerken}
+
+Voor dat Julius aan zijn Rust carrière begon was hij een React developer. Wat hem nu stoort is de
+hoeveelheid boilerplate code dat je nodig hebt in Rust om het zelfde te kunnen bereiken in React.
+Zo hoeven we bijvoorbeeld voor simpele functies aan te spreken in Javascript libraries gebruiken als
+\mintinline{rust}{gloo} die speelt als 'lijm' tussen Rust, wasm en Javascript.
 
 
 \section{Is ‘het projectresultaat’ (incl. methodiek) bruikbaar in de bedrijfswereld}
@@ -73,6 +82,9 @@ gzipped content
 
 \section{Wat zijn de mogelijke implementatiehindernissen voor een bedrijf?}
 
+hosting / deployment
+
+compilatie tijden
 
 
 
