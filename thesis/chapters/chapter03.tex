@@ -75,18 +75,27 @@ haalt de snippets op uit een SQLite database. Om de database in sync te houden m
 er diesel gebruikt als ORM framework.
 
 
-\section{Werking frontend}
+\clearpage
 
-\includegraphics[width=\textwidth]{./figures/components.png}
+\section{Werking frontend}
 
 De startpagina is geïnspireerd door mijn favoriete editor vim. Zo krijg je een simpele versie van
 vim te zien als editor voor het typen. Hieronder zie je een schema van de compositie van de
 belangrijkste componenten.
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{./figures/components.png}
+\end{figure}
+
 Game: rendert op basis van de game status Vim of Result 
+
 Vim: de tekst editor voor de code en bevat Window \& StatusLine als children 
+
 Window: rendert de tekst samen met LineNumber 
+
 StatusLine: toont live statistieken zoals de huidige taal, tijd, WPM, progress 
+
 Result: toont alle statistieken op het einde van de game
 
 Het bouwen van de interface was redelijk eenvoudig, maar om de speed typing test te doen werken was
@@ -94,13 +103,17 @@ het verassend moeilijk. Om de gebruiker het idee te geven dat hij tekst over typ
 elementen gebruikt: een cursor met het huidige karkater, de correct getypte tekst, de foute getypte
 tekst en de resterende tekst.
 
-\includegraphics[width=\textwidth]{./figures/text.png}
+\begin{wrapfigure}{l}{0.55\textwidth}
+  \includegraphics[width=\linewidth]{./figures/text.png}
+\end{wrapfigure}
 
 Bij elk keypress event wordt er gecontroleerd of de key gelijk is aan het volgende karakter. Indien
 het gelijk is wordt het huidige karakter van de cursor toegevoegd aan de string met de correcte
 karakters en de cursor schuift een karakter op. Hetzelfde geldt als men een verkeerde key indrukt
 maar de cursor wordt dan toegevoegd aan de string met de foutieve karakters. Als de gebruiker de
 “Backspace” toets indrukt kan hij zijn foute karakters verwijderen tot de string leeg is. 
+
+\clearpage
 
 Dit was het basisidee waarmee ik aan de slag ging. De moeilijkheid van het bouwen lag vooral aan hoe
 ik efficiënt de variabelen van de tekst en de bijhorende statistieken in een state kan opslaan zodat
@@ -124,6 +137,50 @@ Zo heb ik 5 acties gedefinieert: \mintinline{rust}{NewSnippet}, \mintinline{rust
 de meeste logica van het spel en kan gebruikt worden in components om de state van het spel aan te
 passen. 
 
+\begin{figure}[h]
+\centering
+\begin{minipage}{.45\textwidth}
+\begin{minted}{rust}
+pub struct Code {
+  pub lines: usize,
+  pub cursor: Option<char>,
+  pub remaining: String,
+  pub correct: String,
+  pub wrong: String,
+}
+
+pub struct Stats {
+  pub progress: u8,
+  pub mistakes: u8,
+  pub wpm: u8,
+  pub accuracy: u8,
+  pub time: u8,
+  pub combos: u8,
+}
+\end{minted}
+\end{minipage}%
+\begin{minipage}{.45\textwidth}
+\begin{minted}{rust}
+pub struct GameState {
+  pub code: Code,
+  pub stats: Stats,
+  pub status: Status,
+  pub language: String,
+}
+
+pub enum Action {
+  NewSnippet(Snippet),
+  KeyPress(char),
+  BackSpace,
+  Tick,
+  Reset,
+}
+
+
+\end{minted}
+\end{minipage}
+\end{figure}
+
 Het probleem met de \mintinline{rust}{use_reducer} hook is dat een component de hele state opneemt.
 Als de child components een variabel nodig hebben van de state, moeten die als properties worden
 doorgeven. Hier is niks mis mee tenzij je een diep genest child component hebt die afhankelijk is
@@ -138,17 +195,17 @@ je bij de gewenste component bent.
   \includegraphics[width=0.6\textwidth]{./figures/use_reducer.png}
 \end{figure}
 
-
 Dit heb ik opgelost door de \mintinline{rust}{use_context} hook te gebruiken samen met de
 \mintinline{rust}{use_reducer}. Zo kon ik een \mintinline{rust}{GameStateProvider} component
 definiëren die de context (state) consumeert en gebruikt kan worden door alle child components. Dit
-betekent dat ik de props niet meer hoefde te “prop drillen” maar direct kon aanspreken vanuit alle
-child components onder de GameStateProvider. Helaas heeft deze methode ook zijn nadelen: 
+betekent dat ik de props niet meer hoefde te 'prop drillen' maar direct kon aanspreken vanuit alle
+child components onder de \mintinline{rust}{GameStateProvider}. Helaas heeft deze methode ook zijn
+nadelen: 
 \begin{itemize}
-    \item als de state gebruikt wordt in een child component moet de hele state gekloond worden 
+    \item Als de state gebruikt wordt in een child component moet de hele state gekloond worden 
 
-    \item stel een child component gebruikt een variabele A van de globale state, als de hele state
-    wordt aangepast behalve de variabele A zal het child component toch onnodig re-renderen. 
+    \item Stel een child component gebruikt een variabele A van de globale state, als de hele state
+    wordt aangepast behalve de variabele A zal het child component toch onnodig re-renderen 
 \end{itemize}
 
 Zo ben ik uiteindelijk geland op yewdux een state management library voor Yew die werkt met een
@@ -160,6 +217,10 @@ extra boilerplate, en gebruik maken van change detection om onnodige re-renders 
 Een voorbeeld hiervan is de \mintinline{rust}{use_selector} hook van yewdux, waarmee we een
 variabele van de state kunnen selecteren en slechts re-renderen als de variabel verandert i.p.v. de
 hele state.
+
+\clearpage
+
+\section{Werking backend}
 
 De werking van de backend verschilt niet veel met het voorbeeld “Todo” applicatie die we gemaakt
 hebben in “Hoe bouw je een API in Rust?”. Opnieuw werd er gekozen voor een simpele SQLite database
@@ -193,6 +254,14 @@ random gesorteerd en het eerste resultaat eruit gepakt.
 Standaard zal Rust of diesel het random type niet kennen. Gelukkig voorziet diesel de
 \mintinline{rust}{no_arg_sql_function} macro waarmee je SQL functies kunt mappen naar Rust types.
 
-Zo kan ik het random type importeren vanuit het schema en gebruiken in mijn SQL-query opgesteld door diesel.
+\begin{listing}[h]
+\begin{minted}{rust}
+no_arg_sql_function!(
+  random,
+  sql::types::Integer,
+  "Represents the SQL RANDOM() function"
+)
+\end{minted}
+\end{listing}
 
-\section{Werking backend}
+Zo kan ik het random type importeren vanuit het schema en gebruiken in mijn SQL-query opgesteld door diesel.

@@ -587,17 +587,18 @@ andere components kunnen worden opgebouwd, bouwen we onze applicatie. Door onze 
 structureren voor herbruikbaarheid en ze generiek te houden, kunnen we ze in meerdere delen van onze
 applicatie gebruiken zonder code of logica te hoeven dupliceren.
 
-In feite is de app functie die we tot nu toe hebben gebruikt een component, genaamd App. Het is een
-'function component'. Er zijn twee verschillende soorten componenten in Yew:
+In feite is de app functie die we tot nu toe hebben gebruikt een component, genaamd
+\mintinline{rust}{App}. Het is een 'function component'. Er zijn twee verschillende soorten
+componenten in Yew:
 \begin{itemize}
   \item Struct Components 
   \item Function Components
 \end{itemize}
 
-In deze tutorial zullen we function components gebruiken.
+In dit voorbeeld zullen we function components gebruiken.
 
-Laten we nu onze App component opsplitsen in kleinere componenten. We kunnen onze Todo lijst
-opspliten in 2 components genaamd Task en TaskList.
+Laten we nu onze \mintinline{rust}{App} component opsplitsen in kleinere componenten. We kunnen onze
+Todo lijst opspliten in 2 components genaamd \mintinline{rust}{Task} en \mintinline{rust}{TaskList}.
 
 \begin{listing}[h]
 \begin{minted}{rust}

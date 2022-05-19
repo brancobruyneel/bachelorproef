@@ -70,14 +70,19 @@ hoeveelheid boilerplate code dat je nodig hebt in Rust om het zelfde te kunnen b
 Zo hoeven we bijvoorbeeld voor simpele functies aan te spreken in Javascript libraries gebruiken als
 \mintinline{rust}{gloo} die speelt als 'lijm' tussen Rust, wasm en Javascript.
 
+\clearpage
 
-\section{Is ‘het projectresultaat’ (incl. methodiek) bruikbaar in de bedrijfswereld}
+\section{Is ‘het projectresultaat’ (incl. methodiek) bruikbaar in de bedrijfswereld?}
 
-cargo workspace
-
-er zijn geen testen
-
-gzipped content
+De technische demo werd gebouwd in een Cargo workspace. Dit wil zeggen dat crates api, web en parser
+in een zelfde mono repo zitten. Tijdens het bouwen van de technische demo had ik geprobeerd om de
+models uit de api crate te importeren in de web crate. Op die manier zou ik het
+\mintinline{rust}{Snippet} model kunnen gebruiken als type voor de snippets die ik ophaal uit de
+api. Dit zorgde voor problemen sinds ik zo alle dependencies van mijn api ook mee importeerde naar
+de web binary en gaf compilatie errors. Dus had ik besloten om simpelweg voor wat tijd te winnen
+simpel weg het model te herdefiniëren in de web crate. Bij het interview met Julius kwam dit ter
+sprake en vertelde hij dat ze op zijn werk ook een grote mono repo gebruiken en om code te delen met
+andere crates maak je gewoon een aparte crate aan, die je dan kan importeren bij andere crates.
 
 
 \section{Wat zijn de mogelijke implementatiehindernissen voor een bedrijf?}
@@ -86,18 +91,16 @@ hosting / deployment
 
 compilatie tijden
 
-
-
 \section{Wat is de meerwaarde voor het bedrijf?}
 
 als het bedrijf al rust gebruikt bij hun andere services
 
+\section{Welke suggesties geven bedrijven en/of community?}
 
-\section{Welke alternatieven/suggesties geven bedrijven en/of community?}
+emiel
+tests
 
-
-\section{Is er een economische meerwaarde aanwezig?}
-
+gzipped content
 
 \section{Wat zijn jouw suggesties voor een (eventueel) vervolgonderzoek?}
 
