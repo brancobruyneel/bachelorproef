@@ -131,9 +131,12 @@ van de state. Dan heb je “prop drilling” waarbij je vanuit de parent compone
 doorgeven aan zijn children die dezelfde props dan doorgeven aan hun children, en zo verder tot dat
 je bij de gewenste component bent.
 
+\clearpage
 
-\centering
-\includegraphics[width=0.6\textwidth]{./figures/use_reducer.png}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./figures/use_reducer.png}
+\end{figure}
 
 
 Dit heb ik opgelost door de \mintinline{rust}{use_context} hook te gebruiken samen met de

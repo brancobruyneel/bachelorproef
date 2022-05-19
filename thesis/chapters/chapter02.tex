@@ -149,7 +149,7 @@ de heap worden opgeslagen.
 De heap is minder georganiseerd: als je gegevens op de heap zet, vraag je een bepaalde hoeveelheid
 ruimte aan. De memory allocator vindt een lege plek in de heap die groot genoeg is, markeert die als
 in gebruik, en geeft een pointer terug, dat is het adres van die locatie. Dit proces wordt
-“allocating on the heap” genoemd en wordt soms afgekort als gewoon allocating. Het "pushen" van
+'allocating on the heap' genoemd en wordt soms afgekort als gewoon allocating. Het 'pushen' van
 waarden op de stack wordt niet beschouwd als allocating. Omdat de pointer naar de heap een bekende,
 vaste grootte heeft, kun je de pointer op de stack opslaan, maar als je de eigenlijke gegevens wilt
 hebben, moet je de pointer volgen. 
@@ -401,7 +401,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 \subsubsection{WebAssembly}
 
-Rust kan source codes compileren voor verschillende "targets" (m.a.w verschillende processors). Het
+Rust kan source codes compileren voor verschillende 'targets' (m.a.w verschillende processors). Het
 compilatie target voor een browser gebaseerd WebAssembly heet wasm32-unkown-unkown. Het volgende
 commando zal het WebAssembly target toevoegen aan je development environment.
 
@@ -1227,19 +1227,20 @@ async fn main() -> std::io::Result<()> {
 
 \section{Is Rust productie klaar?}
 
-Wanneer een taal “productie klaar” benoemd kan worden is eigenlijk een moeilijke vraag om te
-beantwoorden. Wat “productie klaar” betekent hangt af van verschillende factoren voor een specifiek
+Wanneer een taal 'productie klaar' benoemd kan worden is eigenlijk een moeilijke vraag om te
+beantwoorden. Wat 'productie klaar' betekent hangt af van verschillende factoren voor een specifiek
 domein. Rust schittert bijvoorbeeld in productief veilige en performante applicaties te bouwen. Top
-bedrijven zoals Amazon, Google, Microsoft kunnen dit beamen sinds ze ondertussen al een aantal jaar
-Rust gebruiken. Zo heeft Amazon in 2018 Firecracker gelanceerd. Een open source
-virtualisatietechnologie die AWS Lambda en andere serverloze aanbiedingen aandrijft. Daarnaast
-gebruiken ze Rust ook voor services te leveren zoals Amazon Simple Storage Service (Amazon S3),
-Amazon Elastic Compute Cloud (Amazon EC2), Amazon CloudFront, en meer. Amazon heeft dan ook samen
-met Google, Microsoft, Huawei en Mozilla de Rust foundation opgericht in 2020, met een missie om het
-developen van Rust te ondersteunen. We kunnen dus concluderen dat de taal op zich wel een stabiele
-omgeving is. Dit onderzoek gaat natuurlijk wel over hoe we Rust kunnen gebruiken voor het bouwen van
-webapplicaties. We richten onze focus dan ook op dit domein. We zullen de onderzoeksvraag “Is Rust
-productie klaar?” opsplitsen in twee delen namelijk frontend en backend. 
+bedrijven zoals Amazon, Facebook, Microsoft kunnen dit beamen sinds ze ondertussen al een aantal jaar
+Rust gebruiken \cite{rust_companies}. Zo heeft Amazon in 2018 Firecracker gelanceerd
+\cite{aws_sustainability}. Een open source virtualisatietechnologie die AWS Lambda en andere
+serverloze aanbiedingen aandrijft. Daarnaast gebruiken ze Rust ook voor services te leveren zoals
+Amazon Simple Storage Service (Amazon S3), Amazon Elastic Compute Cloud (Amazon EC2), Amazon
+CloudFront, en meer. Amazon heeft dan ook samen met Google, Microsoft, Huawei en Mozilla de Rust
+foundation opgericht in 2020, met een missie om het developen van Rust te ondersteunen. We kunnen
+dus concluderen dat de taal op zich wel een stabiele omgeving is. Dit onderzoek gaat natuurlijk wel
+over hoe we Rust kunnen gebruiken voor het bouwen van webapplicaties. We richten onze focus dan ook
+op dit domein. We zullen de deelvraag “Is Rust productie klaar?” opsplitsen in twee delen namelijk
+frontend en backend. 
 
 \subsection{Backend }
 
@@ -1248,12 +1249,12 @@ algemeen 2 zaken nodig, een API en een database. Uiteraard is dit niet altijd he
 we onze focus hierop leggen. 
 
 Om een web API te bouwen gebruik je gewoonlijk een web framework. Het huidige rust ecosysteem heeft
-een aantal stabiele web frameworks ter beschikking. Uit de onderzoeksvraag “Hoe bouw je een API in
+een aantal stabiele web frameworks ter beschikking. Uit de deelvraag “Hoe bouw je een API in
 Rust?” hebben we gekozen voor Actix-web te gebruiken als framework. Actix-web voorziet alles wat je
 kan verwachten van een web framework, van routing en middleware, tot templating en JSON/form
 afhandeling. Het is ook een van de snelste web frameworks ter beschikking. Zo staat actix momenteel
 op de 5de plaats bij een benchmark ranking van alle populaire web frameworks (ook andere
-programmeertalen dan Rust). 
+programmeertalen dan Rust) \cite{web_bench}. 
 
 Het actix framework ondersteunt verschillende soorten databases zoals mongodb, postgres, redis,
 sqlite, graphql, elasticsearch en meer. De ene database heeft meer ondersteuning dan de andere, maar
@@ -1265,16 +1266,16 @@ Bij de frontend komt er wat meer bij kijken. Er zijn namelijk twee opties waarvo
 worden: 
 \begin{itemize}
   \item Een gedeelde in Rust schrijven en compileren naar wasm om vervolgens te importeren als een node
-  \item module in een bestaande Javascript applicatie. 
+    module in een bestaande Javascript applicatie. 
   \item Een volledige frontend in Rust schrijven met een web framework als Yew en compileren naar wasm 
 \end{itemize}               
 
 \clearpage
 
 De eerste optie is meteen ook de optie waarvoor wasm het meest zal gebruikt worden. Zo kan je
-Javascript blijven gebruiken voor de UI en wasm voor de logica van de applicatie. Om mogelijks meer
-performatie te winnen en correctere code te schrijven. Deze optie wordt al volop in productie
-gebruikt door meerdere bedrijven: 
+bijvoorbeeld Javascript gebruiken voor de UI en wasm voor de logica van de applicatie. Om mogelijks
+meer performatie te winnen en correctere code te schrijven. Deze optie wordt al volop in productie
+gebruikt door meerdere bedrijven \cite{made_with_wasm}: 
 \begin{itemize}
   \item 1Password – gebruikt wasm om hun browser plugin te versnellen 
   \item Figma – gebruikt wasm om hun originele C++ applicatie te exporteren naar de browser 
@@ -1285,11 +1286,26 @@ gebruikt door meerdere bedrijven:
 De andere optie, een volledige frontend bouwen met Rust, is een optie die momenteel meer gebruikt
 wordt voor hobby projecten dan voor productie. Een van de redenen hiervoor is dat het ecosysteem nog
 zeer jong is. Het is bijvoorbeeld niet te vergelijken met het ecosysteem van populaire JS
-frameworks, wat ook logisch is. Toch kan een bedrijf er een voordeel uithalen. Bijvoorbeeld als hun
-volledige stack geschreven is in Rust, kunnen ze delen van hun codebase zoals database entiteiten
-hergebruiken in de frontend. Nog een voordeel is dat beide teams maar een taal hoeven te kennen en
-zo elkaar kunnen helpen bij veelvoorkomende fouten.  
+frameworks, wat ook logisch is. Desondanks het ecosysteem wordt Yew aan een snel tempo ontwikkeld.
+Waar sommige libraries als React jaren over doen om features uit te brengen als SSR doet Yew in elke
+maanden.
 
-Het heeft natuurlijk ook zijn nadelen. De compileer tijd kan soms op lopen tot enkele minuten. 
+Het is ook merkwaardig dat Yew degelijk scoort op benchmarks. Natuurlijk presteert Yew beter dan
+Javascript frameworks in het werken met geheugen, maar wat vooral opvalt is dat het ook redelijk
+presteert in het aanpassen van de DOM. Dit is nu nog een struikel punt voor WebAssembly in het
+algemeen, sinds er nog altijd javascript functies worden gebruikt voor het aanpassen van de DOM.
+Dat is een van de redenen waarom we hogere bundel grootes over het netwerk zien bij Yew.
+Een andere reden is dat WebAssembly zelf niet beschikt over geheugen beheer en garbage collectors.
+Om die reden wordt vaak een runtime meegeleverd met de logica van je applicatie. In sommige gevallen
+(Rust) is deze runtime vrij licht, en in andere (Blazor) is het zeer zwaar. We zullen waarschijnlijk
+zien dat het gewicht van deze runtimes in de loop van de tijd aanzienlijk zal afnemen door nieuwe
+WebAssembly mogelijkheden (garbage collection, module caching) en betere compilatietechnieken
+(ahead-of-time compilation).
 
-\blindtext
+De resultaten van de benchmakrs zijn terug te vinden in Bijlage \ref{appendix:bench}.
+
+\subsection{Conclusie}
+
+Om Rust in productie te gebruiken kan dus zeker. De vraag is alleen of dit enige meerwaarden heeft
+voor het bedrijf. Het antwoord hierop is terug te vinden Hoofdstuk \ref{reflectie} reflectie waar
+de vraag wordt afgetoetst met mensen uit de praktijk.
