@@ -32,7 +32,7 @@ problemen of vragen.
 
 \subsection{Sterke}
 
-Tijdens het interview met Julius Lungys, stelde ik vraag waarom hij zo enthousiast over Rust is. 
+Tijdens het interview met Julius Lungys, stelde ik vraag waarom hij zo enthousiast is over Rust. 
 Hij antwoorde dat de taal alles heeft wat hij wilt, een eigen equivalent van npm (Cargo), ingebouwde
 code formatter, tests, docs, geen garbage collector en macros.
 
@@ -42,9 +42,9 @@ impact hebben op de groei van het ecosysteem.
 
 Rust is correct met een krachtig typesysteem, dit betekent dat alle edge cases in de code worden
 opgevangen. Denk maar aan het unwrappen van een \mintinline{rust}{Option} of
-\mintinline{rust}{Result} type. Gelukkig heeft Rust een intelligente compiler die suggesties geeft,
+\mintinline{rust}{Result} type. Gelukkig heeft Rust een intelligente compiler die suggesties geeft
 wanneer er iets fout loopt tijdens het compileren. Dit zorgt ervoor als de applicatie compileert, je
-er zeker van kan zijn dat de meeste voorkomende bugs er uit zijn.
+zeker kan zijn dat de meest voorkomende bugs er uit zijn.
 
 In deelvraag \ref{productie} \enquote{Is Rust productie klaar?} zagen we bij de benchmark resultaten dat
 Rust efficiënter omgaat met het geheugen dan de normale Javascript frameworks. Wat natuurlijk ook
@@ -56,7 +56,7 @@ rekenkrachtige applicaties op het web te draaien die ervoor niet mogelijk waren.
 
 Momenteel het grootste nadeel om productief te zijn in het bouwen van webapplicaties met Rust, is
 het beperkte ecosysteem er rond. Hoe sneller een bedrijf een web app kan uitbrengen hoe minder
-kosten ze hebben. Dat is een van de redenen waarom er bijvoorbeeld veel voor gestijlde component
+kosten ze hebben. Dat is een van de redenen waarom er bijvoorbeeld veel voorgestijlde component
 libraries op de markt zijn voor Javascript. Yew voorziet al een paar copies van zo'n bekende
 Javascript libraries maar die zijn allemaal nog te jong om te kunnen gebruiken in productie.
 
@@ -68,41 +68,109 @@ Samen met Rust is WebAssembly nog jong en volop in beweging. Zoals besproken in 
 Voor dat Julius aan zijn Rust carrière begon was hij een React developer. Wat hem nu stoort is de
 hoeveelheid boilerplate code dat je nodig hebt in Rust om het zelfde te kunnen bereiken in React.
 Zo hoeven we bijvoorbeeld voor simpele functies aan te spreken in Javascript libraries gebruiken als
-\mintinline{rust}{gloo} die speelt als 'lijm' tussen Rust, wasm en Javascript.
+\mintinline{rust}{gloo} een high level wrapper rond de \mintinline{rust}{wasm-bindgen} crate die
+speelt als 'lijm' tussen Rust en Javascript.
 
 \clearpage
 
 \section{Is ‘het projectresultaat’ (incl. methodiek) bruikbaar in de bedrijfswereld?}
 
-De technische demo werd gebouwd in een Cargo workspace. Dit wil zeggen dat crates api, web en parser
-in een zelfde mono repo zitten. Tijdens het bouwen van de technische demo had ik geprobeerd om de
-models uit de api crate te importeren in de web crate. Op die manier zou ik het
-\mintinline{rust}{Snippet} model kunnen gebruiken als type voor de snippets die ik ophaal uit de
-api. Dit zorgde voor problemen sinds ik zo alle dependencies van mijn api ook mee importeerde naar
-de web binary en gaf compilatie errors. Dus had ik besloten om simpelweg voor wat tijd te winnen
-simpel weg het model te herdefiniëren in de web crate. Bij het interview met Julius kwam dit ter
-sprake en vertelde hij dat ze op zijn werk ook een grote mono repo gebruiken en om code te delen met
-andere crates maak je gewoon een aparte crate aan, die je dan kan importeren bij andere crates.
+Kort gezegd, ja. De technische demo toonde aan welke stappen er ondernomen moesten worden voor een
+simpele webapplicatie te bouwen. Deze stappen kunnen we beschouwen als een basis die een bedrijf kan
+gebruiken voor een webapp te bouwen in Rust. De methodiek werd dan ook afgetoetst bij externen.
+Julius en Cecile hadden beide geen opmerkingen over de structuur/methodiek van het project. 
 
+Julius gebruikt zelf een gelijkaardige structuur in de praktijk. Op zijn werk gebruiken ze een grote
+mono repo waar all hun services inclusief de web applicaties inzitten. Met als voordeel dat ze een
+paar crates hebben met code die ze kunnen delen, bijvoorbeeld een crate database entiteiten.
 
 \section{Wat zijn de mogelijke implementatiehindernissen voor een bedrijf?}
 
-hosting / deployment
+De huidige stabel release van Yew heeft nog geen SSR. Dit betekent met de huidige CSR, er twee grote
+nadelen zijn:
+\begin{itemize}
+   \item Gebruikers zullen niets kunnen zien totdat de hele WebAssembly bundel is gedownload en de
+   eerste render is voltooid. Dit kan resulteren in een slechte gebruikerservaring als de gebruiker
+   een traag netwerk gebruikt.
 
-compilatie tijden
+  \item Sommige zoekmachines ondersteunen geen dynamisch gerenderde web content en zij die dat wel
+  doen plaatsen dynamische websites meestal lager in de zoekresultaten.
+\end{itemize}
+Het gebrek aan SSR kan dus gezien worden als een implementatiehindernis, indien het bedrijf zijn web
+app wil optimaliseren.
+
+Een andere implementatiehindernis kan zijn dat het team binnen het bedrijf geen ervaring heeft met
+Rust. De taal opzich heeft al een steile leercurve, daarnaast moeten ze ook nog bedrijpen hoe
+WebAssembly werkt. Gelukkig hebben mensen met React ervaring al een voorsprong als ze voor het Yew
+framework kiezen, sinds het bijna een excate copie is.
 
 \section{Wat is de meerwaarde voor het bedrijf?}
 
-als het bedrijf al rust gebruikt bij hun andere services
+Als een bedrijf de frontend van een applicatie volledig in Rust schrijft, zal dat op dit moment niet
+veel meerwaarde brengen. Buiten dat als een bedrijf een volledige stack heeft in Rust, ze het
+makkelijk kunnen vinden om ook hun web applicaties ook te bouwen in Rust. 
+
+Zoals besproken in sectie \ref{productie} \enquote{Is Rust productie klaar?} is de grootste use case
+momenteel om Rust/WebAssembly te gebruiken waar er grote prestatie vereisen zijn of een gedeelte van
+de applicatie als de logica in Rust schrijven.
+
+Wat wel interessant is, is om micro services te schrijven in Rust die we kunnen gebruiken voor het
+web. Rust zijn binary grootte zonder te compileren naar WebAssembly is klein. Daarnaast is Rust ook
+super snel, perfect voor kleine micro services in de cloud. Denk maar bijvoorbeeld aan AWS lambda
+functies. Emiel weette mij te vertellen dat nu ook Cloudflare workers volledig in Rust geschreven
+kunnen worden. \cite{cloudflare_workers}
+
+Ten slotte is het niet onbelangrijk om te vermelden dat Rust ondertussen al 6 jaar op een rij als de meest
+geliefde taal bij een enquête van Stack Overflow. \cite{so_enquete} 
 
 \section{Welke suggesties geven bedrijven en/of community?}
 
-emiel
-tests
+Wanneer ik aan het zoeken was naar externen om te reflecteren, had ik een bericht geplaatst in de
+Yew discord server. Daar kreeg ik ook feedback op het project van de community. Zij stelden voor om
+de wasm code bij de server te comprimeren, zodat het niet de client ~380kB aan wasm code
+ongecomprimeerd laat downloaden over het internet. Een andere suggestie van de community was om de
+\mintinline{rust}{reqwasm} crate te laten vallen, want die is ondertussen toegevoegd aan de
+\mintinline{rust}{gloo} crate. Dit zou ook de wasm binary grootte kunnen verkleien.
 
-gzipped content
+Emiel suggesteeerde om testen te schrijven, Rust heeft daarvoor een heel goed builtin test systeem.
+Dat had zeker een meerwaarde kunnen zijn om bijvoorbeeld de parser tool uit te werken met behulp van
+test driven development.
+
+Julius stelde ook voor om de \mintinline{rust}{hooks} te gebruiken van \mintinline{rust}{Trunk}, op
+die manier zou ik een hook kunnen schrijven die bij het bouwen van de applicatie ook de tailwindcss
+scripts uitvoert. De huidige manier was via een npm script.
 
 \section{Wat zijn jouw suggesties voor een (eventueel) vervolgonderzoek?}
 
-ci/cd deployment
+Vooraleer ik aan het research project begon, werd er gevraagd een contractplan in te vullen. 
+Daarin had ik een opsomming opgelijst van wat het resultaat van mijn technisch onderzoek minimaal
+zal bevatten. Helaas heb ik tijdens het onderzoek de tijd niet gehad voor alles te realiseren. 
+Ik lijst hier even kort op welke criterea's ik niet heb kunnen realiseren:
+\begin{enumerate}
+  \item De applicatie is beveiligd met SSO
+  \item Er is een profiel pagina aanwezig
+  \item De statistische resultaten worden opgeslaan in een database
+\end{enumerate}
+In een vervolgonderzoek zou ik de applicatie dan ook uitbreiden met deze functionaliteiten. Om de
+applicatie te beveiligen met SSO, zou ik OAUTH implementeren. Op die manier kunnen gebruikers
+inloggen met bijvoorbeeld hun Github account. Waarschijnlijk zal de SQLite database niet meer de
+beste keuze zijn en zou ik overschakelen naar mongodb. Met een gebruikers account zal ik ook een
+profiel pagina kunnen aanmaken en de statistische resultaten per gebruiker opslaan in de database.
 
+Tijdens het onderzoek heb ik geen aandacht gegeven aan ci/cd. Ondertussen heb ik al een kleine
+pipeline opgezet om de frontend te deployen naar een Azure Static Web App en de api naar een Azure
+API App. Dit is vlug opgezet en kan zeker ook verder onderzocht / geoptimaliseert worden.
+
+In sectie \ref{frameworks} sprak ik over dat Axum een interessant framework was om naar uit te
+kijken. Met dat Tokio zo'n populair async framework is en Axum deel is van het Tokio project, zou ik
+eens de api herschrijven in Axum. Om dan te kijken of het voor- of nadelen biedt tegenover actix.
+
+Wat ik ook nog niet heb onderzocht is het optimaliseren van de wasm binary. Volgens de community
+zijn er een aantal stappen die je kan ondernemen om je binary te verkleinen. Wat belangrijk is, want
+we hebben gezien bij de benchmark resultaten dat Yew een grotere bundle size over het internet
+stuurt dan Javascript frameworks.
+
+Als laatste zou ik proberen een javascript module als bijvoorbeeld \mintinline{javascript}{Chart.js}
+gebruiken in het web project. Dit zou mogelijk moeten zijn door de \mintinline{rust}{wasm-bindgen}
+crate te gebruiken om de functies van de JS library te mappen naar Rust. Met
+\mintinline{javascript}{Chart.js} zou ik dan een grafiek kunnen tonen van de afgelopen resultaten.

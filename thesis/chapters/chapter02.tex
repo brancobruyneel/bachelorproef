@@ -287,7 +287,10 @@ complexere types te laten werken.
 
 \includegraphics[width=\textwidth]{./figures/wasm_bindgen.png}
 
+\clearpage
+
 \section{Welke front- \& backend frameworks zijn er ter beschikking?}
+\label{frameworks}
 
 Om efficiënt webapplicaties te bouwen heb je natuurlijk een degelijk framework nodig die voor jou al
 het zware werk doet. Gelukkig heeft Rust mits zijn jonge jaren, al een aardig aantal frameworks ter
@@ -311,8 +314,6 @@ van web workers.
 De documentatie over de huidige release versie 19.0 is uitgebreid geschreven.  Er kan zelfs al
 gekeken worden naar de volgende release “Next”, die refereert naar de master branch. In de Next
 versie is belangrijkste nieuwe feature SSR, want de huidige versie heeft alleen maar CSR.
-
-\clearpage
 
 \subsubsection{Dixous - 3.8k}
 
@@ -362,8 +363,6 @@ schrijfdiensten en micro apps. Het heeft ondersteuning voor routing, middleware,
 automatisch server reloading en kan gehost worden op NGINX. Actix kan worden gebruikt om een
 volledige web app en API te bouwen. 
 
-\clearpage
-
 \subsubsection{Axum – 4.7k}
 
 Alhoewel er nog populairdere frameworks zijn dan Axum verdient het zeker een plaats in de top 3.
@@ -378,6 +377,8 @@ systeem heeft maar gebruikt in plaats daarvan de tower::Service module van het T
 betekent dat Axum gratis timeouts, tracing, compressie, authorisatie en meer krijgt. 
 
 Dit alles maakt met zijn jonge 1-jarige leeftijd toch een library om naar uit te kijken. 
+
+\clearpage
 
 \section{Hoe bouw je een web app in Rust?}
 
@@ -636,10 +637,10 @@ pub fn Task(
 
 \clearpage
 
-Let op de parameters van onze Task function component. Een function component heeft slechts één
-argument dat zijn "props" (kort voor "properties") definieert. Props worden gebruikt om gegevens
-door te geven van een ouder component naar een kind component. In dit geval is TaskProps een struct
-die de props definieert.
+Let op de parameters van onze \mintinline{rust}{Task} function component. Een function component
+heeft slechts één argument dat zijn 'props' (kort voor 'properties') definieert. Props worden
+gebruikt om gegevens door te geven van een ouder component naar een kind component. In dit geval is
+\mintinline{rust}{TaskProps} een \mintinline{rust}{struct} die de props definieert.
 
 \begin{listing}[h]
 \begin{minted}{rust}
@@ -647,7 +648,6 @@ die de props definieert.
 pub struct TaskListProps {
   pub children: Children,
 }
-
 #[function_component]
 pub fn TaskList(TaskListProps { children }: &TaskListProps) -> Html {
   html! {
@@ -660,43 +660,27 @@ pub fn TaskList(TaskListProps { children }: &TaskListProps) -> Html {
 \caption{task\_list.rs}
 \end{listing}
 
-Nu kunnen we onze App component updaten met onze nieuwe components Task \& TaskList.
+Nu kunnen we onze \mintinline{rust}{App} component updaten met onze nieuwe components
+\mintinline{rust}{Task} \& \mintinline{rust}{TaskList}.
 
 \begin{listing}[h]
 \begin{minted}{rust}
 #[function_component]
 pub fn App() -> Html {
-    let tasks = vec![
-        html! { 
-          <Task 
-            id={"1"}
-            title={"Take dog out for a walk"}
-            completed={true}
-          /> 
-        },
-        html! { 
-          <Task 
-            id={"2"}
-            title={"Feed the cats"}
-            completed={false}
-          /> 
-        },
-        html! { 
-          <Task 
-            id={"3"}
-            title={"Water the plants"}
-            completed={false}
-          /> 
-        },
-    ];
-    html! {
-        <main>
-            <h1>{ "My todo list" }</h1>
-            <TaskList>
-                {tasks}
-            </TaskList>
-        </main>
-    }
+  let tasks = vec![
+    html! { 
+      <Task id={"1"} title={"Take dog out for a walk"} completed={true} /> 
+    },
+    // ... andere tasks
+  ];
+  html! {
+    <main>
+      <h1>{ "My todo list" }</h1>
+      <TaskList>
+        {tasks}
+      </TaskList>
+    </main>
+  }
 }
 \end{minted}
 \caption{app.rs}
