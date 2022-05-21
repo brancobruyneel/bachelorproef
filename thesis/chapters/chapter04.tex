@@ -46,24 +46,24 @@ opgevangen. Denk maar aan het unwrappen van een \mintinline{rust}{Option} of
 wanneer er iets fout loopt tijdens het compileren. Dit zorgt ervoor als de applicatie compileert, je
 zeker kan zijn dat de meest voorkomende bugs er uit zijn.
 
-In deelvraag \ref{productie} \enquote{Is Rust productie klaar?} zagen we bij de benchmark resultaten dat
-Rust efficiënter omgaat met het geheugen dan de normale Javascript frameworks. Wat natuurlijk ook
-logisch is sinds Javascript een dynamische getypeerde taal is en gebruik maakt van een garbage
-collector wat zorgt voor veel overhead. Samen met WebAssembly opent dit de deuren om allerhande
-rekenkrachtige applicaties op het web te draaien die ervoor niet mogelijk waren.
+In deelvraag \ref{productie} \enquote{Is Rust productie klaar?} zagen we dat de taal uitstekend
+presteert bij de benchmarks zowel bij de frontend als backend. Als we de frontend resultaten
+vergelijken met de populaire Javascript frameworks zien we dat Rust efficiënter omgaat met het
+geheugen. Wat natuurlijk ook logisch is sinds Javascript een dynamische getypeerde taal is en
+gebruik maakt van een garbage collector wat zorgt voor veel overhead. Samen met WebAssembly opent
+dit de deuren om rekenkrachtige applicaties op het web te draaien die ervoor niet mogelijk waren.
 
 \subsection{Zwakke}
 
-Momenteel het grootste nadeel om productief te zijn in het bouwen van webapplicaties met Rust, is
-het beperkte ecosysteem er rond. Hoe sneller een bedrijf een web app kan uitbrengen hoe minder
-kosten ze hebben. Dat is een van de redenen waarom er bijvoorbeeld veel voorgestijlde component
-libraries op de markt zijn voor Javascript. Yew voorziet al een paar copies van zo'n bekende
-Javascript libraries maar die zijn allemaal nog te jong om te kunnen gebruiken in productie.
+Momenteel is het groottste nadeel het beperkte ecosysteem bij het bouwen voor de frontend van
+webapplicaties. Hoe sneller een bedrijf een web app kan uitbrengen hoe minder kosten ze hebben. Dat
+is een van de redenen waarom er bijvoorbeeld veel voorgestijlde component libraries op de markt zijn
+voor Javascript. Yew voorziet al een paar copies van zo'n bekende Javascript libraries maar die zijn
+allemaal nog te jong om te kunnen gebruiken in productie.
 
 Samen met Rust is WebAssembly nog jong en volop in beweging. Zoals besproken in de deelvraag
-\ref{productie} \enquote{Is Rust productie klaar?} is wasm nog niet perfect.
-
-\textbf{TODO: eerst het wasm hoofdstuk nog afwerken}
+\ref{productie} \enquote{Is Rust productie klaar?} is wasm nog niet perfect. Zo hoeven we nog altijd
+javascript te gebruiken om te praten met de DOM, maar dit is slechts tijdelijk.
 
 Voor dat Julius aan zijn Rust carrière begon was hij een React developer. Wat hem nu stoort is de
 hoeveelheid boilerplate code dat je nodig hebt in Rust om het zelfde te kunnen bereiken in React.
@@ -126,11 +126,11 @@ geliefde taal bij een enquête van Stack Overflow. \cite{so_enquete}
 \section{Welke suggesties geven bedrijven en/of community?}
 
 Wanneer ik aan het zoeken was naar externen om te reflecteren, had ik een bericht geplaatst in de
-Yew discord server. Daar kreeg ik ook feedback op het project van de community. Zij stelden voor om
-de wasm code bij de server te comprimeren, zodat het niet de client ~380kB aan wasm code
-ongecomprimeerd laat downloaden over het internet. Een andere suggestie van de community was om de
-\mintinline{rust}{reqwasm} crate te laten vallen, want die is ondertussen toegevoegd aan de
-\mintinline{rust}{gloo} crate. Dit zou ook de wasm binary grootte kunnen verkleien.
+Yew discord server. Daar kreeg ik ook feedback. Zij stelden voor om de wasm code bij de server te
+comprimeren, zodat het niet de client ~380kB aan wasm code ongecomprimeerd laat downloaden over het
+internet. Een andere suggestie van de community was om de \mintinline{rust}{reqwasm} crate te laten
+vallen, want die is ondertussen toegevoegd aan de \mintinline{rust}{gloo} crate. Dit zou ook de wasm
+binary grootte kunnen verkleien.
 
 Emiel suggesteeerde om testen te schrijven, Rust heeft daarvoor een heel goed builtin test systeem.
 Dat had zeker een meerwaarde kunnen zijn om bijvoorbeeld de parser tool uit te werken met behulp van
@@ -153,22 +153,17 @@ Ik lijst hier even kort op welke criterea's ik niet heb kunnen realiseren:
 \end{enumerate}
 In een vervolgonderzoek zou ik de applicatie dan ook uitbreiden met deze functionaliteiten. Om de
 applicatie te beveiligen met SSO, zou ik OAUTH implementeren. Op die manier kunnen gebruikers
-inloggen met bijvoorbeeld hun Github account. Waarschijnlijk zal de SQLite database niet meer de
-beste keuze zijn en zou ik overschakelen naar mongodb. Met een gebruikers account zal ik ook een
-profiel pagina kunnen aanmaken en de statistische resultaten per gebruiker opslaan in de database.
+inloggen met bijvoorbeeld hun Github account.  Met een gebruikers account zal ik ook een profiel
+pagina kunnen aanmaken en de statistische resultaten per gebruiker opslaan in de database.
 
 Tijdens het onderzoek heb ik geen aandacht gegeven aan ci/cd. Ondertussen heb ik al een kleine
 pipeline opgezet om de frontend te deployen naar een Azure Static Web App en de api naar een Azure
 API App. Dit is vlug opgezet en kan zeker ook verder onderzocht / geoptimaliseert worden.
 
-In sectie \ref{frameworks} sprak ik over dat Axum een interessant framework was om naar uit te
-kijken. Met dat Tokio zo'n populair async framework is en Axum deel is van het Tokio project, zou ik
-eens de api herschrijven in Axum. Om dan te kijken of het voor- of nadelen biedt tegenover actix.
-
-Wat ik ook nog niet heb onderzocht is het optimaliseren van de wasm binary. Volgens de community
-zijn er een aantal stappen die je kan ondernemen om je binary te verkleinen. Wat belangrijk is, want
-we hebben gezien bij de benchmark resultaten dat Yew een grotere bundle size over het internet
-stuurt dan Javascript frameworks.
+Wat ik ook nog niet heb onderzocht is het optimaliseren van de wasm binary.\cite{wasm_size} Volgens
+de community zijn er een aantal stappen die je kan ondernemen om je binary te verkleinen. Wat
+belangrijk is, want we hebben gezien bij de benchmark resultaten dat Yew een grotere bundle size
+over het internet stuurt dan Javascript frameworks.
 
 Als laatste zou ik proberen een javascript module als bijvoorbeeld \mintinline{javascript}{Chart.js}
 gebruiken in het web project. Dit zou mogelijk moeten zijn door de \mintinline{rust}{wasm-bindgen}

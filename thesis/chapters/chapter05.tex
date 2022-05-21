@@ -1,6 +1,42 @@
 \chapter{Advies}
 
+\section{Bruikbaarheid}
+
+Zoals reeds vermeld is het projectresultaat een goede basis als men een volledige webapplicatie wil
+gaan bouwen in Rust. In de praktijk zullen bedrijven nog wat extra stappen ondernemen. Zoals
+bijvoorbeeld de api beveilign met authenticatie en de wasm binary optimaliseren.
+
+One big 2018 goal for the Rust community is to become a web language. By targeting WebAssembly, Rust
+can run on the web just like JavaScript. But what does this mean? Does it mean that Rust is trying
+to replace JavaScript?
+
+The answer to that question is no. We don’t expect Rust WebAssembly apps to be written completely in
+Rust. In fact, we expect the bulk of application code will still be JS, even in most Rust
+WebAssembly applications.
+
+This is because JS is a good choice for most things. It’s quick and easy to get up and running with
+JavaScript. On top of that, there’s a vibrant ecosystem full of JavaScript developers who have
+created incredibly innovative approaches to different problems on the web.
+
+
+\section{Aanbevelingen}
+
+
+
+In de praktijk moeten er nog een aantal stappen ondernomen worden voor 
+
+Toch zullen bedrijven er waarschijnlijk meer baat bij hebben om delen van hun huidige applicatie te
+vervangen door wasm. Zo kunnen ze 
+
+
+
 de bruikbaarheid en toepasbaarheid van je vooropgestelde oplossingen.
+
+De basis is er om het 
+
+
+is het bruikbaar ja? ja
+toepasbaarheid voor kleine  
 
 welke concrete aanbevelingen het werkveld volgens jou kan ondernemen op basis van jouw onderzoeksresultaten.
 
@@ -13,8 +49,30 @@ andere relevante adviezen voor het werkveld, gebaseerd op je onderzoek.
 
 stappenplan
 
+Mocht ik het onderzoek opnieuw starten zou ik een aantal zaken anders aangepakt hebben.
+
+De eerste paar weken van het onderzoek had ik besteed aan het lezen van het Rust boek. Terwijl er
+genoeg kleine voorbeelden waren van code die je kon meevolgen in het boek, is dit niet genoeg om
+een goed inzicht te krijgen in de taal. Daarom raad ik aan om tijdens het lezen van het boek per
+hoofdstuk zelf met een paar kleine demo's te komen.
+
+Wat ook niet onbelangrijk is, zoals vermeld in de reflectie, is het schrijven van testen. Mocht ik
+de tijd genomen hebben om eerst de testen te schrijven en dan mijn functies. Zou ik hoogst
+waarschijnlijk een pak tijd gewonnen hebben. De testen zou ik hierdan geschreven hebben alleen voor
+de api en parser tool, sinds dat Yew naar mijn weten nog geen ondersteuning heeft voor integratie
+testen.
+
+Vooraleer ik het project begon dacht ik ook dat dit een 'simpele' applicatie ging worden, maar heb
+uiteindelijk te veel tijd besteed aan de logica en werking van het spel. Mocht ik een andere soort
+webapp gemaakt hebben kon ik meer tijd besteden aan authenticatie, ci/cd, wasm optimaliseren, en zo
+verder.
+
 schrijf testen
 
+
+In sectie \ref{frameworks} sprak ik over dat Axum een interessant framework was om naar uit te
+kijken. Met dat Tokio zo'n populair async framework is en Axum deel is van het Tokio project, zou ik
+eens de api herschrijven in Axum. Om dan te kijken of het voor- of nadelen biedt tegenover actix.
 
 
 

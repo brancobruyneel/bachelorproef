@@ -210,6 +210,8 @@ voorbeeld en in de realiteit komen er natuurlijk nog wat eigenaardigheden bij ki
 
 \blindtext
 
+\clearpage
+
 \section{Wat is WebAssembly \& Hoe werkt het?}
 
 Om interactieve webapps te creëren gebruik je tegenwoordig javascript. Ondanks de succesvolle
@@ -218,7 +220,7 @@ maken, is dat voor veel toepassingen nog niet genoeg. Google dan kwam in 2011 me
 (NaCI), een sandbox voor het efficiënt en veilig uitvoeren van gecompileerde C en C++ code in de
 browser, onafhankelijk van het besturingssysteem van de gebruiker. Het bracht prestaties en
 low-level controle van native code naar moderne webbrowsers, zonder de veiligheid en portabiliteit
-van het web op te offeren. [1] 
+van het web op te offeren. \cite{native_client}
 
 Mozilla wilde de platformonafhankelijkheid van javascript echter niet verlaten, en begon daarom in
 2013 aan een andere aanpak: asm.js, een subset van javascript die browsers heel efficiënt kunnen
@@ -239,19 +241,21 @@ Het is dus geen nieuwe programmeertaal, maar een binair formaat voor uitvoerbare
 wordt gecreëerd als een open standaard binnen de W3C WebAssembly Community Group met de volgende
 doelstellingen: 
 \begin{itemize}
-  \item Snel, efficiënt en overdraagbaar - wasm code kan op bijna-native snelheid worden uitgevoerd
+  \item \textbf{Snel, efficiënt en overdraagbaar} - wasm code kan op bijna native snelheid worden uitgevoerd
     op verschillende platforms door gebruik te maken van gemeenschappelijke hardware mogelijkheden. 
 
-  \item Leesbaar en foutopspoorbaar - wasm is een lage assembleertaal, maar het heeft een menselijk
+  \item \textbf{Leesbaar en foutopspoorbaar} - wasm is een lage assembleertaal, maar het heeft een menselijk
     leesbaar tekstformaat (aan de specificatie wordt nog gewerkt) waarmee code met de hand kan
     worden geschreven, bekeken en foutopsporing mogelijk is. 
 
-  \item Veilig - wasm is gespecificeerd om te worden uitgevoerd in een veilige, sandboxed omgeving.
+  \item \textbf{Veilig} - wasm is gespecificeerd om te worden uitgevoerd in een veilige, sandboxed omgeving.
     Net als andere webcode, zal het de browser's same-origin en permissies beleid afdwingen. 
 
-  \item Maak het web niet kapot - wasm is zo ontworpen dat het goed samengaat met andere
+  \item \textbf{Maak het web niet kapot} - wasm is zo ontworpen dat het goed samengaat met andere
     webtechnologieën en achterwaartse compatibiliteit behoudt.
 \end{itemize}
+
+\clearpage
 
 \subsection{Hoe werkt het?}
 
@@ -271,21 +275,101 @@ precies werkt. Er zijn namelijk een aantal opties voor het compileren naar wasm:
 
 In deze bachelorproef werd het technisch onderzoek uitgevoerd in Rust. Met zijn kleine runtime,
 betrouwbaar en rijk typesysteem is het een van de populairste keuzes voor het bouwen van webapps met
-WebAssembly. Dus laat ons even kijken naar een voorbeeld hoe we vanuit Rust javascript functies
-kunnen gebruiken en andersom.
+wasm. Helaas is wasm nog niet compleet en hebben we nog altijd javascript nodig om te praten met de
+DOM. Dus laat ons even kijken naar een voorbeeld hoe we vanuit Rust javascript functies kunnen
+gebruiken en andersom.
 
-Een van de moeilijkste onderdelen van het werken met WebAssembly is om verschillende soorten waarden
-in en uit functies te krijgen. Dat komt omdat WebAssembly momenteel slechts twee types kent:
-integers en floating point getallen. 
+Een van de moeilijkste onderdelen van het werken met wasm is om verschillende soorten waarden in en
+uit functies te krijgen. Dat komt omdat wasm momenteel slechts twee types kent: \textbf{integers} en
+\textbf{floating point} getallen. 
 
-Dit betekent dat je niet zomaar een string in een WebAssembly functie kunt stoppen. In plaats
-daarvan moet je een aantal stappen doorlopen om een string voor te stellen als getallen. Als je
-complexere types hebt, zul je zelfs een ingewikkelder proces hebben om de gegevens heen en weer te
-sturen. Gelukkig bestaat er de library wasm-bindgen die deze stappen voor ons doet. Met een paar
+Dit betekent dat je niet zomaar een string in een wasm functie kunt stoppen. In plaats daarvan moet
+je een aantal stappen doorlopen om een string voor te stellen als getallen. Als je complexere types
+hebt, zal je zelfs een ingewikkelder proces hebben om de gegevens heen en weer te sturen. Gelukkig
+bestaat er de library \mintinline{rust}{wasm-bindgen} die deze stappen voor ons doet. Met een paar
 annotaties aan je Rust code, zal het automatisch de code maken die nodig is (aan beide kanten) om
 complexere types te laten werken.
 
-\includegraphics[width=\textwidth]{./figures/wasm_bindgen.png}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/wasm_bindgen.png}
+  \caption{JS string naar wasm conversie}
+\end{figure}
+
+Dit betekent dat JS functies vanuit Rust worden aangeroepen met de types die deze functies
+verwachten:
+\begin{figure}[h]
+\begin{minipage}{.5\textwidth}
+\begin{minted}{rust}
+#[wasm_bindgen]
+extern {
+  type console;
+  #[wasm_bindgen(static = console)]
+  fn log(s: &str);
+}
+\end{minted}
+\end{minipage}\hfill
+\begin{minipage}{.5\textwidth}
+\begin{minted}{rust}
+#[wasm_bindgen]
+pub fn foo() {
+  console::log("hello!");
+}
+
+
+\end{minted}
+\end{minipage}
+\end{figure}
+
+Of structs gebruiken in Rust en ze laten werken als klassen in JS:
+
+\begin{figure}[h]
+\begin{minipage}{.5\textwidth}
+\begin{minted}{rust}
+// rust
+#[wasm_bindgen]
+pub struct Foo {
+  contents: u32,
+}
+
+#[wasm_bindgen]
+impl Foo {
+  pub fn new() -> Foo {
+    Foo { contents: 0 }
+}
+\end{minted}
+\end{minipage}\hfill
+\begin{minipage}{.5\textwidth}
+\begin{minted}{javascript}
+// JS
+import {Foo} from "./js_hello_world";
+
+let foo = Foo.new();
+assertEq(foo.add(10), 10);
+foo.free();
+
+
+
+
+
+\end{minted}
+\end{minipage}
+\end{figure}
+
+Na het compileren, zijn er een heleboel bestanden. Om van die bestanden naar een npm package te
+gaan, is er de \mintinline{rust}{wasm-pack} library. Het zal \mintinline{rust}{wasm-bindgen} voor je
+draaien. Dan, zal het alle bestanden nemen en ze verpakken. Het zal een package.json  er aan
+toevoegen, waarin alle npm dependencies van je Rust code zijn ingevuld. Ten slotte, alles wat je
+hoeft te doen is \mintinline{bash}{npm publish}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{figures/wasm_to_npm.png}
+  \caption{publiceren van wasm als npm package}
+\end{figure}
+
+
+
 
 \clearpage
 
@@ -380,13 +464,13 @@ Dit alles maakt met zijn jonge 1-jarige leeftijd toch een library om naar uit te
 
 \clearpage
 
-\section{Hoe bouw je een web app in Rust?}
+\section{Hoe bouw je een webapp in Rust?}
 
 Sinds Yew het populairste framework is en ook is gebruikt als framework voor het bouwen van de speed
-typing applicatie, zal de vraag \enquote{Hoe bouw je een Webapplicatie in Rust} beantwoord worden met Yew
+typing applicatie, zal de vraag \enquote{Hoe bouw je een webapp in Rust} beantwoord worden met Yew
 als framework. Het bouwen van een webapplicatie in een ander framework zal in grote lijnen hetzelfde
 zijn. Dit zal een praktische kijk zijn op hoe we Yew kunnen gebruiken voor het bouwen van
-Webapplicaties.  
+Webapplicaties. \cite{yew_introduction}
 
 In dit voorbeeld gaan we een simpele Todo applicatie bouwen.
 
@@ -868,10 +952,11 @@ let tasks = use_state(std::vec::Vec::new);
 
 \section{Hoe bouw je een API in Rust?}
 
-Volgend op de Todo applicatie die we gebouwd hebben in "Hoe bouw je een web app in Rust?",
+Volgend op de Todo applicatie die we gebouwd hebben in \enquote{Hoe bouw je een webapp in Rust?},
 zullen we een REST API bouwen die de taken uit een database zal halen en opslaan. Als API framework
 zullen we Actix-web gebruiken, samen met diesel.rs als ORM voor het beheren van de database. Om het
 simpel te houden gebruiken we net zoals in de speed typing test applicatie SQLite als database.
+\cite{diesel} \cite{actix_docs}
 
 
 \subsection{Opzet project}
@@ -1275,8 +1360,8 @@ De andere optie, een volledige frontend bouwen met Rust, is een optie die moment
 wordt voor hobby projecten dan voor productie. Een van de redenen hiervoor is dat het ecosysteem nog
 zeer jong is. Het is bijvoorbeeld niet te vergelijken met het ecosysteem van populaire JS
 frameworks, wat ook logisch is. Desondanks het ecosysteem wordt Yew aan een snel tempo ontwikkeld.
-Waar sommige libraries als React jaren over doen om features uit te brengen als SSR doet Yew in elke
-maanden.
+Waar sommige libraries als React jaren over doen om features uit te brengen als SSR doet Yew in
+enkele maanden.
 
 Het is ook merkwaardig dat Yew degelijk scoort op benchmarks. Natuurlijk presteert Yew beter dan
 Javascript frameworks in het werken met geheugen, maar wat vooral opvalt is dat het ook redelijk
@@ -1290,7 +1375,7 @@ zien dat het gewicht van deze runtimes in de loop van de tijd aanzienlijk zal af
 WebAssembly mogelijkheden (garbage collection, module caching) en betere compilatietechnieken
 (ahead-of-time compilation).
 
-De resultaten van de benchmakrs zijn terug te vinden in Bijlage \ref{appendix:bench}.
+De resultaten van de benchmarks zijn terug te vinden in Bijlage \ref{appendix:bench}.
 
 \subsection{Conclusie}
 
