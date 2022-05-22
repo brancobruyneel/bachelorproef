@@ -1,35 +1,38 @@
 \chapter{Technisch onderzoek}
 
-Mijn technisch onderzoek startte bij het lezen van “The book” een boek over de taal Rust geschreven
-door Steve Klabnik, Carol Nichols en met contributies van de Rust community. Tijdens het lezen
-volgde ik de kleine code voorbeelden mee in een eigen Github repository. Dit maakte het makkelijker
-om de geavanceerde hoofdstukken goed te begrijpen. 
+\section{Voorbereiding}
+
+Het technisch onderzoek startte bij het lezen van “The book” een boek over de taal Rust geschreven
+door Steve Klabnik, Carol Nichols en met contributies van de Rust community. Tijdens het lezen waren
+er kleine code voorbeelden die je kon mee volgen. Dit maakte het makkelijker om de geavanceerde
+hoofdstukken goed te begrijpen. 
 
 Na een paar hoofdstukken diep in het boek was het tijd om de geleerde zaken tot de test te brengen.
-De opdracht was om de miniversie van het gekende Linux commando grep te maken. Zo kon ik mijn kennis
-over structs, ownership, enums en pattern matching, error handling, lifetimes en tests praktisch
-toepassen.  
+De opdracht was om de miniversie van het gekende Linux commando grep te maken. Zo werd de geleerde
+kennis over structs, ownership, enums en pattern matching, error handling, lifetimes en tests
+praktisch toegepast.  
 
 Op het einde van het boek was er een finaal project dat ook de laatste hoofdstukken bevatte. Het
 project was het bouwen van een “simpele” multi-threaded server. Daar lag de focus op het werken met
 meerdere threads, wat niet voor de hand ligt als je rekening moet houden met het geheugen. 
 
-Na de taal onder de knie te hebben, begon ik met het leren van WebAssembly. Mits het nog een
-piepjonge technologie is was er al heel wat documentatie/artikelen over te vinden op het web. Zo
-begon ik bij de documentatie van Mozilla waar alles te vinden was om van start te gaan. Met
-doorverwijzingen naar hun uitstekende geschreven blogposts die dieper gaan op hoe WebAssembly werkt. 
+Na de taal onder de knie te hebben, werd er onderzoek gedaan naar WebAssembly. Mits het nog een
+piepjonge technologie is, was er al heel wat documentatie/artikelen over te vinden op het web. Zo
+begon het onderzoek bij de documentatie van Mozilla. Daar is alles te vinden om van start te gaan
+met WebAssembly. Er zijn ook doorverwijzingen naar hun uitstekende geschreven blogposts die dieper
+gaan op hoe WebAssembly precies werkt.
 
-Vervolgens heb ik een keuze moeten maken welke frameworks ik zou gebruiken voor zowel front als
-backend. Na wat onderzoek dat beschreven staat in “Welke front- end backend frameworks zijn er ter
-beschikking?” heb ik gekozen voor Yew als frontend en Actix.web samen met diesel.rs als backend
-framework.
+Vervolgens moest er een keuze gemaakt worden welke frameworks we zullen gebruiken voor het bouwen
+van de webapplicatie. Na wat onderzoek dat beschreven staat in “Welke front- end backend frameworks
+zijn er ter beschikking?”, is er gekozen voor Yew als frontend en Actix web samen met diesel.rs als
+backend frameworks.
 
 \clearpage
 
 \section{Omschrijving}
 
-Om de huidige status van Rust voor het bouwen van webapplicaties te onderzoeken, heb ik gekozen voor
-een speed typing test applicatie te maken.
+Om de huidige status van Rust voor het bouwen van webapplicaties te onderzoeken, werd er gekozen
+voor een speed typing test applicatie te maken.
 
 \includegraphics[width=\textwidth]{./figures/vim.png}
 
@@ -44,10 +47,10 @@ aantal fouten. Daarna kan de gebruiker opnieuw spelen door op de letter ‘r’ 
 \end{wrapfigure}
 
 
-Ik had voor ogen om bij dit project nog een aantal features eraan toe te voegen. Zoals authenticatie
+Er was voor ogen om bij dit project nog een aantal features eraan toe te voegen. Zoals authenticatie
 met SSO, de statistieken opslaan in de database zodat er een lijn grafiek kon getoond op basis van
-de historiek, andere database, profiel pagina, ci/cd enz. Helaas ben ik daar niet toe tot geraakt.
-Het leren van Rust en WebAssembly nam meer tijd in beslag dan verwacht. Sinds ik geen voorkennis had
+de historiek, andere database, profiel pagina, ci/cd enz. Helaas is het onderzoek daar niet toe tot
+geraakt. Het leren van Rust en WebAssembly nam meer tijd in beslag dan verwacht. Zonder voorkennis
 van Rust of een gelijkaardige systeem level programmeertaal was dit project al een hele uitdaging op
 zich.
 
@@ -58,12 +61,13 @@ zich.
 \includegraphics[width=\textwidth]{./figures/structuur.png}
 
 De frontend van de applicatie is volledig geschreven in Rust. Dit is mogelijk gemaakt door het
-gebruik van Yew als framework. Daarbij heb ik Tailwindcss gebruikt als CSS framework. Tailwindcss is
+gebruik van Yew als framework. Daarbij is er Tailwindcss gebruikt als CSS framework. Tailwindcss is
 een utility-first CSS framework om snel custom user interfaces te bouwen. Samen met een component
-based framework als Yew hoeft ik zelf geen CSS meer schrijven maar kan ik direct tailwindcss zijn
-utility classes toepassen op mijn components. Wat maakt voor een geweldige developer experience. 
+based framework als Yew hoeven we zelf geen CSS meer schrijven maar kunnen we direct tailwindcss
+zijn utility classes toepassen op mijn components. Wat maakt voor een geweldige developer
+experience. 
 
-Om alles van frontend te kunnen compileren en uitvoeren heb ik trunk gebruikt. Trunk is een WASM web
+Om alles van frontend te kunnen compileren en uitvoeren is er trunk gebruikt. Trunk is een WASM web
 applicatie bundelaar. Het gebruikt een eenvoudige config voor het bouwen en bundelen van WASM, JS
 snippets en andere assets (images, css, scss) via een source HTML bestand. Met een simpel commando
 als \mintinline{bash}{trunk build} bouwt hij de hele frontend en met \mintinline{bash}{trunk serve
@@ -100,8 +104,8 @@ belangrijkste componenten.
 \mintinline{javascript}{Result}: toont alle statistieken op het einde van de game
 
 Het bouwen van de interface was redelijk eenvoudig, maar om de speed typing test te doen werken was
-het verassend moeilijk. Het duurde enkele iteraties tot ik het goed had. Om de gebruiker het idee te
-geven dat hij tekst over typt heb ik vier html elementen gebruikt: een cursor met het huidige
+het verassend moeilijk. Het duurde enkele iteraties tot de logica goed zat. Om de gebruiker het idee
+te geven dat hij tekst over typt zijn er vier html elementen gebruikt: een cursor met het huidige
 karkater, de correct getypte tekst, de foute getypte tekst en de resterende tekst.
 
 \begin{wrapfigure}{l}{0.55\textwidth}
@@ -116,9 +120,9 @@ maar de cursor wordt dan toegevoegd aan de string met de foutieve karakters. Als
 
 \clearpage
 
-Dit was het basisidee waarmee ik aan de slag ging. De moeilijkheid van het bouwen lag vooral aan hoe
-ik efficiënt de variabelen van de tekst en de bijhorende statistieken in een state kan opslaan zodat
-elk component slechts rendert als het nodig is.  
+Dit was het basisidee, de moeilijkheid van het bouwen lag vooral aan hoe we efficiënt de variabelen
+van de tekst en de bijhorende statistieken in een state kunnen opslaan zodat elk component slechts
+rendert als het nodig is.  
 
 Mijn eerste oplossing was het gebruik van globale state met de \mintinline{rust}{use_reducer}
 hook. Als je vertrouwd bent met React zijn de meeste hooks zoals \mintinline{rust}{use_reducer},
@@ -196,10 +200,10 @@ je bij de gewenste component bent.
   \includegraphics[width=0.6\textwidth]{./figures/use_reducer.png}
 \end{figure}
 
-Dit heb ik opgelost door de \mintinline{rust}{use_context} hook te gebruiken samen met de
-\mintinline{rust}{use_reducer}. Zo kon ik een \mintinline{rust}{GameStateProvider} component
+Dit werd opgelost door de \mintinline{rust}{use_context} hook te gebruiken samen met de
+\mintinline{rust}{use_reducer}. Zo kunnen we een \mintinline{rust}{GameStateProvider} component
 definiëren die de context (state) consumeert en gebruikt kan worden door alle child components. Dit
-betekent dat ik de props niet meer hoefde te 'prop drillen' maar direct kon aanspreken vanuit alle
+betekent dat we de props niet meer hoefde te 'prop drillen' maar direct kon aanspreken vanuit alle
 child components onder de \mintinline{rust}{GameStateProvider}. Helaas heeft deze methode ook zijn
 nadelen: 
 \begin{itemize}
@@ -209,11 +213,12 @@ nadelen:
     wordt aangepast behalve de variabele A zal het child component toch onnodig re-renderen 
 \end{itemize}
 
-Zo ben ik uiteindelijk geland op yewdux een state management library voor Yew die werkt met een
-globale store/state. Het is verglijkbaar met de populaire React library Redux. Yewdux gebruikt een
-CoW (clone on write) managementstrategie. Dit betekent dat de state bij elke mutatie een keer wordt
-gekloond. Door het op deze manier te doen kunnen we beknopt een precieze mutatie uitdrukken zonder
-extra boilerplate, en gebruik maken van change detection om onnodige re-renders te voorkomen. 
+Uiteindelijk is er de switch gemaakt naar yewdux, een state management library voor Yew die werkt
+met een globale store/state. Het is verglijkbaar met de populaire React library Redux. Yewdux
+gebruikt een CoW (clone on write) managementstrategie. Dit betekent dat de state bij elke mutatie
+een keer wordt gekloond. Door het op deze manier te doen kunnen we beknopt een precieze mutatie
+uitdrukken zonder extra boilerplate, en gebruik maken van change detection om onnodige re-renders te
+voorkomen. 
 
 Een voorbeeld hiervan is de \mintinline{rust}{use_selector} hook van yewdux, waarmee we een
 variabele van de state kunnen selecteren en slechts re-renderen als de variabel verandert i.p.v. de
@@ -234,12 +239,12 @@ database schema aanpassen/aanmaken.
 In de speed typing database gebruiken we twee tabellen “languages” en “snippets”. Die een een op
 veel relatie met elkaar hebben. De tabel languages bevat de soorten programmeertalen en de tabel
 snippets de code. De code is hier gewoon opgeslagen als tekst in de tabel snippets. Het is wel
-belangrijk dat de code geen spaties bevat maar tabs. Daarvoor heb ik kleine parser tool geschreven
-om makkelijk code snippets te maken. Het neemt een tekstbestand als input en zet alle spaties en
-enters om naar de respectievelijke karakters “\textbackslash t” en “\textbackslash n”. Zo kan de
-frontend makkelijk de juiste enters en tabs weergeven. 
+belangrijk dat de code geen spaties bevat maar tabs. Daarvoor is er kleine parser tool geschreven om
+makkelijk code snippets te maken. Het neemt een tekstbestand als input en zet alle spaties en enters
+om naar de respectievelijke karakters “\textbackslash t” en “\textbackslash n”. Zo kan de frontend
+makkelijk de juiste enters en tabs weergeven. 
 
-De API kent een aantal routes, ik lijst ze hier even op: 
+De API kent een aantal routes:
 \begin{itemize}
     \item GET, POST, DELETE  /languages
     \item GET, POST, DELETE /snippets 
@@ -251,7 +256,7 @@ Uiteindelijk gebruikt de frontend maar een route “/snippets/random” om een r
 halen uit de database. 
 
 Om ervoor te zorgen dat we niet eerst alle snippets op halen uit de database om dan een random
-snippet eruit te selecteren. Heb ik eerst via een SQL-query de snippets tabel random gesorteerd en
+snippet eruit te selecteren. Wordt er eerst via een SQL-query de snippets tabel random gesorteerd en
 het eerste resultaat eruit gepakt. Standaard zal Rust of diesel het random type niet kennen.
 Gelukkig voorziet diesel de \mintinline{rust}{no_arg_sql_function} macro waarmee je SQL functies
 kunt mappen naar Rust types.
@@ -266,4 +271,5 @@ no_arg_sql_function!(
 \end{minted}
 \end{listing}
 
-Zo kan ik het random type importeren vanuit het schema en gebruiken in mijn SQL-query opgesteld door diesel.
+Zo kunnen we het random type importeren vanuit het schema en gebruiken in mijn SQL-query opgesteld
+door diesel.

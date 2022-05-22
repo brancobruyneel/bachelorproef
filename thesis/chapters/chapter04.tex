@@ -2,29 +2,29 @@
 \label{reflectie}
 
 Het doel van de module 'Research Project' was om onderzoek te doen naar de vraag "Wat is de huidige
-status van Rust voor het bouwen van webapplicaties?". In dit hoofdstuk reflecteer ik op het
-resultaat van het onderzoek en vergelijk de bevindingen uit de praktijk. Daarvoor heb ik contact
-opgenomen met twee core maintainers van het gebruikte web framework genaamd Yew. Zij hebben beide
-ook professionele ervaring met het bouwen van webapplicaties in Rust.
+status van Rust voor het bouwen van webapplicaties?". In dit hoofdstuk wordt er gereflecteerd op het
+resultaat van het onderzoek en vergelijken we de bevindingen uit de praktijk. Daarvoor is er contact
+opgenomen met twee core maintainers van Yew die beide professionele ervaring hebben met het bouwen
+van webapplicaties in Rust. 
 
 De eerste core maintainer is Julius Lungys, hij is een Rust developer bij het Fintech bedrijf
-Nikulipe. Al hun software is geschreven met Rust, de software is voornamelijk backend gericht maar
+Nikulipe. Al hun software is geschreven in Rust, de software is voornamelijk backend gericht maar
 voor de admin websites gebruiken ze Yew. Julius was ook te gast bij \citetitle{podcast}
-\cite{podcast} met een episode over Yew, waar ik interessante inzichten gekregen heb over dit
-onderzoek.
+\cite{podcast} met een episode over Yew, waar er interessante inzichten zijn gekregen voor het
+reflecteren over dit onderzoek.
 
-Cecile Tonglet is de tweede core maintainer, in het dagelijkse leven ook een Rust developer
-bij HMI Hydronics. Ze maken hydraulische ventielen, inclusief een "slimme" ventiel met wat embedded
-code. Cecile werkt niet aan de niet aan de embedded software maar werkt aan een web app die draait 
+Cecile Tonglet is de tweede core maintainer, in het dagelijkse leven is ze een Rust developer bij
+HMI Hydronics. Ze maken hydraulische ventielen, inclusief een "slimme" ventiel met wat embedded
+code. Cecile werkt niet aan de niet aan de embedded software maar werkt aan een web app die draait
 op het slimme ventiel.
 
-Naast de core maintainers heb ik ook gereflecteerd met Emiel Van Severen, een mastersstudent
-Industrieel Ingenieur in de Informatica. Hij heeft nog geen professionele ervaring met Rust maar
-is zich zeer bekend in het ecosysteem en heeft een aantal hobby projecten in Rust.
+Naast de core maintainers, werd er ook gereflecteerd met Emiel Van Severen, een mastersstudent
+Industrieel Ingenieur in de Informatica. Hij heeft nog geen professionele ervaring met Rust maar is
+zich zeer bekend in het ecosysteem en heeft een aantal hobby projecten in Rust.
 
 Ook was er tijdens het onderzoek ook aardig wat feedback van de Yew community. Yew heeft een
-relatief kleine maar zeer actieve community. Zo kreeg ik in hun discord instant feedback bij
-problemen of vragen.
+relatief kleine maar zeer actieve community. Zo werd er bijna instant feedback gegeven bij problemen
+of vragen.
 
 \clearpage
 
@@ -32,13 +32,14 @@ problemen of vragen.
 
 \subsection{Sterke}
 
-Tijdens het interview met Julius Lungys, stelde ik vraag waarom hij zo enthousiast is over Rust. 
-Hij antwoorde dat de taal alles heeft wat hij wilt, een eigen equivalent van npm (Cargo), ingebouwde
-code formatter, tests, docs, geen garbage collector en macros.
+Tijdens het interview met Julius Lungys, werd er de vraag gesteld waarom hij zo enthousiast is over
+Rust. Hij antwoorde dat de taal alles heeft wat hij wilt, een eigen equivalent van npm (Cargo),
+ingebouwde code formatter, tests, docs, geen garbage collector en macros.
 
-Dit kon ik alleen maar beamen, Cargo is een geweldige package manager en maakt het beheren van
-packages zeer eenvoudig. Cargo is ongetwijfeld een van Rust zijn sterkte punten en zal een positieve
-impact hebben op de groei van het ecosysteem.
+Cargo is ongetwijfeld een van Rust zijn sterke punten. Het is een geweldige package manager en maakt
+het beheren van packages zeer eenvoudig. Met Cargo kan je dus makkelijk nieuwe crates developen en
+publiceren naar \url{crates.io}. Dit zal dus zeker een positieve impact hebben op de groei van het
+ecosysteem.
 
 Rust is correct met een krachtig typesysteem, dit betekent dat alle edge cases in de code worden
 opgevangen. Denk maar aan het unwrappen van een \mintinline{rust}{Option} of
@@ -55,7 +56,7 @@ dit de deuren om rekenkrachtige applicaties op het web te draaien die ervoor nie
 
 \subsection{Zwakke}
 
-Momenteel is het groottste nadeel het beperkte ecosysteem bij het bouwen voor de frontend van
+Momenteel is het groottste nadeel het beperkte ecosysteem bij het bouwen van een frontend voor
 webapplicaties. Hoe sneller een bedrijf een web app kan uitbrengen hoe minder kosten ze hebben. Dat
 is een van de redenen waarom er bijvoorbeeld veel voorgestijlde component libraries op de markt zijn
 voor Javascript. Yew voorziet al een paar copies van zo'n bekende Javascript libraries maar die zijn
@@ -120,17 +121,14 @@ super snel, perfect voor kleine micro services in de cloud. Denk maar bijvoorbee
 functies. Emiel weette mij te vertellen dat nu ook Cloudflare workers volledig in Rust geschreven
 kunnen worden. \cite{cloudflare_workers}
 
-Ten slotte is het niet onbelangrijk om te vermelden dat Rust ondertussen al 6 jaar op een rij als de meest
-geliefde taal bij een enquête van Stack Overflow. \cite{so_enquete} 
-
 \section{Welke suggesties geven bedrijven en/of community?}
 
-Wanneer ik aan het zoeken was naar externen om te reflecteren, had ik een bericht geplaatst in de
-Yew discord server. Daar kreeg ik ook feedback. Zij stelden voor om de wasm code bij de server te
-comprimeren, zodat het niet de client ~380kB aan wasm code ongecomprimeerd laat downloaden over het
-internet. Een andere suggestie van de community was om de \mintinline{rust}{reqwasm} crate te laten
-vallen, want die is ondertussen toegevoegd aan de \mintinline{rust}{gloo} crate. Dit zou ook de wasm
-binary grootte kunnen verkleien.
+Tijdens het zoeken naar externen om te reflecteren, is er ook een bericht geplaatst in de Yew
+discord server. Zij stelden voor om de wasm code bij de server te comprimeren, zodat het niet de
+client 380kB aan wasm code ongecomprimeerd laat downloaden over het internet. Een andere suggestie
+van de community was om de \mintinline{rust}{reqwasm} crate te laten vallen, want die is ondertussen
+toegevoegd aan de \mintinline{rust}{gloo} crate. Dit zou ook de wasm binary grootte kunnen
+verkleien.
 
 Emiel suggesteeerde om testen te schrijven, Rust heeft daarvoor een heel goed builtin test systeem.
 Dat had zeker een meerwaarde kunnen zijn om bijvoorbeeld de parser tool uit te werken met behulp van
@@ -142,19 +140,20 @@ scripts uitvoert. De huidige manier was via een npm script.
 
 \section{Wat zijn jouw suggesties voor een (eventueel) vervolgonderzoek?}
 
-Vooraleer ik aan het research project begon, werd er gevraagd een contractplan in te vullen. 
-Daarin had ik een opsomming opgelijst van wat het resultaat van mijn technisch onderzoek minimaal
-zal bevatten. Helaas heb ik tijdens het onderzoek de tijd niet gehad voor alles te realiseren. 
-Ik lijst hier even kort op welke criterea's ik niet heb kunnen realiseren:
+Vooraleer het onderzoek begon, werd er gevraagd een contractplan in te vullen. Daarin is er
+opsomming opgelijst van wat het technisch onderzoek resultaat minimaal zal bevatten. Helaas was er
+tijdens het onderzoek niet genoeg tijd voor alles te realiseren. Dit zijn de criterea's die niet
+gerealiseerd zijn:
 \begin{enumerate}
   \item De applicatie is beveiligd met SSO
   \item Er is een profiel pagina aanwezig
   \item De statistische resultaten worden opgeslaan in een database
 \end{enumerate}
-In een vervolgonderzoek zou ik de applicatie dan ook uitbreiden met deze functionaliteiten. Om de
-applicatie te beveiligen met SSO, zou ik OAUTH implementeren. Op die manier kunnen gebruikers
-inloggen met bijvoorbeeld hun Github account.  Met een gebruikers account zal ik ook een profiel
-pagina kunnen aanmaken en de statistische resultaten per gebruiker opslaan in de database.
+In een vervolgonderzoek zou de applicatie dan ook worden kunnen uitgebreid met deze
+functionaliteiten. Om de applicatie te beveiligen met SSO, zou ik OAUTH implementeren. Op die manier
+kunnen gebruikers inloggen met bijvoorbeeld hun Github account.  Met een gebruikers account zal ik
+ook een profiel pagina kunnen aanmaken en de statistische resultaten per gebruiker opslaan in de
+database.
 
 Tijdens het onderzoek heb ik geen aandacht gegeven aan ci/cd. Ondertussen heb ik al een kleine
 pipeline opgezet om de frontend te deployen naar een Azure Static Web App en de api naar een Azure
