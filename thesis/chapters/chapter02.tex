@@ -208,16 +208,20 @@ voorbeeld en in de realiteit komen er natuurlijk nog wat eigenaardigheden bij ki
 
 \subsection{Ecosysteem}
 
-crates.io
+Rust heeft een modulair systeem waarmee je de organisatie van je code kunt beheren, vergelijkbaar
+met het es06 modulesysteem van Javascript. \cite{js_modules} \cite{rust_packages} Het modulesysteem
+van Rust gebruikt de volgende hiërarchie:
+\begin{itemize}
+  \item \textbf{Packages}: Een Cargo feature waarmee je crates kunt bouwen, testen en delen
+  \item \textbf{Crates}: Een boom van modules die een library of executable produceert
+  \item \textbf{Modules} en \textbf{use}: Hiermee kunt u de organisatie, het bereik en de privacy
+    van paden regelen
+  \item \textbf{Paths}: Een manier om een item te benoemen, zoals een struct, functie, of module
+\end{itemize}
 
-module system
-
-cargo
-  - docs
-  - test
-  - benchmark
-  - ...
-
+Cargo is de Rust package manager. Cargo downloadt de afhankelijkheden van uw Rust pakket, compileert
+uw pakketten, maakt distribueerbare pakketten, en upload ze naar crates.io, het pakketregister van
+de Rust gemeenschap.
 
 \clearpage
 
@@ -1388,7 +1392,9 @@ zien dat het gewicht van deze runtimes in de loop van de tijd aanzienlijk zal af
 WebAssembly mogelijkheden (garbage collection, module caching) en betere compilatietechnieken
 (ahead-of-time compilation).
 
-De resultaten van de benchmarks zijn terug te vinden in Bijlage \ref{appendix:bench}.
+De resultaten van de benchmarks zijn terug te vinden in Bijlage \ref{appendix:bench}. Let wel op de
+bundle grootte van Yew is nog niet geoptimaliseert, met optimalisaties is het mogelijk om de bundle
+grootte naar $\sim$100kB te krijgen.
 
 \subsection{Conclusie}
 
