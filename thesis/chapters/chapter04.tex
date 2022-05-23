@@ -62,6 +62,9 @@ is een van de redenen waarom er bijvoorbeeld veel voorgestijlde component librar
 voor Javascript. Yew voorziet al een paar copies van zo'n bekende Javascript libraries maar die zijn
 allemaal nog te jong om te kunnen gebruiken in productie.
 
+Naast het beperkte ecosysteem hebben de frontend frameworks in Rust vaak nog geen 1.0 versie bereikt
+en zullen dus in de komende tijd nog zeker wat breaking changes met zich mee brengen.
+
 Samen met Rust is WebAssembly nog jong en volop in beweging. Zoals besproken in de deelvraag
 \ref{productie} \enquote{Is Rust productie klaar?} is wasm nog niet perfect. Zo hoeven we nog altijd
 javascript te gebruiken om te praten met de DOM, maar dit is slechts tijdelijk.
@@ -109,13 +112,13 @@ framework kiezen, sinds het bijna een excate copie is.
 
 Als een bedrijf de frontend van een applicatie volledig in Rust schrijft, zal dat op dit moment niet
 veel meerwaarde brengen. Buiten dat als een bedrijf een volledige stack heeft in Rust, ze het
-makkelijk kunnen vinden om ook hun web applicaties ook te bouwen in Rust. 
+makkelijk kunnen vinden om ook hun web applicaties te bouwen in Rust. 
 
 Zoals besproken in sectie \ref{productie} \enquote{Is Rust productie klaar?} is de grootste use case
-momenteel om Rust/WebAssembly te gebruiken waar er grote prestatie vereisen zijn of een gedeelte van
+momenteel om Rust/WebAssembly te gebruiken waar er grote prestatie vereisten zijn of een gedeelte van
 de applicatie als de logica in Rust schrijven.
 
-Wat wel interessant is, is om micro services te schrijven in Rust die we kunnen gebruiken voor het
+Wat wel een meerwaarde is, is om micro services te schrijven in Rust die gebruikt worden voor het
 web. Rust zijn binary grootte zonder te compileren naar WebAssembly is klein. Daarnaast is Rust ook
 super snel, perfect voor kleine micro services in de cloud. Denk maar bijvoorbeeld aan AWS lambda
 functies. Emiel weette mij te vertellen dat nu ook Cloudflare workers volledig in Rust geschreven
