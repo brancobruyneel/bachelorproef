@@ -40,25 +40,74 @@ Een eerste stap in de juiste richting, is het schrijven van testen. Zo voorkom j
 veelvoorkomende fouten terrecht komen in productie. Rust beschikt al over een ingebouwd systeem voor
 het schrijven van testen met \mintinline{rust}{cargo test}. Optioneel kan je de crate
 \mintinline{rust}{cargo-nextest} gebruiken. Het biedt wat meer functionaliteiten dan de ingebouwde
-test runner, zoals een mooiere user interface en is in sommige code bases tot 60\% sneller dan
+test runner, zoals een mooiere user interface en bij sommige code bases tot 60\% sneller dan
 \mintinline{rust}{cargo test}.
+
+In het technisch onderzoek is \mintinline{rust}{Diesel.rs} gebruikt als ORM. Het gebruik van een ORM
+zal vaak de achterliggende SQL queries verborgen houden. Er bestaat ook een andere populaire crate
+genaamd \mintinline{rust}{sqlx} \cite{sqlx}. Het is een puur asynchroon Rust + SQL crate die queries
+kan valideren voor het compileren. Het doet dit echter niet door een Rust API of DSL
+(domain-specific language) te bieden voor het bouwen van queries. In plaats daarvan biedt het
+macro's die gewone SQL als invoer nemen en ervoor zorgen dat deze geldig is voor je database. De
+manier waarop dit werkt is dat SQLx tijdens het compileren verbinding maakt met jouw development
+database om de database zelf uw SQL queries te laten verifiëren (en er info over terug te geven).
+Als je geen fan bent van een ORM, kan dit een andere optie zijn om vanuit de api met een SQL
+gebaseerde database te communiceren.
+
+Ook belangrijke stap, is het optimaliseren van de wasm code. Er zijn verschillende technieken
+hiervoor om je wasm zo klein mogelijk te krijgen. Tijdens het onderzoek is hier niet verder op in
+gegaan maar als we naar de code voorbeelden kijken van Yew, zien we dat zij hun wasm groottes hebben
+kunnen verkleinen naar $\sim$100kB. \cite{wasm_size}
+
+In sectie \ref{frameworks} is het Axum framework vermeld, wat een interessant framework is om naar
+uit te kijken. Met dat Tokio zon'n populair async framework is en Axum deel uitmaakt van het
+project, zou het een optie kunnen zijn om Actix-web te vervangen door Axum. 
+
+\clearpage
 
 Het technisch onderzoek in deze bachelorproef was een klein en simpel project. Bij grotere code
 bases mag je met Rust lange compilatie tijden verwachten. Daarom is het best op plaatsen waar we
 moeten compileren, zoveel mogelijk proberen om niet elke keer vanaf nul te compileren. Een mogelijke
 oplossing hiervoor is cachen.
 
-Om de API te kunnen deployen naar de cloud is er in het technischonderzoek een Docker container
+Om de API te kunnen deployen naar de cloud is er in het technisch onderzoek een Docker container
 gebruikt. Hier wil je dus vermijden dat je terug vanaf nul gaat compileren bij het aanpassen van je
 code. Ontmoet \mintinline{rust}{cargo-chef}, een cargo-subcommando gemaakt om Rust docker builds te
 versnelling met behulp van Docker layer caching. Met \mintinline{rust}{cargo-chef} krijg je tot 5x
-snellere build times.
+snellere build times. Hieronder in oplijsting \ref{lst:cargo-chef} is een voorbeeld hoe
+\mintinline{rust}{cargo-chef} kan gebruikt worden voor de api crate.
 
-In sectie \ref{frameworks} is het Axum framework vermeld, wat een interessant framework is om naar
-uit te kijken. Met dat Tokio zon'n populair async framework is en Axum deel uitmaakt van het
-project, zou het een optie kunnen zijn om Actix-web te vervangen door Axum. 
+\begin{listing}[h]
+\begin{minted}{DockerFile}
+FROM ekidd/rust-musl-builder:latest AS chef
+USER root
+RUN cargo install cargo-chef
+WORKDIR /app
 
-Een laatste stap kan het optimaliseren van de wasm code zijn. Er zijn verschillende technieken
-hiervoor om je wasm zo klein mogelijk te krijgen. Tijdens het onderzoek is hier niet verder op in
-gegaan maar als we naar de code voorbeelden kijken van Yew, zien we dat zij hun wasm groottes hebben
-kunnen verkleinen naar $\sim$100kB. \cite{wasm_size}
+FROM chef AS planner
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+RUN cargo chef cook --release --target x86_64-unknown-linux-musl \
+  --recipe-path recipe.json
+COPY . .
+RUN cargo build --release --target x86_64-unknown-linux-musl \
+  --bin crabtyper-api
+
+FROM alpine AS runtime
+ENV DATABASE_URL=/var/lib/snippets.db
+ENV PORT=5000
+EXPOSE 5000
+COPY --from=builder /app/snippets.db /var/lib/snippets.db
+COPY --from=builder \
+  /app/target/x86_64-unknown-linux-musl/release/crabtyper-api \
+  /usr/local/bin/
+CMD ["/usr/local/bin/crabtyper-api"]
+\end{minted}
+\caption{\mintinline{rust}{cargo-chef} voorbeeld}
+\label{lst:cargo-chef}
+\end{listing}
+
+

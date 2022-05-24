@@ -209,19 +209,21 @@ voorbeeld en in de realiteit komen er natuurlijk nog wat eigenaardigheden bij ki
 \subsection{Ecosysteem}
 
 Rust heeft een modulair systeem waarmee je de organisatie van je code kunt beheren, vergelijkbaar
-met het es06 modulesysteem van Javascript. \cite{js_modules} \cite{rust_packages} Het modulesysteem
+met het ES06 modulesysteem van Javascript. \cite{js_modules} \cite{rust_packages} Het modulesysteem
 van Rust gebruikt de volgende hiërarchie:
 \begin{itemize}
   \item \textbf{Packages}: Een Cargo feature waarmee je crates kunt bouwen, testen en delen
-  \item \textbf{Crates}: Een boom van modules die een library of executable produceert
+  \item \textbf{Crates}: Een boom van modules die een library of binary produceert
   \item \textbf{Modules} en \textbf{use}: Hiermee kunt u de organisatie, het bereik en de privacy
-    van paden regelen
+    van paths regelen
   \item \textbf{Paths}: Een manier om een item te benoemen, zoals een struct, functie, of module
 \end{itemize}
 
-Cargo is de Rust package manager. Cargo downloadt de afhankelijkheden van uw Rust pakket, compileert
-uw pakketten, maakt distribueerbare pakketten, en upload ze naar crates.io, het pakketregister van
-de Rust gemeenschap.
+De packages worden beheert door Cargo als package manager. Cargo downloadt de dependencies van je
+Rust package, compileert je packages, maakt distribueerbare packages, en upload ze naar crates.io,
+de package registry van de Rust community. Buiten het beheren van packages het nog een aantal
+features. Met Cargo kan je tests en benchmakrs uitvoeren, een statische html pagina van je
+documentatie bouwen, automatisch warnings oplossen en nog veel meer.
 
 \clearpage
 
