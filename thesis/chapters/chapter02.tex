@@ -106,8 +106,8 @@ Naast de \mintinline{rust}{if} en \mintinline{rust}{else} controlestructuren is 
 een serie van patronen. Op basis van welk patroon er overeenkomt wordt de code uitgevoerd. Patronen
 kunnen opgemaakt worden uit waarden, variabel namen, wildcards, en veel meer. De power van match
 komt van het feit dat de compiler zal bevestigen bij het compileren dat alle mogelijke gevallen zijn
-afgehandeld. Soms wil je niet alle gevallen expliciet afhandelen en wil je slechts een patroon
-afhandelen terwijl je de rest negeert. In dat geval kan je \mintinline{rust}{if let} gebruiken, wat
+afgehandeld. Soms wit u niet alle gevallen expliciet afhandelen en wilt u slechts een patroon
+afhandelen terwijl u de rest negeert. In dat geval kunt u \mintinline{rust}{if let} gebruiken, wat
 minder boilerplate code is dan match.
 
 \begin{listing}[h]
@@ -130,7 +130,7 @@ if let Some(max) = config_max {
 
 \subsection{Geheugen}
 
-Bij vele programmeertalen hoef je geen zorgen te maken over het geheugen gebruik. Dit is mogelijk
+Bij vele programmeertalen hoeft u geen zorgen te maken over het geheugen gebruik. Dit is mogelijk
 door een garbage collector te gebruiken die voortdurend zoekt naar niet langer gebruikt geheugen
 terwijl het programma loopt. In andere talen, moet de programmeur het geheugen expliciet toewijzen
 en vrijmaken. Rust gebruikt geen van beide methodes en komt met een uniek concept genaamd ownership.
@@ -147,13 +147,13 @@ worden opgeslagen moeten een bekende, vaste grootte hebben. Gegevens waarvan de 
 moment van compileren onbekend is of die van grootte kunnen veranderen, moeten in plaats daarvan op
 de heap worden opgeslagen. 
 
-De heap is minder georganiseerd: als je gegevens op de heap zet, vraag je een bepaalde hoeveelheid
+De heap is minder georganiseerd: als u gegevens op de heap zet, vraagt u een bepaalde hoeveelheid
 ruimte aan. De memory allocator vindt een lege plek in de heap die groot genoeg is, markeert die als
 in gebruik, en geeft een pointer terug, dat is het adres van die locatie. Dit proces wordt
 'allocating on the heap' genoemd en wordt soms afgekort als gewoon allocating. Het 'pushen' van
 waarden op de stack wordt niet beschouwd als allocating. Omdat de pointer naar de heap een bekende,
-vaste grootte heeft, kun je de pointer op de stack opslaan, maar als je de eigenlijke gegevens wilt
-hebben, moet je de pointer volgen. 
+vaste grootte heeft, kunt u de pointer op de stack opslaan, maar als u de eigenlijke gegevens wilt
+hebben, moet u de pointer volgen. 
 
 Het efficiëntste is dus om data naar de stack weg te schrijven dan naar de heap, omdat de allocator
 nooit hoeft te zoeken naar een plaats om nieuwe gegevens op te slaan. Die plaats is altijd bovenaan
@@ -161,9 +161,9 @@ de stack. Het alloceren van ruimte op de heap vergt meer werk, omdat de allocato
 moet vinden die groot genoeg is om de gegevens op te slaan en dan de boekhouding moet doen om de
 volgende allocatie voor te bereiden. 
 
-Rust heeft dus een voorkeur om zijn variabelen weg te schrijven naar de stack. Maar zoals gezegd kan
-je niet elke variabele wegschrijven naar de stack, daarom is er een onderscheid tussen simpele en
-complexe types. Bij simpele types ken je de grootte voor het compileren, daarmee worden ze dan ook
+Rust heeft dus een voorkeur om zijn variabelen weg te schrijven naar de stack. Maar zoals gezegd
+kunt u niet elke variabele wegschrijven naar de stack, daarom is er een onderscheid tussen simpele en
+complexe types. Bij simpele types kent u de grootte voor het compileren, daarmee worden ze dan ook
 opgeslagen op de stack. In tegenstelling tot complexe types waarbij de grootte kan veranderen,
 worden ze opgeslagen in de heap.
 
