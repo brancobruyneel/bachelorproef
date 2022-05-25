@@ -276,6 +276,13 @@ dus dat was een goede use case om mee te beginnen. \cite{wasm_interfaces}
 
 \clearpage
 
+Buiten het web kan wasm worden uitgevoerd door \mintinline{rust}{wasmtime} \cite{wasm_time}. Een
+project door \textit{Bytecode Alliance} om wasm te draaien als een command-line utility of een
+library in een ander project. Theoretisch, gebaseerd op de aard van wasm heeft het geen toegang tot
+de 'host' en de API van het systeem, dit is waar WASI in het verhaal komt. WASI staat voor
+\textit{WebAssembly System Interface} en is een modulair systeeminterface voor wasm dat het
+gemakkelijker maakt om de 'host' met de runtime te verbinden.\cite{wasi}
+
 \subsection{Hoe werkt het?}
 
 Nu we weten wat wasm op een hoog niveau inhoudt, is het ook goed om eens praktisch te kijken hoe het
@@ -288,7 +295,7 @@ precies werkt. Er zijn namelijk een aantal opties voor het compileren naar wasm:
 
   \item een Rust applicatie schrijven en wasm als compilatie target gebruiken 
 
-  \item AssemblyScript gebruiken, wat vergelijkbaar is met Typscript en compileert naar een wasm
+  \item AssemblyScript gebruiken, wat vergelijkbaar is met Typescript en compileert naar een wasm
     binary 
 \end{itemize}
 
@@ -311,9 +318,11 @@ complexere types te laten werken.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/wasm_bindgen.png}
+  \includegraphics[width=0.5\textwidth]{figures/wasm_bindgen.png}
   \caption{JS string naar wasm conversie}
 \end{figure}
+
+\clearpage
 
 Dit betekent dat JS functies vanuit Rust worden aangeroepen met de types die deze functies
 verwachten:
