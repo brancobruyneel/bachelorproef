@@ -1,17 +1,17 @@
 \chapter{Conclusie}
 
 Met wat extra werk tegenover andere webprogrammeertalen, biedt Rust snelle prestaties, een rijk
-typesysteem en correcte code. De prestaties verschillen waar u de taal hanteert. Kiest u ervoor om
-de backend services in Rust te schrijven, zal u profiteren van de uitstekende prestaties samen met
-een kleine runtime. Met die reden gebruiken top bedrijven Rust in (micro) services.
+typesysteem en correcte code. De prestaties verschillen echter per domein. Indien het gebruikt wordt
+voor backend services te schrijven, dan kan er geprofiteerd worden van de uitstekende prestaties
+samen met een kleine 'runtime'. Met die reden gebruiken top bedrijven Rust in (micro) services.
 
 Met die zelfde redenen wordt Rust gezien als de taal om te compileren naar WebAssembly. Zoals gezien
 zijn er twee opties om wasm in de browser te draaien. Bij de eerste optie schrijven we een gedeelte
 van de applicatie in wasm, die gewoonlijk krachtige prestaties verwacht zonder de browser aan te
-spreken. Hier benutten we volledige de kracht van wasm samen met een low level taal als Rust
+spreken. Hier benutten we de volledige kracht van wasm samen met een low level taal als Rust
 die veel efficiënter is dan Javascript. Deze optie zien we dan ook het vaakst terug in productie.
 
-De tweede optie, een volledige webapp in Rust schrijven. Verliest prestaties sinds wasm nog niet
+De tweede optie, een volledige webapp schrijven in Rust, verliest prestaties sinds wasm nog niet
 direct de browser API kan aanspreken en dus hiervoor Javascript gebruikt. Toch hebben we gezien dat
 een framework als Yew, betere benchmark resultaten haalt tegenover populaire Javascript frameworks.
 Terwijl Julius en Cecicle beiden Yew gebruiken in productie, blijft het over het algemeen bij hobby
