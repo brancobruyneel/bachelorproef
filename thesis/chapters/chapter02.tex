@@ -3,17 +3,20 @@
 
 \section{Wat is Rust?}
 
-Rust is een gecompileerde multi-paradigma programmeertaal bedacht door Graydon Hoare en is begonnen
-als een project van Mozilla Research. Geïnspireerd door de programmeertalen C en C++, maar kent
-weinig syntactische en semantische gelijkenissen tegenover deze talen. Rust focust zich met name op
-snelheid, veiligheid, betrouwbaarheid en productiviteit. Dit wordt gerealiseerd door gebruik te
-maken van een krachtig typesysteem en een borrow checker. Hiermee kan Rust een hoog niveau van
-geheugenveiligheid garanderen zonder een garbage collector nodig te hebben. Rust beoogt moderne
-computersystemen efficiënter te benutten. Hiervoor maakt het onder meer gebruik van het ownership
-systeem dat geheugen in een blok toewijst en daarnaast strikt toeziet op de stacktoewijzing.
-Hierdoor kunnen problemen zoals stackoverflows, bufferoverflows en niet-geïnitialiseerd geheugen
-voorkomen worden. Verder staat Rust ook geen null-pointers, dangling-pointers of data-races toe in
-veilige code.
+Robust, veilig, correct en snel met die eigenschappen in zijn achterhoofd bedacht Graydon Hoare in
+2006 een nieuwe programmeertaal als hobby project, genaamd Rust. Graydon werkte destijds bij Mozilla
+die in 2009 interesse toonde in zijn project door het te sponseren. Later in 2010 werd het voor het
+eerst publiekelijk aangekondig door Mozilla.
+
+Rust is geschreven als een gecompileerde multi-paradigma programmeertaal. Geïnspireerd door de
+programmeertalen C en C++ met als doel hun pijnpunten op te lossen. Dit wordt gerealiseerd door
+gebruik te maken van een krachtig typesysteem en een borrow checker. Hiermee kan Rust een hoog
+niveau van geheugenveiligheid garanderen zonder een garbage collector nodig te hebben. Rust beoogt
+moderne computersystemen efficiënter te benutten. Hiervoor maakt het onder meer gebruik van het
+ownership systeem dat geheugen in een blok toewijst en daarnaast strikt toeziet op de
+stacktoewijzing. Hierdoor kunnen problemen zoals stackoverflows, bufferoverflows en
+niet-geïnitialiseerd geheugen voorkomen worden. Verder staat Rust ook geen null-pointers,
+dangling-pointers of data-races toe in veilige code.
 
 \subsection{Syntax} 
 
@@ -74,24 +77,24 @@ fn main() {
 \caption{structs}
 \end{listing}
 
-Een \mintinline{rust}{struct} in Rust is gelijkaardig als een Object in object georiënteerde
-programmeertalen. Het wordt gebruikt om samenhorende waarden te groeperen en optioneel kan men
-associated functions implementeren. Associated functions die geen self als hun eerste parameter
-hebben zijn geen methodes en kunnen gebruikt worden als constructors die een nieuwe instantie
-retourneren van de struct.
+Een \mintinline{rust}{struct} in Rust is gelijkaardig als een \mintinline{java}{Object} in object
+georiënteerde programmeertalen. Het wordt gebruikt om samenhorende waarden te groeperen en optioneel
+kan men associated functions implementeren. Associated functions die geen \mintinline{rust}{self}
+als hun eerste parameter hebben zijn geen methodes en kunnen gebruikt worden als constructors die
+een nieuwe instantie retourneren van de \mintinline{rust}{struct}.
 
 Rust heeft geen null pointers tenzij men een null pointer wil dereferentieren (dan moet die in een
 \mintinline{rust}{unsafe} blok worden geplaatst). Als alternatief voor null maakt Rust gebruik van
 een \mintinline{rust}{Option} type waarmee gekeken kan worden of een pointer wel
-\mintinline{rust}{Some} of geen \mintinline{rust}{None} waarde bevat. Dit
-kan afgehandeld worden door syntactische sugar, zoals het if let statement om toegang te krijgen tot
-het innerlijke type, in dit geval een string:
+\mintinline{rust}{Some} of geen \mintinline{rust}{None} waarde bevat. Dit kan afgehandeld worden
+door syntactische sugar, zoals het \mintinline{rust}{if let} statement om toegang te krijgen tot het
+innerlijke type, in dit geval een \mintinline{rust}{string}:
 
 \begin{listing}[h]
 \begin{minted}{rust}
 fn main() {
   let name: Option<String> = None;
-  // If name was not None, it would print here.
+  // Als name niet None was, zou het hier geprint worden
   if let Some(name) = name {
     println!("{}", name);
   }
@@ -100,15 +103,15 @@ fn main() {
 \caption{\mintinline{rust}{Option} type}
 \end{listing}
 
-Naast de \mintinline{rust}{if} en \mintinline{rust}{else} controlestructuren is er ook match en
-\mintinline{rust}{if} \mintinline{rust}{let}. match is vergelijkbaar met een
-\mintinline{javascript}{switch} statement uit andere talen. Het neemt een waarde en test het tegen
-een serie van patronen. Op basis van welk patroon er overeenkomt wordt de code uitgevoerd. Patronen
-kunnen opgemaakt worden uit waarden, variabel namen, wildcards, en veel meer. De power van match
-komt van het feit dat de compiler zal bevestigen bij het compileren dat alle mogelijke gevallen zijn
-afgehandeld. Soms wit u niet alle gevallen expliciet afhandelen en wilt u slechts een patroon
-afhandelen terwijl u de rest negeert. In dat geval kunt u \mintinline{rust}{if let} gebruiken, wat
-minder boilerplate code is dan match.
+Naast de \mintinline{rust}{if} en \mintinline{rust}{else} controlestructuren is er ook
+\mintinline{rust}{match} en \mintinline{rust}{if} \mintinline{rust}{let}. \mintinline{rust}{match}
+is vergelijkbaar met een \mintinline{javascript}{switch} statement uit andere talen. Het neemt een
+waarde en test het tegen een serie van patronen. Op basis van welk patroon er overeenkomt wordt de
+code uitgevoerd. Patronen kunnen opgemaakt worden uit waarden, variabel namen, wildcards, en veel
+meer. De power van \mintinline{rust}{match} komt van het feit dat de compiler zal bevestigen bij het
+compileren dat alle mogelijke gevallen zijn afgehandeld. Soms wit u niet alle gevallen expliciet
+afhandelen en wilt u slechts een patroon afhandelen terwijl u de rest negeert. In dat geval kunt u
+\mintinline{rust}{if let} gebruiken, wat minder boilerplate code is dan \mintinline{rust}{match}.
 
 \begin{listing}[h]
 \begin{minted}{rust}
@@ -134,7 +137,8 @@ Bij vele programmeertalen hoeft u geen zorgen te maken over het geheugen gebruik
 door een garbage collector te gebruiken die voortdurend zoekt naar niet langer gebruikt geheugen
 terwijl het programma loopt. In andere talen, moet de programmeur het geheugen expliciet toewijzen
 en vrijmaken. Rust gebruikt geen van beide methodes en komt met een uniek concept genaamd ownership.
-Hiermee kan het geheugen veiligheid garanderen zonder een garbage collector nodig te hebben. 
+Hiermee kan het geheugen veiligheid garanderen zonder een garbage collector nodig te hebben.
+\cite{ownership}
 
 Vooraleer we verder gaan is het belangrijk dat we de twee begrippen genaamd stack en heap begrijpen.
 De twee datastructuren maken deel uit van het geheugen en zijn beschikbaar voor uw code om te
@@ -185,8 +189,8 @@ drie regels:
   \item Wanneer de owner buiten scope gaat, zal de waarde worden verwijderd 
 \end{enumerate}
 
-Deze regels worden gecontroleerd bij het compileren. Als een van de regels wordt overtreden zal het
-programma niet compileren.  
+Deze regels worden gecontroleerd bij het compileren met behulp van de borrow checker. Als een van de
+regels wordt overtreden zal het programma niet compileren.  
 
 Laat ons eens kijken naar een simpel voorbeeld.
 
@@ -200,13 +204,44 @@ Laat ons eens kijken naar een simpel voorbeeld.
 \caption{ownership}
 \end{listing}
 
-Als we de regels volgen, wordt de variabele s owner over de string literal \mintinline{rust}{hello}.
-De variabele \mintinline{rust}{s} blijft geldig zolang hij binnen de scope wordt aangeroepen. Op het
-einde van de scope zal Rust de \mintinline{rust}{drop} functie uitvoeren en dus het geheugen terug
-vrijgeven. Dit is de basis van hoe het ownership systeem werkt in Rust. Dit was een zeer simpel
-voorbeeld en in de realiteit komen er natuurlijk nog wat eigenaardigheden bij kijken.
+In het voorbeeld gebruiken we het complexe \mintinline{rust}{String} type. Als we de regels volgen,
+wordt de variabele s owner over de string \mintinline{rust}{hello}. De variabele
+\mintinline{rust}{s} blijft geldig zolang hij binnen de scope wordt aangeroepen. Op het einde van de
+scope zal Rust de \mintinline{rust}{drop} functie uitvoeren en dus het geheugen terug vrijgeven. Dit
+is de basis van hoe het ownership systeem werkt in Rust. In realiteit komen er natuurlijk nog wat
+eigenaardigheden bij kijken, voor meer info hierover verwijs ik u graag door naar het \enquote{The
+Rust Programming Language} boek. \cite{rust_book}
 
 \subsection{Ecosysteem}
+
+
+De Rust ervaring is groter dan een taalspecificatie en een compiler; veel aspecten van het maken en
+onderhouden van productie-kwaliteit software worden behandeld als eersterangs burgers. Meerdere
+gelijktijdige Rust toolchains kunnen worden geïnstalleerd en beheerd via rustup. Rust-installaties
+worden geleverd met Cargo, een opdrachtregelgereedschap om afhankelijkheden te beheren, tests uit te
+voeren, documentatie te genereren en meer. Omdat afhankelijkheden, tests en documentatie standaard
+beschikbaar zijn, is het gebruik ervan wijdverbreid. crates.io is de community site voor het delen
+en ontdekken van Rust bibliotheken. Van elke bibliotheek die gepubliceerd wordt op crates.io zal de
+documentatie gebouwd en gepubliceerd worden op docs.rs.
+
+Naast de ingebouwde tools, heeft de Rust community een groot aantal ontwikkeltools gemaakt.
+Benchmarking, fuzzing, en property-based testing zijn allemaal gemakkelijk toegankelijk en worden
+goed gebruikt in projecten. Extra compiler lints zijn beschikbaar via Clippy en automatische
+idiomatische formattering wordt geleverd door rustfmt. De IDE-ondersteuning is gezond en wordt elke
+dag beter.
+
+Naast de technische punten heeft Rust ook een levendige, gastvrije gemeenschap. Er zijn
+verschillende officiële en onofficiële wegen voor mensen om hulp te krijgen, zoals de chat, het
+gebruikersforum, de Rust subreddit, en, natuurlijk, Stack Overflow vragen en antwoorden en chatroom.
+Rust heeft een gedragscode die wordt afgedwongen door een geweldig moderatieteam om ervoor te zorgen
+dat de officiële ruimtes gastvrij zijn, en de meeste onofficiële ruimtes houden zich ook aan iets
+dergelijks.
+
+Offline heeft Rust meerdere conferenties over de hele wereld, zoals RustConf, Rust Belt Rust,
+RustFest, Rust Latam, RustCon Asia, en meer.
+
+
+compiler
 
 Rust heeft een modulair systeem waarmee je de organisatie van je code kunt beheren, vergelijkbaar
 met het ES06 modulesysteem van Javascript. \cite{js_modules} \cite{rust_packages} Het modulesysteem
@@ -224,6 +259,10 @@ Rust package, compileert je packages, maakt distribueerbare packages, en upload 
 de package registry van de Rust community. Buiten het beheren van packages het nog een aantal
 features. Met Cargo kan je tests en benchmakrs uitvoeren, een statische html pagina van je
 documentatie bouwen, automatisch warnings oplossen en nog veel meer.
+
+clippy
+
+fmt
 
 \clearpage
 
@@ -1337,7 +1376,7 @@ Rust gebruiken \cite{rust_companies}. Zo heeft Amazon in 2018 Firecracker gelanc
 serverloze aanbiedingen aandrijft. Daarnaast gebruiken ze Rust ook voor services te leveren zoals
 Amazon Simple Storage Service (Amazon S3), Amazon Elastic Compute Cloud (Amazon EC2), Amazon
 CloudFront, en meer. Amazon heeft dan ook samen met Google, Microsoft, Huawei en Mozilla de Rust
-foundation opgericht in 2020, met een missie om het developen van Rust te ondersteunen. We kunnen
+foundation opgericht in 2020, met een missie om het ontwikkelen van Rust te ondersteunen. We kunnen
 dus concluderen dat de taal op zich wel een stabiele omgeving is. Dit onderzoek gaat natuurlijk wel
 over hoe we Rust kunnen gebruiken voor het bouwen van webapplicaties. We richten onze focus dan ook
 op dit domein. We zullen de deelvraag “Is Rust productie klaar?” opsplitsen in twee delen namelijk
