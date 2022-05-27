@@ -11,6 +11,9 @@
 *.cb
 *.cb2
 .*.lb
+*.acn
+*.ist
+*.gl*-abr
 
 ## Intermediate documents:
 *.dvi

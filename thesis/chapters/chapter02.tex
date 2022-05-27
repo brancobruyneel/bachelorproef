@@ -13,17 +13,16 @@ programmeertalen C en C++ met als doel hun pijnpunten op te lossen. Dit wordt ge
 gebruik te maken van een krachtig typesysteem en een borrow checker. Hiermee kan Rust een hoog
 niveau van geheugenveiligheid garanderen zonder een garbage collector nodig te hebben. Rust beoogt
 moderne computersystemen efficiënter te benutten. Hiervoor maakt het onder meer gebruik van het
-ownership systeem dat geheugen in een blok toewijst en daarnaast strikt toeziet op de
-stacktoewijzing. Hierdoor kunnen problemen zoals stackoverflows, bufferoverflows en
-niet-geïnitialiseerd geheugen voorkomen worden. Verder staat Rust ook geen null-pointers,
-dangling-pointers of data-races toe in veilige code.
+ownership model dat geheugen in een blok toewijst en daarnaast strikt toeziet op de stacktoewijzing.
+Hierdoor kunnen problemen zoals stackoverflows, bufferoverflows en niet-geïnitialiseerd geheugen
+voorkomen worden. Verder staat Rust ook geen null-pointers, dangling-pointers of data-races toe in
+veilige code.
 
 \subsection{Syntax} 
 
 Voor velen die zich niet herkennen in programmeertalen zoals C++, Haskell of OCaml lijkt Rust een
 aparte syntax te hebben in tegenstelling tot conventionele talen. Laat ons even kijken naar een paar
 syntactische voorbeelden in Rust.
-
 
 Hier een simpel voorbeeld dat \mintinline{rust}{"Hello world!"} schrijft naar de standaard output.
 
@@ -82,6 +81,8 @@ georiënteerde programmeertalen. Het wordt gebruikt om samenhorende waarden te g
 kan men associated functions implementeren. Associated functions die geen \mintinline{rust}{self}
 als hun eerste parameter hebben zijn geen methodes en kunnen gebruikt worden als constructors die
 een nieuwe instantie retourneren van de \mintinline{rust}{struct}.
+
+\clearpage
 
 Rust heeft geen null pointers tenzij men een null pointer wil dereferentieren (dan moet die in een
 \mintinline{rust}{unsafe} blok worden geplaatst). Als alternatief voor null maakt Rust gebruik van
@@ -181,7 +182,7 @@ De simpele types zijn:
   \item Array (ze hebben dus een vaste grootte in Rust)
 \end{itemize}
 
-Nu de begrippen zijn opgeklaard kunnen we kijken naar het ownership systeem. Het systeem bestaat uit
+Nu de begrippen zijn opgeklaard kunnen we kijken naar het ownership model. Het model bestaat uit
 drie regels: 
 \begin{enumerate}
   \item Elke waarde in Rust heeft een variabele die de owner wordt genoemd 
@@ -208,7 +209,7 @@ In het voorbeeld gebruiken we het complexe \mintinline{rust}{String} type. Als w
 wordt de variabele s owner over de string \mintinline{rust}{hello}. De variabele
 \mintinline{rust}{s} blijft geldig zolang hij binnen de scope wordt aangeroepen. Op het einde van de
 scope zal Rust de \mintinline{rust}{drop} functie uitvoeren en dus het geheugen terug vrijgeven. Dit
-is de basis van hoe het ownership systeem werkt in Rust. In realiteit komen er natuurlijk nog wat
+is de basis van hoe het ownership model werkt in Rust. In realiteit komen er natuurlijk nog wat
 eigenaardigheden bij kijken, voor meer info hierover verwijs ik u graag door naar het \enquote{The
 Rust Programming Language} boek. \cite{rust_book}
 
@@ -236,7 +237,7 @@ dag beter.
 \section{Wat is WebAssembly \& Hoe werkt het?}
 
 Tegenwoordig wordt Javascript gebruikt om interactieve webapps te creëren. Ondanks de succesvolle
-inspanningen van browsermakers om hun javascript-engines in elke versie weer wat efficiënter te
+inspanningen van browsermakers om hun Javascript-engines in elke versie weer wat efficiënter te
 maken, is dat voor veel toepassingen nog steeds niet genoeg. In 2011 lanceerde Google Native Client
 (NaCI), een sandbox voor het efficiënt en veilig uitvoeren van gecompileerde C en C++ code in de
 browser. Het bracht prestaties en low-level controle van native code naar moderne webbrowsers,
@@ -249,15 +250,15 @@ worden naar asm.js en de browser zal dit uitvoeren als gewone Javascript.
 Het voordeel van asm.js is dat het simpelweg in alle webbrowsers werkte, maar Mozilla botste tegen
 de snelheidsgrenzen van Javascript aan. Sinds Javascript een tekstformaat is, vereist het parsen
 veel rekenkracht, vooral op mobiele apparaten met een iets zwakkere processor. Daarom werd
-WebAssembly (afgekort Wasm) in 2015 geboren, een binair instructieformaat voor een stack-gebaseerde
-virtuele machine in je browser. Het is ontworpen als een overdraagbaar compilatiedoel voor
-programmeertalen, waardoor het gebruik op het web mogelijk wordt voor client- en servertoepassingen.
-\cite{wat_is_wasm}
+WebAssembly (afgekort \acrshort{wasm}) in 2015 geboren, een binair instructieformaat voor een
+stack-gebaseerde virtuele machine in je browser. Het is ontworpen als een overdraagbaar
+compilatiedoel voor programmeertalen, waardoor het gebruik op het web mogelijk wordt voor client- en
+servertoepassingen. \cite{wat_is_wasm}
 
 \subsection{Doel}
 
 Het is dus geen nieuwe programmeertaal, maar een binair formaat voor uitvoerbare programma’s. Het
-wordt gecreëerd als een open standaard binnen de W3C WebAssembly Community Group met de volgende
+wordt gecreëerd als een open standaard binnen de \gls{w3c} met de volgende
 doelstellingen: 
 \begin{itemize}
   \item \textbf{Snel, efficiënt en overdraagbaar} - wasm code kan op bijna native snelheid worden
@@ -308,8 +309,8 @@ precies werkt. Er zijn namelijk een aantal opties voor het compileren naar wasm:
 
 In deze bachelorproef werd het technisch onderzoek uitgevoerd in Rust. Met zijn kleine runtime,
 betrouwbaar en rijk typesysteem is het een van de populairste keuzes voor het bouwen van webapps met
-wasm. Helaas is wasm nog niet compleet en hebben we nog altijd javascript nodig om te praten met de
-DOM. Dus laat ons even kijken naar een voorbeeld hoe we vanuit Rust javascript functies kunnen
+wasm. Helaas is wasm nog niet compleet en hebben we nog altijd Javascript nodig om te praten met de
+DOM. Dus laat ons even kijken naar een voorbeeld hoe we vanuit Rust Javascript functies kunnen
 gebruiken en andersom.
 
 Een van de moeilijkste onderdelen van het werken met wasm is om verschillende soorten waarden in en

@@ -26,6 +26,9 @@
 
 \usepackage[small,bf,hang]{caption2}
 
+\usepackage[acronym,nonumberlist]{glossaries}
+\makeglossaries
+\loadglsentries{glossary}
 
 \author{Branco Bruyneel}
 \title{Wat is de huidige status van Rust voor het bouwen van webapplicaties?}
@@ -44,7 +47,7 @@ webapplicaties?” en is dan ook het onderwerp voor deze bachelorproef.
 
 Deze bachelorproef bespreekt eerst de research en technische demo uit de module ‘Research Project’.
 De demo bestond uit een speed typing test applicatie, waar een gebruiker zo snel mogelijk een random
-code fragment moet over typen om erna zijn prestaties te kunnen bekijken. 
+code snippet moet over typen om erna zijn prestaties te kunnen bekijken. 
 
 Na de analyse reflecteer ik het verkregen resultaat met het werkveld. Hiervoor nam ik contact op met
 een van de core maintainers van Yew genaamd Julius Lungys en mastersstudent industrieel ingenieur
@@ -78,6 +81,7 @@ conclusie.
 
 
 \tableofcontents
+
 \addcontentsline{toc}{chapter}{Woord vooraf}
 \addcontentsline{toc}{chapter}{Abstract}
 \addcontentsline{toc}{chapter}{Lijst van figuren}
@@ -86,9 +90,9 @@ conclusie.
 
 \listoffigures
 
-\chapter*{Lijst met afkortingen}
-\chapter*{Verklarende woordenlijst}
-
+\printglossary[title=Lijst met afkortingen,toctitle=Lijst met afkortingen,type=acronym]
+\printglossary[title=Verklarende woordenlijst,toctitle=Verklarende woordenlijst,type=main]
+\glsaddallunused
 
 \include{chapters/chapter01}
 \include{chapters/chapter02}
