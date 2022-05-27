@@ -4,7 +4,7 @@
 
 Het technisch onderzoek startte bij het lezen van “The book” een boek over de taal Rust geschreven
 door Steve Klabnik, Carol Nichols en met contributies van de Rust community. Tijdens het lezen waren
-er kleine code voorbeelden die je kon mee volgen. Dit maakte het makkelijker om de geavanceerde
+er kleine code voorbeelden die u kon mee volgen. Dit maakte het makkelijker om de geavanceerde
 hoofdstukken goed te begrijpen. 
 
 Na een paar hoofdstukken diep in het boek was het tijd om de geleerde zaken tot de test te brengen.
@@ -14,7 +14,7 @@ praktisch toegepast.
 
 Op het einde van het boek was er een finaal project dat ook de laatste hoofdstukken bevatte. Het
 project was het bouwen van een “simpele” multi-threaded server. Daar lag de focus op het werken met
-meerdere threads, wat niet voor de hand ligt als je rekening moet houden met het geheugen. 
+meerdere threads, wat niet voor de hand ligt als u rekening moet houden met het geheugen. 
 
 Na de taal onder de knie te hebben, werd er onderzoek gedaan naar WebAssembly. Mits het nog een
 piepjonge technologie is, was er al heel wat documentatie/artikelen over te vinden op het web. Zo
@@ -82,8 +82,8 @@ er diesel gebruikt als ORM framework.
 
 \section{Werking frontend}
 
-De startpagina is geïnspireerd door mijn favoriete editor vim. Zo krijg je een simpele versie van
-vim te zien als editor voor het typen. Hieronder zie je een schema van de compositie van de
+De startpagina is geïnspireerd door mijn favoriete editor vim. Zo krijgt u een simpele versie van
+vim te zien als editor voor het typen. Hieronder ziet u een schema van de compositie van de
 belangrijkste componenten.
 
 \begin{figure}[h]
@@ -125,11 +125,11 @@ van de tekst en de bijhorende statistieken in een state kunnen opslaan zodat elk
 rendert als het nodig is.  
 
 Mijn eerste oplossing was het gebruik van globale state met de \mintinline{rust}{use_reducer}
-hook. Als je vertrouwd bent met React zijn de meeste hooks zoals \mintinline{rust}{use_reducer},
+hook. Als u vertrouwd bent met React zijn de meeste hooks zoals \mintinline{rust}{use_reducer},
 \mintinline{rust}{use_state}, \mintinline{rust}{use_effect} overgenomen in Yew. Indien niet leg
 ik het kort even uit. Voor simpele variabelen op te slaan in een state zoals bijvoorbeeld een
-boolean gebruik je de \mintinline{rust}{use_state} hook. Die zorgt ervoor dat de boolean doorheen
-het component lifecycle hetzelfde blijft tenzij je hem aanpast. Als je hem aanpast dan zal het
+boolean gebruikt u de \mintinline{rust}{use_state} hook. Die zorgt ervoor dat de boolean doorheen
+het component lifecycle hetzelfde blijft tenzij u hem aanpast. Als u hem aanpast dan zal het
 component opnieuw renderen.  
 
 De \mintinline{rust}{use_reducer} hook werkt gelijkaardig maar wordt gebruikt voor complexere
@@ -188,8 +188,8 @@ pub enum Action {
 
 Het probleem met de \mintinline{rust}{use_reducer} hook is dat een component de hele state opneemt.
 Als de child components een variabel nodig hebben van de state, moeten die als properties worden
-doorgeven. Hier is niks mis mee tenzij je een diep genest child component hebt die afhankelijk is
-van de state. Dan heb je “prop drilling” waarbij je vanuit de parent component de props moet
+doorgeven. Hier is niks mis mee tenzij u een diep genest child component hebt die afhankelijk is
+van de state. Dan heeft u “prop drilling” waarbij u vanuit de parent component de props moet
 doorgeven aan zijn children die dezelfde props dan doorgeven aan hun children, en zo verder tot dat
 je bij de gewenste component bent.
 
@@ -228,12 +228,12 @@ hele state.
 
 \section{Werking backend}
 
-De werking van de backend verschilt niet veel met het voorbeeld “Todo” applicatie die we gemaakt
-hebben in “Hoe bouw je een API in Rust?”. Opnieuw werd er gekozen voor een simpele SQLite database
+De werking van de backend verschilt niet veel met het voorbeeld 'Todo' applicatie die we gemaakt
+hebben in \enquote{Hoe bouwt u een API in Rust?}. Opnieuw werd er gekozen voor een simpele SQLite database
 om de code snippets in op te slaan. Zoals eerder gezien wordt het database schema aangemaakt door
 migrations uit te voeren met diesel CLI.  Dit is een database first aanpak, na wat onderzoek lijkt
 het me dat diesel.rs jammer genoeg geen andere aanpakken ondersteund zoals code first. Met code
-first kan je vanuit models die gedefinieerd staan in code automatisch migrations aanmaken die het
+first kan u vanuit models die gedefinieerd staan in code automatisch migrations aanmaken die het
 database schema aanpassen/aanmaken. 
 
 In de speed typing database gebruiken we twee tabellen “languages” en “snippets”. Die een een op
@@ -258,7 +258,7 @@ halen uit de database.
 Om ervoor te zorgen dat we niet eerst alle snippets op halen uit de database om dan een random
 snippet eruit te selecteren. Wordt er eerst via een SQL-query de snippets tabel random gesorteerd en
 het eerste resultaat eruit gepakt. Standaard zal Rust of diesel het random type niet kennen.
-Gelukkig voorziet diesel de \mintinline{rust}{no_arg_sql_function} macro waarmee je SQL functies
+Gelukkig voorziet diesel de \mintinline{rust}{no_arg_sql_function} macro waarmee u SQL functies
 kunt mappen naar Rust types.
 
 \begin{listing}[h]

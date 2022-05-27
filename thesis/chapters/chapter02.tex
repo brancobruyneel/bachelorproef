@@ -221,9 +221,9 @@ installer laat ook toe om makkelijk te wisselen tussen verschillende versies zoa
 nightly compilers en houdt ze up to date.
 
 Rust-installaties worden geleverd met Cargo, als package manager. Cargo downloadt de dependencies
-van je Rust package, compileert je packages, maakt distribueerbare packages, en upload ze naar
+van uw Rust package, compileert uw packages, maakt distribueerbare packages, en upload ze naar
 \url{crates.io}, de package registry van de Rust community. Buiten het beheren van packages heeft
-het nog een aantal features. Met Cargo kan je tests uitvoeren, documentatie genereren, automatisch
+het nog een aantal features. Met Cargo kan u tests uitvoeren, documentatie genereren, automatisch
 warnings oplossen en nog veel meer.
 
 Naast de ingebouwde tools, heeft de Rust community een groot aantal development tools gemaakt.
@@ -251,7 +251,7 @@ Het voordeel van asm.js is dat het simpelweg in alle webbrowsers werkte, maar Mo
 de snelheidsgrenzen van Javascript aan. Sinds Javascript een tekstformaat is, vereist het parsen
 veel rekenkracht, vooral op mobiele apparaten met een iets zwakkere processor. Daarom werd
 WebAssembly (afgekort \acrshort{wasm}) in 2015 geboren, een binair instructieformaat voor een
-stack-gebaseerde virtuele machine in je browser. Het is ontworpen als een overdraagbaar
+stack-gebaseerde virtuele machine in uw browser. Het is ontworpen als een overdraagbaar
 compilatiedoel voor programmeertalen, waardoor het gebruik op het web mogelijk wordt voor client- en
 servertoepassingen. \cite{wat_is_wasm}
 
@@ -277,10 +277,10 @@ doelstellingen:
     webtechnologieën en achterwaartse compatibiliteit behoudt.
 \end{itemize}
 
-WebAssembly is niet beperkt tot het web. Maar tot nu toe heeft het grootste deel van de
-ontwikkeling van WebAssembly zich gericht op het web. Dat komt omdat je betere ontwerpen kunt maken
-als je je richt op het oplossen van concrete use cases. De taal zou zeker op het Web moeten draaien,
-dus dat was een goede use case om mee te beginnen. \cite{wasm_interfaces}
+WebAssembly is niet beperkt tot het web. Maar tot nu toe heeft het grootste deel van de ontwikkeling
+van WebAssembly zich gericht op het web. Dat komt omdat men betere ontwerpen kan maken als men zich
+richt op het oplossen van concrete use cases. De taal zou zeker op het Web moeten draaien, dus dat
+was een goede use case om mee te beginnen. \cite{wasm_interfaces}
 
 \clearpage
 
@@ -317,11 +317,11 @@ Een van de moeilijkste onderdelen van het werken met wasm is om verschillende so
 uit functies te krijgen. Dat komt omdat wasm momenteel slechts twee types kent: \textbf{integers} en
 \textbf{floating point} getallen. 
 
-Dit betekent dat je niet zomaar een string in een wasm functie kunt stoppen. In plaats daarvan moet
-je een aantal stappen doorlopen om een string voor te stellen als getallen. Als je complexere types
-hebt, zal je zelfs een ingewikkelder proces hebben om de gegevens heen en weer te sturen. Gelukkig
+Dit betekent dat u niet zomaar een string in een wasm functie kunt stoppen. In plaats daarvan moet
+je een aantal stappen doorlopen om een string voor te stellen als getallen. Als u complexere types
+heeft, zal u zelfs een ingewikkelder proces hebben om de gegevens heen en weer te sturen. Gelukkig
 bestaat er de library \mintinline{rust}{wasm-bindgen} die deze stappen voor ons doet. Met een paar
-annotaties aan je Rust code, zal het automatisch de code maken die nodig is (aan beide kanten) om
+annotaties aan uw Rust code, zal het automatisch de code maken die nodig is (aan beide kanten) om
 complexere types te laten werken.
 
 \begin{figure}[h]
@@ -395,7 +395,7 @@ foo.free();
 Na het compileren, zijn er een heleboel bestanden. Om van die bestanden naar een npm package te
 gaan, is er de \mintinline{rust}{wasm-pack} library. Het zal \mintinline{rust}{wasm-bindgen} voor je
 draaien. Dan, zal het alle bestanden nemen en ze verpakken. Het zal een package.json  er aan
-toevoegen, waarin alle npm dependencies van je Rust code zijn ingevuld. Ten slotte, alles wat je
+toevoegen, waarin alle npm dependencies van uw Rust code zijn ingevuld. Ten slotte, alles wat je
 hoeft te doen is \mintinline{bash}{npm publish}.
 
 \begin{figure}[h]
@@ -412,8 +412,8 @@ hoeft te doen is \mintinline{bash}{npm publish}.
 \section{Welke front- \& backend frameworks zijn er ter beschikking?}
 \label{frameworks}
 
-Om efficiënt webapplicaties te bouwen heb je natuurlijk een degelijk framework nodig die voor jou al
-het zware werk doet. Gelukkig heeft Rust mits zijn jonge jaren, al een aardig aantal frameworks ter
+Om efficiënt webapplicaties te bouwen heeft u een degelijk framework nodig die voor jou al het zware
+werk doet. Gelukkig heeft Rust mits zijn jonge jaren, al een aardig aantal frameworks ter
 beschikking voor het bouwen van webapplicaties.  
 
 Dit zijn de top 3 front- en backend frameworks. Gerangschikt naar mate van hun populariteit (GitHub
@@ -500,10 +500,10 @@ Dit alles maakt met zijn jonge 1-jarige leeftijd toch een library om naar uit te
 
 \clearpage
 
-\section{Hoe bouw je een webapp in Rust?}
+\section{Hoe bouwt u een webapp in Rust?}
 
 Sinds Yew het populairste framework is en ook is gebruikt als framework voor het bouwen van de speed
-typing applicatie, zal de vraag \enquote{Hoe bouw je een webapp in Rust} beantwoord worden met Yew
+typing applicatie, zal de vraag \enquote{Hoe bouwt u een webapp in Rust} beantwoord worden met Yew
 als framework. Het bouwen van een webapplicatie in een ander framework zal in grote lijnen hetzelfde
 zijn. Dit zal een praktische kijk zijn op hoe we Yew kunnen gebruiken voor het bouwen van
 Webapplicaties. \cite{yew_introduction}
@@ -514,8 +514,8 @@ In dit voorbeeld gaan we een simpele Todo applicatie bouwen.
 
 \subsubsection{Rust}
 Om Rust te installeren hebben we de rustup toolchain installer nodig. Met het onderstaand script kan
-je het installeren op jouw UNIX machine. Als je Rust al hebt staan maak dan zeker dat je de laatste
-versie hebt door rustup update uit te voeren.
+je het installeren op jouw UNIX machine. Als u Rust al hebt staan maak dan zeker dat u de laatste
+versie heeft door \mintinline{rust}{rustup update} uit te voeren.
 
 \begin{minted}{bash}
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -525,7 +525,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 Rust kan source codes compileren voor verschillende 'targets' (m.a.w verschillende processors). Het
 compilatie target voor een browser gebaseerd WebAssembly heet wasm32-unkown-unkown. Het volgende
-commando zal het WebAssembly target toevoegen aan je development environment.
+commando zal het WebAssembly target toevoegen aan uw development environment.
 
 \begin{minted}{bash}
 rustup target add wasm32-unknown-unknown
@@ -548,8 +548,8 @@ cargo new yew-app
 cd yew-app
 \end{minted}
 
-Om te verifieren dat het Rust environment juist is opgezet, voer je het initiele project uit met de
-cargo build tool. Na de output van de het build process, zou je normaal \mintinline{rust}{"Hello,
+Om te verifieren dat het Rust environment juist is opgezet, voert u het initiele project uit met de
+cargo build tool. Na de output van de het build process, zou u normaal \mintinline{rust}{"Hello,
 world!"} te zien
 krijgen.
 
@@ -986,9 +986,9 @@ let tasks = use_state(std::vec::Vec::new);
 
 \clearpage
 
-\section{Hoe bouw je een API in Rust?}
+\section{Hoe bouwt u een API in Rust?}
 
-Volgend op de Todo applicatie die we gebouwd hebben in \enquote{Hoe bouw je een webapp in Rust?},
+Volgend op de Todo applicatie die we gebouwd hebben in \enquote{Hoe bouwt u een webapp in Rust?},
 zullen we een REST API bouwen die de taken uit een database zal halen en opslaan. Als API framework
 zullen we Actix-web gebruiken, samen met diesel.rs als ORM voor het beheren van de database. Om het
 simpel te houden gebruiken we net zoals in de speed typing test applicatie SQLite als database.
@@ -1024,8 +1024,8 @@ We zullen uitleggen waarom we deze dependencies nodig hebben als we verder gaan.
 
 \subsubsection{Database}
 
-Diesel biedt een aparte CLI tool om je project te helpen beheren. Omdat het een standalone binary
-is, en geen directe invloed heeft op de code van je project, voegen we het niet toe aan Cargo.toml.
+Diesel biedt een aparte CLI tool om uw project te helpen beheren. Omdat het een standalone binary
+is, en geen directe invloed heeft op de code van uw project, voegen we het niet toe aan Cargo.toml.
 In plaats daarvan installeren we het gewoon op ons systeem.
 
 \begin{minted}{bash}
@@ -1145,7 +1145,7 @@ In onze main, instantiëren we een \mintinline{rust}{HttpServer}, voegen er een
 \mintinline{rust}{App} aan toe die dient als een
 Application factory en voegen onze eerste route er aan toe.
 
-Als alles goed gaat zou je nu de API kunnen opstarten met \mintinline{bash}{cargo run} en bij een
+Als alles goed gaat zou u nu de API kunnen opstarten met \mintinline{bash}{cargo run} en bij een
 GET request naar \mintinline{bash}{localhost:8080/hello} \mintinline{rust}{"Hello world!"} als repons 
 te zien krijgen.
 
@@ -1353,12 +1353,12 @@ frontend en backend.
 
 \subsection{Backend }
 
-Laten we beginnen met de backend. Bij het bouwen van hedendaagse webapplicaties heb je over het
+Laten we beginnen met de backend. Bij het bouwen van hedendaagse webapplicaties heeft u over het
 algemeen 2 zaken nodig, een API en een database. Uiteraard is dit niet altijd het geval maar laten
 we onze focus hierop leggen. 
 
-Om een web API te bouwen gebruik je gewoonlijk een web framework. Het huidige rust ecosysteem heeft
-een aantal stabiele web frameworks ter beschikking. Uit de deelvraag “Hoe bouw je een API in
+Om een web API te bouwen gebruikt u gewoonlijk een web framework. Het huidige rust ecosysteem heeft
+een aantal stabiele web frameworks ter beschikking. Uit de deelvraag “Hoe bouwt u een API in
 Rust?” hebben we gekozen voor Actix-web te gebruiken als framework. Actix-web voorziet alles wat je
 kan verwachten van een web framework, van routing en middleware, tot templating en JSON/form
 afhandeling. Het is ook een van de snelste web frameworks ter beschikking. Zo staat actix momenteel
@@ -1405,7 +1405,7 @@ presteert in het aanpassen van de DOM. Dit is nu nog een struikel punt voor WebA
 algemeen, sinds er nog altijd javascript functies worden gebruikt voor het aanpassen van de DOM.
 Dat is een van de redenen waarom we hogere bundel grootes over het netwerk zien bij Yew.
 Een andere reden is dat WebAssembly zelf niet beschikt over geheugen beheer en garbage collectors.
-Om die reden wordt vaak een runtime meegeleverd met de logica van je applicatie. In sommige gevallen
+Om die reden wordt vaak een runtime meegeleverd met de logica van uw applicatie. In sommige gevallen
 (Rust) is deze runtime vrij licht, en in andere (Blazor) is het zeer zwaar. We zullen waarschijnlijk
 zien dat het gewicht van deze runtimes in de loop van de tijd aanzienlijk zal afnemen door nieuwe
 WebAssembly mogelijkheden (garbage collection, module caching) en betere compilatietechnieken
