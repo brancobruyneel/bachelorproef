@@ -214,79 +214,45 @@ Rust Programming Language} boek. \cite{rust_book}
 
 \subsection{Ecosysteem}
 
+Het Rust team \& de community hebben veel aandacht besteed aan de gebruiksvriendelijkheid. Zo is de
+installatie van de taal zeer eenvoudig met de \mintinline{rust}{rustup} toolchain installer. De
+installer laat ook toe om makkelijk te wisselen tussen verschillende versies zoals stable, beta en
+nightly compilers en houdt ze up to date.
 
-De Rust ervaring is groter dan een taalspecificatie en een compiler; veel aspecten van het maken en
-onderhouden van productie-kwaliteit software worden behandeld als eersterangs burgers. Meerdere
-gelijktijdige Rust toolchains kunnen worden geïnstalleerd en beheerd via rustup. Rust-installaties
-worden geleverd met Cargo, een opdrachtregelgereedschap om afhankelijkheden te beheren, tests uit te
-voeren, documentatie te genereren en meer. Omdat afhankelijkheden, tests en documentatie standaard
-beschikbaar zijn, is het gebruik ervan wijdverbreid. crates.io is de community site voor het delen
-en ontdekken van Rust bibliotheken. Van elke bibliotheek die gepubliceerd wordt op crates.io zal de
-documentatie gebouwd en gepubliceerd worden op docs.rs.
+Rust-installaties worden geleverd met Cargo, als package manager. Cargo downloadt de dependencies
+van je Rust package, compileert je packages, maakt distribueerbare packages, en upload ze naar
+\url{crates.io}, de package registry van de Rust community. Buiten het beheren van packages heeft
+het nog een aantal features. Met Cargo kan je tests uitvoeren, documentatie genereren, automatisch
+warnings oplossen en nog veel meer.
 
-Naast de ingebouwde tools, heeft de Rust community een groot aantal ontwikkeltools gemaakt.
+Naast de ingebouwde tools, heeft de Rust community een groot aantal development tools gemaakt.
 Benchmarking, fuzzing, en property-based testing zijn allemaal gemakkelijk toegankelijk en worden
 goed gebruikt in projecten. Extra compiler lints zijn beschikbaar via Clippy en automatische
 idiomatische formattering wordt geleverd door rustfmt. De IDE-ondersteuning is gezond en wordt elke
 dag beter.
 
-Naast de technische punten heeft Rust ook een levendige, gastvrije gemeenschap. Er zijn
-verschillende officiële en onofficiële wegen voor mensen om hulp te krijgen, zoals de chat, het
-gebruikersforum, de Rust subreddit, en, natuurlijk, Stack Overflow vragen en antwoorden en chatroom.
-Rust heeft een gedragscode die wordt afgedwongen door een geweldig moderatieteam om ervoor te zorgen
-dat de officiële ruimtes gastvrij zijn, en de meeste onofficiële ruimtes houden zich ook aan iets
-dergelijks.
-
-Offline heeft Rust meerdere conferenties over de hele wereld, zoals RustConf, Rust Belt Rust,
-RustFest, Rust Latam, RustCon Asia, en meer.
-
-
-compiler
-
-Rust heeft een modulair systeem waarmee je de organisatie van je code kunt beheren, vergelijkbaar
-met het ES06 modulesysteem van Javascript. \cite{js_modules} \cite{rust_packages} Het modulesysteem
-van Rust gebruikt de volgende hiërarchie:
-\begin{itemize}
-  \item \textbf{Packages}: Een Cargo feature waarmee je crates kunt bouwen, testen en delen
-  \item \textbf{Crates}: Een boom van modules die een library of binary produceert
-  \item \textbf{Modules} en \textbf{use}: Hiermee kunt u de organisatie, het bereik en de privacy
-    van paths regelen
-  \item \textbf{Paths}: Een manier om een item te benoemen, zoals een struct, functie, of module
-\end{itemize}
-
-De packages worden beheert door Cargo als package manager. Cargo downloadt de dependencies van je
-Rust package, compileert je packages, maakt distribueerbare packages, en upload ze naar crates.io,
-de package registry van de Rust community. Buiten het beheren van packages het nog een aantal
-features. Met Cargo kan je tests en benchmakrs uitvoeren, een statische html pagina van je
-documentatie bouwen, automatisch warnings oplossen en nog veel meer.
-
-clippy
-
-fmt
-
 \clearpage
 
 \section{Wat is WebAssembly \& Hoe werkt het?}
 
-Om interactieve webapps te creëren gebruik je tegenwoordig javascript. Ondanks de succesvolle
+Tegenwoordig wordt Javascript gebruikt om interactieve webapps te creëren. Ondanks de succesvolle
 inspanningen van browsermakers om hun javascript-engines in elke versie weer wat efficiënter te
-maken, is dat voor veel toepassingen nog niet genoeg. Google dan kwam in 2011 met Native Client
+maken, is dat voor veel toepassingen nog steeds niet genoeg. In 2011 lanceerde Google Native Client
 (NaCI), een sandbox voor het efficiënt en veilig uitvoeren van gecompileerde C en C++ code in de
-browser, onafhankelijk van het besturingssysteem van de gebruiker. Het bracht prestaties en
-low-level controle van native code naar moderne webbrowsers, zonder de veiligheid en portabiliteit
-van het web op te offeren. \cite{native_client}
+browser. Het bracht prestaties en low-level controle van native code naar moderne webbrowsers,
+zonder de veiligheid en portabiliteit van het web op te offeren. \cite{native_client}
 
-Mozilla wilde de platformonafhankelijkheid van javascript echter niet verlaten, en begon daarom in
-2013 aan een andere aanpak: asm.js, een subset van javascript die browsers heel efficiënt kunnen
-uitvoeren. Je compileert dan een webapp uit een taal zoals C naar asm.js, en je browser voert dit
-dan als gewone javascript uit. 
+Vervolgens kwam Mozilla in 2013 met een andere aanpak: asm.js, een subset van Javascript die
+browsers heel efficiënt kunnen uitvoeren. Hiermee kan een webapp uit een taal zoals C gecompileerd
+worden naar asm.js en de browser zal dit uitvoeren als gewone Javascript.
 
-Het voordeel van asm.js is dat het gewoon al in alle webbrowsers werkte, maar Mozilla botste tegen
-de snelheidsgrenzen van javascript aan. Omdat javascript een tekstformaat heeft, vraagt het parsen
-veel rekenkracht, zeker op mobiele toestellen met een wat zwakkere processor. En zo werd in 2015
-WebAssembly (afgekort Wasm) geboren, een binair instructieformaat voor een stack-gebaseerde virtuele
-machine in je webbrowser. Het is ontworpen als een overdraagbaar compilatiedoel voor
+Het voordeel van asm.js is dat het simpelweg in alle webbrowsers werkte, maar Mozilla botste tegen
+de snelheidsgrenzen van Javascript aan. Sinds Javascript een tekstformaat is, vereist het parsen
+veel rekenkracht, vooral op mobiele apparaten met een iets zwakkere processor. Daarom werd
+WebAssembly (afgekort Wasm) in 2015 geboren, een binair instructieformaat voor een stack-gebaseerde
+virtuele machine in je browser. Het is ontworpen als een overdraagbaar compilatiedoel voor
 programmeertalen, waardoor het gebruik op het web mogelijk wordt voor client- en servertoepassingen.
+\cite{wat_is_wasm}
 
 \subsection{Doel}
 
@@ -294,15 +260,17 @@ Het is dus geen nieuwe programmeertaal, maar een binair formaat voor uitvoerbare
 wordt gecreëerd als een open standaard binnen de W3C WebAssembly Community Group met de volgende
 doelstellingen: 
 \begin{itemize}
-  \item \textbf{Snel, efficiënt en overdraagbaar} - wasm code kan op bijna native snelheid worden uitgevoerd
-    op verschillende platforms door gebruik te maken van gemeenschappelijke hardware mogelijkheden. 
+  \item \textbf{Snel, efficiënt en overdraagbaar} - wasm code kan op bijna native snelheid worden
+    uitgevoerd op verschillende platforms door gebruik te maken van gemeenschappelijke hardware
+    mogelijkheden. 
 
-  \item \textbf{Leesbaar en foutopspoorbaar} - wasm is een lage assembleertaal, maar het heeft een menselijk
-    leesbaar tekstformaat (aan de specificatie wordt nog gewerkt) waarmee code met de hand kan
-    worden geschreven, bekeken en foutopsporing mogelijk is. 
+  \item \textbf{Leesbaar en foutopspoorbaar} - wasm is een lage assembleertaal, maar het heeft een
+    menselijk leesbaar tekstformaat (aan de specificatie wordt nog gewerkt) waarmee code met de hand
+    kan worden geschreven, bekeken en foutopsporing mogelijk is. 
 
-  \item \textbf{Veilig} - wasm is gespecificeerd om te worden uitgevoerd in een veilige, sandboxed omgeving.
-    Net als andere webcode, zal het de browser's same-origin en permissies beleid afdwingen. 
+  \item \textbf{Veilig} - wasm is gespecificeerd om te worden uitgevoerd in een veilige, sandboxed
+    omgeving. Net als andere webcode, zal het de browser's same-origin en permissies beleid
+    afdwingen. 
 
   \item \textbf{Maak het web niet kapot} - wasm is zo ontworpen dat het goed samengaat met andere
     webtechnologieën en achterwaartse compatibiliteit behoudt.
