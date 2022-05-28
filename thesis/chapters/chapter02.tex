@@ -76,7 +76,7 @@ fn main() {
 \caption{structs}
 \end{listing}
 
-Een \mintinline{rust}{struct} in Rust is gelijkaardig als een \mintinline{java}{Object} in object
+Een \mintinline{rust}{struct} in Rust is gelijkaardig aan een \mintinline{java}{Object} in object
 georiënteerde programmeertalen. Het wordt gebruikt om samenhorende waarden te groeperen en optioneel
 kan men associated functions implementeren. Associated functions die geen \mintinline{rust}{self}
 als hun eerste parameter hebben zijn geen methodes en kunnen gebruikt worden als constructors die
@@ -136,9 +136,10 @@ if let Some(max) = config_max {
 
 Bij vele programmeertalen hoeft u geen zorgen te maken over het geheugen gebruik. Dit is mogelijk
 door een garbage collector te gebruiken die voortdurend zoekt naar niet langer gebruikt geheugen
-terwijl het programma loopt. In andere talen, moet de programmeur het geheugen expliciet toewijzen
-en vrijmaken. Rust gebruikt geen van beide methodes en komt met een uniek concept genaamd ownership.
-Hiermee kan het geheugen veiligheid garanderen zonder een garbage collector nodig te hebben.
+terwijl het programma aan het uitvoeren is. In andere talen, moet de programmeur het geheugen
+expliciet toewijzen en vrijmaken. Rust gebruikt geen van beide methodes en komt met een uniek
+concept genaamd ownership. Hiermee kan het geheugen veiligheid garanderen zonder een garbage
+collector nodig te hebben.
 \cite{ownership}
 
 Vooraleer we verder gaan is het belangrijk dat we de twee begrippen genaamd stack en heap begrijpen.
@@ -1374,7 +1375,7 @@ naarmate de tijd vordert zal de ondersteuning alleen maar verbeteren.
 Bij de frontend komt er wat meer bij kijken. Er zijn namelijk twee opties waarvoor Rust gebruikt kan
 worden: 
 \begin{itemize}
-  \item Een gedeelde in Rust schrijven en compileren naar wasm om vervolgens te importeren als een node
+  \item Een gedeelte in Rust schrijven en compileren naar wasm om vervolgens te importeren als een node
     module in een bestaande Javascript applicatie. 
   \item Een volledige frontend in Rust schrijven met een web framework als Yew en compileren naar wasm 
 \end{itemize}               

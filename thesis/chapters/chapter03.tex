@@ -124,13 +124,13 @@ Dit was het basisidee, de moeilijkheid van het bouwen lag vooral aan hoe we effi
 van de tekst en de bijhorende statistieken in een state kunnen opslaan zodat elk component slechts
 rendert als het nodig is.  
 
-Mijn eerste oplossing was het gebruik van globale state met de \mintinline{rust}{use_reducer}
-hook. Als u vertrouwd bent met React zijn de meeste hooks zoals \mintinline{rust}{use_reducer},
-\mintinline{rust}{use_state}, \mintinline{rust}{use_effect} overgenomen in Yew. Indien niet leg
-ik het kort even uit. Voor simpele variabelen op te slaan in een state zoals bijvoorbeeld een
-boolean gebruikt u de \mintinline{rust}{use_state} hook. Die zorgt ervoor dat de boolean doorheen
-het component lifecycle hetzelfde blijft tenzij u hem aanpast. Als u hem aanpast dan zal het
-component opnieuw renderen.  
+Mijn eerste oplossing was het gebruik van globale state met de \mintinline{rust}{use_reducer} hook.
+Als u vertrouwd bent met React zijn de meeste hooks zoals \mintinline{rust}{use_reducer},
+\mintinline{rust}{use_state}, \mintinline{rust}{use_effect} overgenomen in Yew. Indien niet leg ik
+het kort even uit. Om simpele variabelen op te slaan in een state zoals bijvoorbeeld een boolean
+gebruikt u de \mintinline{rust}{use_state} hook. Die zorgt ervoor dat de boolean doorheen het
+component lifecycle hetzelfde blijft tenzij u hem aanpast. Als u hem aanpast dan zal het component
+opnieuw renderen.  
 
 De \mintinline{rust}{use_reducer} hook werkt gelijkaardig maar wordt gebruikt voor complexere
 states. Zo komt het met een dispatch functie die een argument neemt van het type Action. Wanneer

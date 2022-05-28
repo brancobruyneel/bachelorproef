@@ -15,8 +15,8 @@ reflecteren over dit onderzoek.
 
 Cecile Tonglet is de tweede core maintainer, in het dagelijkse leven is ze een Rust developer bij
 HMI Hydronics. Ze maken hydraulische ventielen, inclusief een "slimme" ventiel met wat embedded
-code. Cecile werkt niet aan de niet aan de embedded software maar werkt aan een web app die draait
-op het slimme ventiel.
+code. Cecile werkt niet aan de embedded software maar werkt aan een web app die draait op het slimme
+ventiel.
 
 Naast de core maintainers, werd er ook gereflecteerd met Emiel Van Severen, een mastersstudent
 industrieel ingenieur in de informatica aan de Universiteit van Gent. Hij heeft nog geen
@@ -96,8 +96,8 @@ zullen komen.
 
 \section{Wat zijn de mogelijke implementatiehindernissen voor een bedrijf?}
 
-De huidige stabel release van Yew heeft nog geen SSR. Dit betekent met de huidige CSR, er twee grote
-nadelen zijn:
+De huidige stabiele release van Yew heeft nog geen SSR. Dit betekent met de huidige CSR, er twee
+grote nadelen zijn:
 \begin{itemize}
    \item Gebruikers zullen niets kunnen zien totdat de hele WebAssembly bundel is gedownload en de
    eerste render is voltooid. Dit kan resulteren in een slechte gebruikerservaring als de gebruiker
@@ -127,7 +127,7 @@ de applicatie als de logica in Rust schrijven.
 Wat wel een meerwaarde is, is om micro services te schrijven in Rust die gebruikt worden voor het
 web. Rust zijn binary grootte zonder te compileren naar WebAssembly is klein. Daarnaast is Rust ook
 super snel, perfect voor kleine micro services in de cloud. Denk maar bijvoorbeeld aan AWS lambda
-functies. Emiel weette mij te vertellen dat nu ook Cloudflare workers volledig in Rust geschreven
+functies. Emiel wist mij te vertellen dat nu ook Cloudflare workers volledig in Rust geschreven
 kunnen worden. \cite{cloudflare_workers}
 
 \section{Welke suggesties geven bedrijven en/of community?}
@@ -151,7 +151,7 @@ scripts uitvoert. De huidige manier was via een npm script.
 
 Vooraleer het onderzoek begon, werd er gevraagd een contractplan in te vullen. Daarin is er
 opsomming opgelijst van wat het technisch onderzoek resultaat minimaal zal bevatten. Helaas was er
-tijdens het onderzoek niet genoeg tijd voor alles te realiseren. Dit zijn de criterea's die niet
+tijdens het onderzoek niet genoeg tijd om alles te realiseren. Dit zijn de criterea's die niet
 gerealiseerd zijn:
 \begin{enumerate}
   \item De applicatie is beveiligd met SSO
@@ -164,7 +164,7 @@ kunnen gebruikers inloggen met bijvoorbeeld hun Github account.  Met een gebruik
 ook een profiel pagina kunnen aanmaken en de statistische resultaten per gebruiker opslaan in de
 database.
 
-Tijdens het onderzoek heb ik geen aandacht gegeven aan ci/cd. Ondertussen heb ik al een kleine
+Tijdens het onderzoek heb ik geen aandacht gegeven aan CI/CD. Ondertussen heb ik al een kleine
 pipeline opgezet om de frontend te deployen naar een Azure Static Web App en de api naar een Azure
 API App. Dit is vlug opgezet en kan zeker ook verder onderzocht / geoptimaliseert worden.
 
