@@ -2,7 +2,7 @@
 
 \section{Voorbereiding}
 
-Het technisch onderzoek startte bij het lezen van “The book” een boek over de taal Rust geschreven
+Het technisch onderzoek startte bij het lezen van 'The book' een boek over de taal Rust geschreven
 door Steve Klabnik, Carol Nichols en met contributies van de Rust community. Tijdens het lezen waren
 er kleine code voorbeelden die u kon mee volgen. Dit maakte het makkelijker om de geavanceerde
 hoofdstukken goed te begrijpen. 
@@ -236,12 +236,12 @@ het me dat diesel.rs jammer genoeg geen andere aanpakken ondersteund zoals code 
 first kan u vanuit models die gedefinieerd staan in code automatisch migrations aanmaken die het
 database schema aanpassen/aanmaken. 
 
-In de speed typing database gebruiken we twee tabellen “languages” en “snippets”. Die een een op
+In de speed typing database gebruiken we twee tabellen 'languages' en 'snippets'. Die een een op
 veel relatie met elkaar hebben. De tabel languages bevat de soorten programmeertalen en de tabel
 snippets de code. De code is hier gewoon opgeslagen als tekst in de tabel snippets. Het is wel
 belangrijk dat de code geen spaties bevat maar tabs. Daarvoor is er kleine parser tool geschreven om
 makkelijk code snippets te maken. Het neemt een tekstbestand als input en zet alle spaties en enters
-om naar de respectievelijke karakters “\textbackslash t” en “\textbackslash n”. Zo kan de frontend
+om naar de respectievelijke karakters '\textbackslash t' en '\textbackslash n'. Zo kan de frontend
 makkelijk de juiste enters en tabs weergeven. 
 
 De API kent een aantal routes:
@@ -252,14 +252,14 @@ De API kent een aantal routes:
     \item GET /snippets/\{language\_id\}"
 \end{itemize}
 
-Uiteindelijk gebruikt de frontend maar een route “/snippets/random” om een random code snippet op te
-halen uit de database. 
+Uiteindelijk gebruikt de frontend maar een route '/snippets/random' om een willekeurig code fragment
+op te halen uit de database. 
 
-Om ervoor te zorgen dat we niet eerst alle snippets op halen uit de database om dan een random
-snippet eruit te selecteren. Wordt er eerst via een SQL-query de snippets tabel random gesorteerd en
-het eerste resultaat eruit gepakt. Standaard zal Rust of diesel het random type niet kennen.
-Gelukkig voorziet diesel de \mintinline{rust}{no_arg_sql_function} macro waarmee u SQL functies
-kunt mappen naar Rust types.
+Om ervoor te zorgen dat we niet eerst alle fragmenten op halen uit de database om dan een willekeurig
+fragment eruit te selecteren. Wordt er eerst via een SQL-query de snippets tabel willekeurig gesorteerd
+en het eerste resultaat eruit gepakt. Standaard zal Rust of diesel het random type niet kennen.
+Gelukkig voorziet diesel de \mintinline{rust}{no_arg_sql_function} macro waarmee u SQL functies kunt
+mappen naar Rust types.
 
 \begin{listing}[h]
 \begin{minted}{rust}
