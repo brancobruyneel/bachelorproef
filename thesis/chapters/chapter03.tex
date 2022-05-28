@@ -36,23 +36,23 @@ voor een speed typing test applicatie te maken.
 
 \includegraphics[width=\textwidth]{./figures/vim.png}
 
-Het is een simpele applicatie waarbij de gebruiker een random code snippet krijgt die hij zo snel
-mogelijk moet overtypen. Tijdens het typen wordt er live, zijn tijd en words per minute (WPM)
-bijgehouden. Als de gebruiker de volledige snippet heeft overgetypt krijgt hij een resultaten pagina
-te zien. Daar kan hij zijn statistieken bekijken zoals: WPM, verlopen tijd, accuraatheid en het
-aantal fouten. Daarna kan de gebruiker opnieuw spelen door op de letter ‘r’ in te drukken. \\
+Het is een simpele applicatie waarbij de gebruiker een willekeurig code fragment krijgt die hij zo
+snel mogelijk moet overtypen. Tijdens het typen wordt er live, zijn tijd en woorden per minut (WPM)
+bijgehouden. Als de gebruiker het volledige fragment heeft overgetypt krijgt hij een resultaten
+pagina te zien. Daar kan hij zijn statistieken bekijken zoals: WPM, verlopen tijd, accuraatheid en
+het aantal fouten. Daarna kan de gebruiker opnieuw spelen door op de letter ‘r’ in te drukken. \\
 \begin{wrapfigure}{l}{0.5\linewidth}
   \centering
   \includegraphics[width=0.9\linewidth]{./figures/result.png}
 \end{wrapfigure}
 
 
-Er was voor ogen om bij dit project nog een aantal features eraan toe te voegen. Zoals authenticatie
-met SSO, de statistieken opslaan in de database zodat er een lijn grafiek kon getoond op basis van
-de historiek, andere database, profiel pagina, ci/cd enz. Helaas is het onderzoek daar niet toe tot
-geraakt. Het leren van Rust en WebAssembly nam meer tijd in beslag dan verwacht. Zonder voorkennis
-van Rust of een gelijkaardige systeem level programmeertaal was dit project al een hele uitdaging op
-zich.
+Er was voor ogen om bij dit project nog een aantal functionaliteiten eraan toe te voegen. Zoals
+authenticatie met SSO, de statistieken opslaan in de database zodat er een lijn grafiek kon getoond
+op basis van de historiek, andere database, profiel pagina, ci/cd enz. Helaas is het onderzoek niet
+zo ver gekomen. Het leren van Rust en WebAssembly nam meer tijd in beslag dan verwacht. Zonder
+voorkennis van Rust of een gelijkaardige systeem level programmeertaal was dit project al een hele
+uitdaging op zich.
 
 \clearpage
 
@@ -73,9 +73,9 @@ snippets en andere assets (images, css, scss) via een source HTML bestand. Met e
 als \mintinline{bash}{trunk build} bouwt hij de hele frontend en met \mintinline{bash}{trunk serve
 --open} draait hij een lokale dev server.  
 
-Bij het laden van de startpagina haalt de frontend een random code snippet op via de API. De API
-haalt de snippets op uit een SQLite database. Om de database in sync te houden met de Rust code werd
-er diesel gebruikt als ORM framework.
+Bij het laden van de startpagina haalt de frontend een willekeurig code fragment op via de API. De
+API haalt de fragmenten op uit een SQLite database. Om de database in sync te houden met de Rust
+code werd er diesel gebruikt als ORM framework.
 
 
 \clearpage

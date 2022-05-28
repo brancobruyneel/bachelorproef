@@ -3,7 +3,7 @@
 
 \section{Wat is Rust?}
 
-Robust, veilig, correct en snel met die eigenschappen in zijn achterhoofd bedacht Graydon Hoare in
+Robust, veilig, correct en snel. Met die eigenschappen in zijn achterhoofd bedacht Graydon Hoare in
 2006 een nieuwe programmeertaal als hobby project, genaamd Rust. Graydon werkte destijds bij Mozilla
 die in 2009 interesse toonde in zijn project door het te sponseren. Later in 2010 werd het voor het
 eerst publiekelijk aangekondig door Mozilla.
@@ -84,9 +84,9 @@ een nieuwe instantie retourneren van de \mintinline{rust}{struct}.
 
 \clearpage
 
-Rust heeft geen null pointers tenzij men een null pointer wil dereferentieren (dan moet die in een
-\mintinline{rust}{unsafe} blok worden geplaatst). Als alternatief voor null maakt Rust gebruik van
-een \mintinline{rust}{Option} type waarmee gekeken kan worden of een pointer wel
+Rust heeft geen null pointers tenzij men een dereferentie op een null pointer wil toepassen (dan
+moet die in een \mintinline{rust}{unsafe} blok worden geplaatst). Als alternatief voor null maakt
+Rust gebruik van een \mintinline{rust}{Option} type waarmee gekeken kan worden of een pointer wel
 \mintinline{rust}{Some} of geen \mintinline{rust}{None} waarde bevat. Dit kan afgehandeld worden
 door syntactische sugar, zoals het \mintinline{rust}{if let} statement om toegang te krijgen tot het
 innerlijke type, in dit geval een \mintinline{rust}{string}:
@@ -146,11 +146,15 @@ De twee datastructuren maken deel uit van het geheugen en zijn beschikbaar voor 
 gebruiken tijdens runtime, maar ze zijn op verschillende manieren gestructureerd. Wat maakt dat de
 ene zorgt voor snellere dataopslag dan de andere. 
 
+\subsubsection{Stack}
+
 De stack slaat waarden op in de volgorde waarin hij ze krijgt en verwijdert de waarden in de
 omgekeerde volgorde. Dit wordt aangeduid als last in, first out. Alle gegevens die op de stack
 worden opgeslagen moeten een bekende, vaste grootte hebben. Gegevens waarvan de grootte op het
 moment van compileren onbekend is of die van grootte kunnen veranderen, moeten in plaats daarvan op
 de heap worden opgeslagen. 
+
+\subsubsection{Heap}
 
 De heap is minder georganiseerd: als u gegevens op de heap zet, vraagt u een bepaalde hoeveelheid
 ruimte aan. De memory allocator vindt een lege plek in de heap die groot genoeg is, markeert die als
@@ -159,6 +163,8 @@ in gebruik, en geeft een pointer terug, dat is het adres van die locatie. Dit pr
 waarden op de stack wordt niet beschouwd als allocating. Omdat de pointer naar de heap een bekende,
 vaste grootte heeft, kunt u de pointer op de stack opslaan, maar als u de eigenlijke gegevens wilt
 hebben, moet u de pointer volgen. 
+
+\subsubsection{Toepassing}
 
 Het efficiëntste is dus om data naar de stack weg te schrijven dan naar de heap, omdat de allocator
 nooit hoeft te zoeken naar een plaats om nieuwe gegevens op te slaan. Die plaats is altijd bovenaan
@@ -172,15 +178,9 @@ complexe types. Bij simpele types kent u de grootte voor het compileren, daarmee
 opgeslagen op de stack. In tegenstelling tot complexe types waarbij de grootte kan veranderen,
 worden ze opgeslagen in de heap.
 
-De simpele types zijn:
-\begin{itemize}
-  \item Integer
-  \item Floating-point
-  \item Boolean
-  \item Character
-  \item Tuple
-  \item Array (ze hebben dus een vaste grootte in Rust)
-\end{itemize}
+De simpele types zijn dus: integer, floating-point, boolean, tuple, array.
+
+Een paar voorbeelden van complexe types: string, vector, struct.
 
 Nu de begrippen zijn opgeklaard kunnen we kijken naar het ownership model. Het model bestaat uit
 drie regels: 
@@ -315,10 +315,10 @@ gebruiken en andersom.
 
 Een van de moeilijkste onderdelen van het werken met wasm is om verschillende soorten waarden in en
 uit functies te krijgen. Dat komt omdat wasm momenteel slechts twee types kent: \textbf{integers} en
-\textbf{floating point} getallen. 
+\textbf{floating-point} getallen. 
 
 Dit betekent dat u niet zomaar een string in een wasm functie kunt stoppen. In plaats daarvan moet
-je een aantal stappen doorlopen om een string voor te stellen als getallen. Als u complexere types
+u een aantal stappen doorlopen om een string voor te stellen als getallen. Als u complexere types
 heeft, zal u zelfs een ingewikkelder proces hebben om de gegevens heen en weer te sturen. Gelukkig
 bestaat er de library \mintinline{rust}{wasm-bindgen} die deze stappen voor ons doet. Met een paar
 annotaties aan uw Rust code, zal het automatisch de code maken die nodig is (aan beide kanten) om
@@ -393,9 +393,9 @@ foo.free();
 \end{figure}
 
 Na het compileren, zijn er een heleboel bestanden. Om van die bestanden naar een npm package te
-gaan, is er de \mintinline{rust}{wasm-pack} library. Het zal \mintinline{rust}{wasm-bindgen} voor je
+gaan, is er de \mintinline{rust}{wasm-pack} library. Het zal \mintinline{rust}{wasm-bindgen} voor u
 draaien. Dan, zal het alle bestanden nemen en ze verpakken. Het zal een package.json  er aan
-toevoegen, waarin alle npm dependencies van uw Rust code zijn ingevuld. Ten slotte, alles wat je
+toevoegen, waarin alle npm dependencies van uw Rust code zijn ingevuld. Ten slotte, alles wat u
 hoeft te doen is \mintinline{bash}{npm publish}.
 
 \begin{figure}[h]
@@ -423,16 +423,16 @@ stars).
 
 \subsubsection{Yew - 21k} 
 
-Yew is het populairste frontend framework met over 21k GitHub stars. Het beschikt
+Yew is het populairste frontend framework met meer dan 21k GitHub stars. Het beschikt
 over een component-gebaseerd framework dat het makkelijk maakt om interactieve UI’s te maken.
 Ontwikkelaars die ervaring hebben met frameworks als React en Elm zouden zich helemaal thuis moeten
 voelen bij het gebruik van Yew. Naast de aangename developer experience brengt het ook geweldige
 prestaties met zich mee. Dit bereiken ze door het minimaliseren van het aanroepen naar de DOM en
-door ontwikkelaars te helpen om gemakkelijk taken te offloaden naar achtergrond threads met behulp
+door ontwikkelaars te helpen om gemakkelijk taken te ontladen naar achtergrond threads met behulp
 van web workers. 
 
 De documentatie over de huidige release versie 19.0 is uitgebreid geschreven.  Er kan zelfs al
-gekeken worden naar de volgende release “Next”, die refereert naar de master branch. In de Next
+gekeken worden naar de volgende release 'Next', die refereert naar de master branch. In de 'Next'
 versie is belangrijkste nieuwe feature SSR, want de huidige versie heeft alleen maar CSR.
 
 \subsubsection{Dixous - 3.8k}
@@ -629,12 +629,12 @@ maken.
 \subsubsection{Converteren van HTML naar Rust}
 
 Aangezien we al een vrij goed idee hebben van hoe onze website eruit zal zien, kunnen we onze
-mentale opzet eenvoudig vertalen naar een voorstelling die compatibel is met html!. Als je
+mentale opzet eenvoudig vertalen naar een voorstelling die compatibel is met html!. Als u
 eenvoudige HTML kunt schrijven, moet het geen probleem zijn om markeringen in html! te schrijven.
 Het is belangrijk op te merken dat de macro op een paar punten verschilt van HTML:
 \begin{itemize}
   \item Uitdrukkingen moeten tussen accolades staan (\{ \})
-  \item Er mag maar één root node zijn. Als je
+  \item Er mag maar één root node zijn. Als u
     meerdere elementen wilt hebben zonder ze in een container te wikkelen, wordt een lege
     tag/fragment (<> ... </>) gebruikt
   \item Elementen moeten goed worden afgesloten.
@@ -1359,7 +1359,7 @@ we onze focus hierop leggen.
 
 Om een web API te bouwen gebruikt u gewoonlijk een web framework. Het huidige rust ecosysteem heeft
 een aantal stabiele web frameworks ter beschikking. Uit de deelvraag “Hoe bouwt u een API in
-Rust?” hebben we gekozen voor Actix-web te gebruiken als framework. Actix-web voorziet alles wat je
+Rust?” hebben we gekozen voor Actix-web te gebruiken als framework. Actix-web voorziet alles wat u
 kan verwachten van een web framework, van routing en middleware, tot templating en JSON/form
 afhandeling. Het is ook een van de snelste web frameworks ter beschikking. Zo staat actix momenteel
 op de 5de plaats bij een benchmark ranking van alle populaire web frameworks (ook andere
@@ -1381,7 +1381,7 @@ worden:
 
 \clearpage
 
-De eerste optie is meteen ook de optie waarvoor wasm het meest zal gebruikt worden. Zo kan je
+De eerste optie is meteen ook de optie waarvoor wasm het meest zal gebruikt worden. Zo kan u
 bijvoorbeeld Javascript gebruiken voor de UI en wasm voor de logica van de applicatie. Om mogelijks
 meer performatie te winnen en correctere code te schrijven. Deze optie wordt al volop in productie
 gebruikt door meerdere bedrijven \cite{made_with_wasm}: 
