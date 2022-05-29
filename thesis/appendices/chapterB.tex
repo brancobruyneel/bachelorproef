@@ -1,78 +1,68 @@
-\chapter{Verslag Cyber Crime Unit}
+\chapter{Handleiding}
 
-Tijdens de module 'Research Project' kregen we de kans om twee sessies bij te wonen van
-gastsprekers. Op 11 januari 2022 gaf Francis Nolf een online sessie over de belgische Cyber Crime
-Unit (CCU). 
+Een live voorbeeld staat online op \url{https://www.crabtyper.com}. Eens de site geladen is klikt u
+op de tekst en kan u beginnen met het code fragment over te typen. Daarna krijgt u een resultaten
+pagina te zien waar verschillende statistieken kan bekijken. Vervolgens kan u opnieuw spelen door op
+de 'r' toets te drukken.
 
-In 2001 kregen we voor het eerst in Belgie een regionale en federale CCU. De federale eenheid staat
-in voor het beleid en is het centraal punt voor internetcriminaliteit, opleidingen en steun aan de
-regionale CCU's. Een van hun taken is bijvoorbeeld onderzoek naar nieuwe ICT-systemen en forensische
-onderzoeksprogramma's. De regionale eenheid is belast met operationeel werk en verricht bijvoorbeeld
-forensisch onderzoek van pc-apparatuur. Door nood aan specialisaties zijn de teams onderverdeeld in
-vier groepen:
-\begin{itemize}
-  \item \textbf{Open Source Intelligence (OSINT)} - verzamelen en analyseren van gegevens die verkregen
-    zijn uit openbaar beschikbare bronnen
-  \item \textbf{telefonie} - focust op de communicatie via mobiele apparaten
-  \item \textbf{onderzoek gegevensdragers} - uitlezen van pc-apparatuur
-  \item \textbf{hacking} - via hacking methodes informatie trachten te achterhalen
-\end{itemize}
+\section{Installatie}
 
-Sinds vijf jaar ziin er ook lokale CCU's, deze eenheid biedt ondersteuning aan de operationele
-eenheden van de Lokale Politie. Francis werkt als hoofdinspecteur bij de LCCU van de politiezone
-Grensleie. Daar is hij verantwoordelijk voor de bijzondere operaties en middelen (BOM), wat in de
-praktijk overeenkomt met technische bijstand aan operaties.
+Deze handleiding gaat er vanuit dat u beschikt over een UNIX gebaseerd systeem.
 
-Bij de oprichting van de CCU was er nog geen technologie zoals we die vandaag de dag kennen. Een van
-hun hoofdtaken was toen het kopieren van harde schijven. De reden waarom ze de schijf kopieren, is
-dat sommige schijven niet makkelijk te ontkoppelen zijn zonder eventuele schade aan te brengen. Als
-er schade is, dan moeten zij ook de kosten dekken.
+Indien u Rust nog niet geïnstalleerd heeft staan op uw systeem kan u het installeren via onderstaand
+commando.
+\begin{minted}{bash}
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+\end{minted}
 
-Tijdens het onderzoek gebruiken ze vaak de Linux distributie genaamd CAINE Forensics. De distributie
-komt met een heleboel professionele tools speciaal gemaakt voor forensisch onderzoek uit te voeren.
-DD, DCFLDD, DDRESCUE zijn voorbeelden van command-line tools die mee met de distributie komen. Die
-tools gebruiken ze voor het kopieren van data. Het voordeel van zo'n tools te gebruiken, is dat ze
-ruwe data kunnen kopieren zonder rekening te houden met het bestandssysteem. Een ander voordeel is
-dat het de mogelijkheid biedt voor volledige schijven te klonen of weg te schrijven naar een
-bestand. Bij het klonen schijven ze de kopie weg naar een EWF formaat die compressie mogelijk maakt.
-Compressie is belangrijk, het bespaart hun wekelijks honderden gigabytes.
+\subsection{API}
 
-Sleuthkit is een andere tool die wordt meegeleverd bij CAINE. Het bevat een reeks command-line tools
-die gewiste bestanden kunnen oplijsten en terughalen. Photorec is een van die tools, kan gebruikt
-worden om bestanden op header niveau te gaan zoeken. Die techniek wordt ook wel carving genoemd.
+Installeer SQLite.
+\begin{minted}{bash}
+# Ubuntu
+sudo apt-get install libsqlite3-dev sqlite3
+# macOS (using homebrew)
+brew install sqlite3
+\end{minted}
 
-Helaas zijn er ook situaties waar de tools niet kunnen gebruikt worden. Zo heeft Apple een
-versleuteld besturingssyteem genaamd APFS. Hier kunnen ze niks mee aanvangen, tenzij ze het
-wachtwoord weten. Ook bij eigen gemaakte bestandssytemen zoals in bepaalde GPS systemen en
-bewakingscamera's werken de tools niet.
+Initialiseer de database.
+\begin{minted}{bash}
+cd api
+cargo install diesel_cli --no-default-features --features sqlite
+echo "DATABASE_URL=snippets.db" > .env
+diesel migration run
+\end{minted}
 
-Naast het kopieren van data, onderzoeken ze ook telefoons. De twee commerciele produkten die ze
-hiervoor gebruiken zijn Ufed en XRY. Het nadeel van commerciele produkten is dat de licencies niet
-goedkoop zijn. Er zijn ook gratis manieren om data te kopieren van mobiele toestellen zoals
-bijvoorbeeld Android Backup Toolkit. Ze hebben hiervoor wel de toegangscode nodig voor het toestel.
-Daarom gebruiken ze sinds kort GrayKey, een tool die voor hun op een onbekende manier het toestel
-kan ontgrendelen.
+\clearpage
 
-Na de uitleg over CAINE forensics werd er de wettelijke mogelijkheden en beperkingen toegelicht. De
-grootste beperking momenteel is het aanvragen van de logs over een IP adres. Sinds kort is er een
-dataretentie wetgeving die zegt dat providers maar maximaal zes maanden de data van een IP adres
-mogen bijhouden. Zes maanden is vaak veel te kort, al deze opvragingen dienen ook te gebeuren via
-het ministerie van buitenlandse zaken en dit kan soms maanden duren. Ze mogen dit ook niet altijd
-opvragen, hiervoor hebben ze een vordering nodig van de procureur of de onderzoeksrechter. Een
-procureur kan identificatie doen van een IP adres, een onderzoeksrechter daarintegen kan enkel
-logbestanden opvragen van een IP adres. 
+Start de API met het onderstaand commando.
+\begin{minted}{bash}
+cd api
+cargo run # (of cargo watch -x run)
 
-Francis vertelde ook dat een procureur een systeembeheerder kan vorderen. Het gaat hier meestal om
-toegang verlenen tot bepaalde servers van het bedrijf of databanken. Indien de systeembeheerder geen
-toegang verleent kan hij gestraft worden met een gevangenisstraf van zes tot drie jaar en met een
-geldboete van zesentwintig euro tot twintigdeuizend euro of met een van die straffen alleen.
+# Started http server: 127.0.0.1:5000
+\end{minted}
 
-Vervolgens werd er kort procedures toegelicht met betrekking tot telefonie. Zo kan alleen een
-officier van de gerechtelijke politie (OGP) kan een toestel in beslag nemen. Het toestel moet dan
-ook direct in een toestand gebracht worden zodat er geen extern contact meer mogelijk is. Als er
-contact zou gemaakt zijn, is er kans dat er gegevens gesynchroniseerd kunnen worden met de cloud en
-zorgt ervoor dat de inbeslagname ongeldig is.
+\subsection{Web}
 
-Op het einde van de sessie besprak hij de huidige fenomenen. Hacking is grotendeels verleden tijd,
-de meeste systemen/websites zijn tegenwoordig zeer goed beveiligd. De huidige fenomenen zijn eerder
-ransomware en oplichtingen.
+Installeer de nodige tools.
+\begin{minted}{bash}
+cd web/
+# Installeert npm packages
+npm run install
+# Voegt de wasm build target toe & installeert trunk
+npm run setup
+\end{minted}
+
+Voor dat u de webapp start maakt u een \mintinline{bash}{.env} bestand aan met daarin de
+\mintinline{bash}{API_URL} naar onze lokale API.
+\begin{minted}{bash}
+echo "API_URL=/api/snippets/random" > .env
+\end{minted}
+
+Vervolgens kan u de webapp starten met het onderstaand commando.
+\begin{minted}{bash}
+npm run dev
+
+# server listening at http://127.0.0.1:8080
+\end{minted}
