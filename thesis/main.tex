@@ -1,4 +1,5 @@
 \documentclass[11pt,a4paper,oneside]{book}
+\usepackage{geometry}
 
 \usepackage[dutch]{babel}
 \usepackage{blindtext}
@@ -10,50 +11,24 @@
 \usepackage{a4wide}
 \usepackage{url}
 
-% \usepackage[pagestyles]{titlesec}
-% \titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
-% \newpagestyle{mystyle}
-% {\sethead[\thepage][][\chaptertitle]{}{}{\thepage}}
-% \pagestyle{mystyle}
-%
+\usepackage[pagestyles]{titlesec}
+\titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
+\newpagestyle{mystyle}
+{\sethead[\thepage][][\chaptertitle]{}{}{\thepage}}
+\pagestyle{mystyle}
 
 
-% %%%%% title page %%%%%
-% \begin{titlepage}
-%     \newgeometry{margin=0cm}
-%     \begin{center}
-%         %%%%% Change the cover image here %%%%%
-%         \includegraphics[width=18.5cm,height=18.5cm]{example-image}
-%     \end{center}
-%     \begin{adjustwidth}{1.5cm}{1.5cm}
-%
-%     \vspace{0.5em}
-%
-%     \MakeUppercase{\huge\textbf{Thesis title}}
-%
-%     \MakeUppercase{\Large\textit{Optional subtitle}}
-%
-%     \vspace{1em}
-%
-%     \MakeUppercase{Interal promotor: <name here>}
-%
-%     \MakeUppercase{External promotor: <name here>}
-%
-%     \vspace{1em}
-%
-%     \MakeUppercase{\small{Research conducted by}}
-%
-%     \MakeUppercase{\Large\textbf{{Author}}}
-%
-%     \MakeUppercase{\small{for obtaining a bachelor's degree in}}
-%
-%     \MakeUppercase{\Large{\textbf{{Multimedia \& Creative Technologies}}}}
-%
-%     \MakeUppercase{Howest | 2021-2022}
-%     \end{adjustwidth}
-% \end{titlepage}
+\usepackage{eso-pic}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{tcolorbox}
+\usepackage{changepage}
+
 
 \usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
 
 \usepackage{dirtree}
 
@@ -63,7 +38,8 @@
 \usepackage{csquotes}
 \usepackage{wrapfig}
 \usepackage{graphicx}
-\graphicspath{./figures/}
+
+\graphicspath{{figures/}}
 
 \usepackage[parfill]{parskip}
 
@@ -78,7 +54,41 @@
 
 \begin{document}
 
-\maketitle
+%%%%% title page %%%%%
+\begin{titlepage}
+    \newgeometry{margin=0cm}
+    \begin{center}
+        %%%%% Change the cover image here %%%%%
+        \includegraphics[width=18.5cm,height=18.5cm]{example-image}
+    \end{center}
+    \begin{adjustwidth}{1.5cm}{1.5cm}
+
+    \vspace{0.5em}
+
+    \MakeUppercase{\huge\textbf{Wat is de huidige status van Rust voor het bouwen van
+      webapplicaties?}}
+
+    \vspace{1em}
+
+    \MakeUppercase{interne promotor: Wouter Gevaerts}
+
+    \MakeUppercase{externe promotor: Niek Candaele}
+
+    \vspace{1em}
+
+    \MakeUppercase{\small{onderzoeksvraag uitgevoerd door}}
+
+    \MakeUppercase{\Large\textbf{{Branco Bruyneel}}}
+
+    \MakeUppercase{\small{voor het behalen van de graad bachelor in de}}
+
+    \MakeUppercase{\Large{\textbf{{Multimedia \& Creative Technologies}}}}
+
+    \MakeUppercase{Howest | 2021-2022}
+    \end{adjustwidth}
+\end{titlepage}
+
+\newgeometry{margin=2cm}
 
 \chapter*{Woord vooraf}
 Ter afsluiting van mijn opleiding Media \& Creative Technologies aan de Hogeschool West-Vlaanderen
