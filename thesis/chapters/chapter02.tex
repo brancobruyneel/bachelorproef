@@ -35,14 +35,14 @@ fn main() {
 \caption{Hello, world!}
 \end{listing}
 
-\clearpage
-
 Merk op dat \mintinline{rust}{println!} geen functie is maar een macro. Geïnspireerd door de
 functionele programmeertaal Scheme, zijn macro’s een manier van code schrijven dat andere code
 schrijft, wat bekend staat als metaprogramming. Metaprogramming is handig voor het verminderen van
 code dat u zelf hoeft te schrijven en onderhouden, wat ook een van de rollen is van functies. Toch
 verschillen macro’s met functies. Zo kunnen macro’s een variabel aantal parameters hebben en worden
 ze uitgebreid vooraleer de compiler de betekenis van de code interpreteert.
+
+\clearpage
 
 \begin{listing}[h]
 \begin{minted}{rust}
@@ -82,8 +82,6 @@ kan men associated functions implementeren. Associated functions die geen \minti
 als hun eerste parameter hebben zijn geen methodes en kunnen gebruikt worden als constructors die
 een nieuwe instantie retourneren van de \mintinline{rust}{struct}.
 
-\clearpage
-
 Rust heeft geen null pointers tenzij men een dereferentie op een null pointer wil toepassen (dan
 moet die in een \mintinline{rust}{unsafe} blok worden geplaatst). Als alternatief voor null maakt
 Rust gebruik van een \mintinline{rust}{Option} type waarmee gekeken kan worden of een pointer wel
@@ -103,6 +101,8 @@ fn main() {
 \end{minted}
 \caption{\mintinline{rust}{Option} type}
 \end{listing}
+
+\clearpage
 
 Naast de \mintinline{rust}{if} en \mintinline{rust}{else} controlestructuren is er ook
 \mintinline{rust}{match} en \mintinline{rust}{if} \mintinline{rust}{let}. \mintinline{rust}{match}
@@ -129,8 +129,6 @@ if let Some(max) = config_max {
 \end{minted}
 \caption{\mintinline{rust}{if let} \& \mintinline{rust}{match} operators}
 \end{listing}
-
-\clearpage
 
 \subsection{Geheugen}
 
@@ -233,8 +231,6 @@ goed gebruikt in projecten. Extra compiler lints zijn beschikbaar via Clippy en 
 idiomatische formattering wordt geleverd door rustfmt. De IDE-ondersteuning is gezond en wordt elke
 dag beter.
 
-\clearpage
-
 \section{Wat is WebAssembly \& Hoe werkt het?}
 
 Tegenwoordig wordt Javascript gebruikt om interactieve webapps te creëren. Ondanks de succesvolle
@@ -327,7 +323,7 @@ complexere types te laten werken.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.5\textwidth]{figures/wasm_bindgen.png}
+  \includegraphics[width=0.8\textwidth]{figures/wasm_bindgen.png}
   \caption{JS string naar wasm conversie}
 \end{figure}
 
@@ -401,7 +397,7 @@ hoeft te doen is \mintinline{bash}{npm publish}.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.7\textwidth]{figures/wasm_to_npm.png}
+  \includegraphics[width=0.9\textwidth]{figures/wasm_to_npm.png}
   \caption{publiceren van wasm als npm package}
 \end{figure}
 
@@ -532,8 +528,6 @@ commando zal het WebAssembly target toevoegen aan uw development environment.
 rustup target add wasm32-unknown-unknown
 \end{minted}
 
-\clearpage
-
 \subsubsection{Trunk}
 
 De documentatie van Yew raad aan om Trunk te gebruiken voor het beheren van deployment en packaging.
@@ -558,6 +552,8 @@ krijgen.
 cargo run
 \end{minted}
 
+\clearpage
+
 \subsubsection{Statische pagina}
 
 Om deze simpele command line applicatie naar een basis Yew web applicatie te convertern, zijn er een
@@ -575,8 +571,6 @@ yew = "0.19"
 \end{minted}
 \caption{Cargo.toml}
 \end{listing}
-
-\clearpage
 
 \begin{listing}[h]
 \begin{minted}{rust}
@@ -617,6 +611,8 @@ Voer het volgende commando uit om de applicatie te builden en lokaal te draaien.
 trunk serve --open
 \end{minted}
 
+\clearpage
+
 \subsection{Statische pagina}
 
 \subsubsection{Bouwen van HTML}
@@ -624,8 +620,6 @@ trunk serve --open
 Yew maakt gebruik van de procedurele macro's van Rust en biedt ons een syntax die lijkt op JSX (een
 uitbreiding van JavaScript waarmee u HTML-achtige code kunt schrijven in JavaScript) om de opmaak te
 maken.
-
-\clearpage
 
 \subsubsection{Converteren van HTML naar Rust}
 
@@ -1088,8 +1082,6 @@ gaan bouwen met code. We zullen in het volgende voorbeeld zien hoe we dat precie
 
 Telkens wanneer we een migratie uitvoeren of terugdraaien, wordt dit bestand automatisch bijgewerkt.
 
-\clearpage
-
 \subsection{API}
 
 Om de basis functionaliteiten van onze Todo applicatie in de front-end te ondersteunen, zal onze API
@@ -1114,6 +1106,8 @@ Om onze code overzichtelijk te houden, zullen we de volgende structuur hanteren:
 Bij het opzetten van ons project heeft cargo al een \mintinline{bash}{main.rs} bestand aangemaakt.
 Laten we dat bewerken en onze eerste \mintinline{rust}{"Hello World!"} route schrijven.
 
+\clearpage
+
 \begin{listing}[h]
 \begin{minted}{rust}
 use actix_web::{web, App, HttpServer};
@@ -1131,7 +1125,6 @@ async fn main() -> std::io::Result<()> {
 \end{minted}
 \caption{main.rs}
 \end{listing}
-\clearpage
 
 Onze main functie heeft nu het \mintinline{rust}{#[actix_web::main]} attribuut, die zal onze main
 functie markeren als start functie en uitvoeren in de runtime van \mintinline{rust}{actix_web}.
@@ -1181,8 +1174,6 @@ nieuwe data in te voegen.
 
 \mintinline{rust}{Deserialize} en \mintinline{rust}{Serialize} komen van de crate
 \mintinline{rust}{serde}, zij zorgen ervoor dat we de models kunnen omzetten naar json en andersom.
-
-\clearpage
 
 \begin{listing}[h]
 \begin{minted}{rust}
@@ -1381,8 +1372,6 @@ worden:
   \item Een volledige frontend in Rust schrijven met een web framework als Yew en compileren naar wasm 
 \end{itemize}               
 
-\clearpage
-
 De eerste optie is meteen ook de optie waarvoor wasm het meest zal gebruikt worden. Zo kan u
 bijvoorbeeld Javascript gebruiken voor de UI en wasm voor de logica van de applicatie. Om mogelijks
 meer performatie te winnen en correctere code te schrijven. Deze optie wordt al volop in productie
@@ -1393,6 +1382,8 @@ gebruikt door meerdere bedrijven \cite{made_with_wasm}:
   \item SketchUp – gebruikt wasm om een 3d modelling tool op het web te draaien, wat snelle en
     voorspelbare prestaties verreist 
 \end{itemize}
+
+\clearpage
 
 De andere optie, een volledige frontend bouwen met Rust, is een optie die momenteel meer gebruikt
 wordt voor hobby projecten dan voor productie. Een van de redenen hiervoor is dat het ecosysteem nog
