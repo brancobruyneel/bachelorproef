@@ -108,9 +108,9 @@ Naast de \mintinline{rust}{if} en \mintinline{rust}{else} controlestructuren is 
 \mintinline{rust}{match} en \mintinline{rust}{if} \mintinline{rust}{let}. \mintinline{rust}{match}
 is vergelijkbaar met een \mintinline{javascript}{switch} statement uit andere talen. Het neemt een
 waarde en test het tegen een serie van patronen. Op basis van welk patroon er overeenkomt wordt de
-code uitgevoerd. Patronen kunnen opgemaakt worden uit waarden, variabel namen, wildcards, en veel
+code uitgevoerd. Patronen kunnen opgemaakt worden uit waarden, variabele namen, wildcards, en veel
 meer. De power van \mintinline{rust}{match} komt van het feit dat de compiler zal bevestigen bij het
-compileren dat alle mogelijke gevallen zijn afgehandeld. Soms wit u niet alle gevallen expliciet
+compileren dat alle mogelijke gevallen zijn afgehandeld. Soms wilt u niet alle gevallen expliciet
 afhandelen en wilt u slechts een patroon afhandelen terwijl u de rest negeert. In dat geval kunt u
 \mintinline{rust}{if let} gebruiken, wat minder boilerplate code is dan \mintinline{rust}{match}.
 
@@ -268,7 +268,7 @@ doelstellingen:
 
   \item \textbf{Leesbaar en foutopspoorbaar} - wasm is een lage assembleertaal, maar het heeft een
     menselijk leesbaar tekstformaat (aan de specificatie wordt nog gewerkt) waarmee code met de hand
-    kan worden geschreven, bekeken en foutopsporing mogelijk is. 
+    kan worden geschreven, bekeken en waarbij foutopsporing mogelijk is. 
 
   \item \textbf{Veilig} - wasm is gespecificeerd om te worden uitgevoerd in een veilige, sandboxed
     omgeving. Net als andere webcode, zal het de browser's same-origin en permissies beleid
@@ -434,12 +434,12 @@ van web workers.
 
 De documentatie over de huidige release versie 19.0 is uitgebreid geschreven.  Er kan zelfs al
 gekeken worden naar de volgende release 'Next', die refereert naar de master branch. In de 'Next'
-versie is belangrijkste nieuwe feature SSR, want de huidige versie heeft alleen maar CSR.
+versie is de belangrijkste nieuwe feature SSR, want de huidige versie heeft alleen maar CSR.
 
 \subsubsection{Dixous - 3.8k}
 
-Dixous is een opkomend en jong UI framework als concurrent voor Yew. Het is net als Yew ontworpen om
-React-achtig te zijn. Zo heeft het ook een component-gebaseerde architectuur, state management,
+Dixous is een opkomend en jong UI framework als concurrent voor Yew. Het is net als Yew ontworpen,
+om React-achtig te zijn. Zo heeft het ook een component-gebaseerde architectuur, state management,
 props en nog veel meer. Buiten de verschillende syntax tegen over Yew, heeft Dixous nog een aantal
 troeven zoals:  
 \begin{itemize}
@@ -549,7 +549,7 @@ cargo new yew-app
 cd yew-app
 \end{minted}
 
-Om te verifieren dat het Rust environment juist is opgezet, voert u het initiele project uit met de
+Om te verifiëren dat het Rust environment juist is opgezet, voert u het initiële project uit met de
 cargo build tool. Na de output van de het build process, zou u normaal \mintinline{rust}{"Hello,
 world!"} te zien
 krijgen.
@@ -630,9 +630,10 @@ maken.
 \subsubsection{Converteren van HTML naar Rust}
 
 Aangezien we al een vrij goed idee hebben van hoe onze website eruit zal zien, kunnen we onze
-mentale opzet eenvoudig vertalen naar een voorstelling die compatibel is met html!. Als u
-eenvoudige HTML kunt schrijven, moet het geen probleem zijn om markeringen in html! te schrijven.
-Het is belangrijk op te merken dat de macro op een paar punten verschilt van HTML:
+mentale opzet eenvoudig vertalen naar een voorstelling die compatibel is met
+\mintinline{rust}{html!}. Als u eenvoudige HTML kunt schrijven, moet het geen probleem zijn om
+markeringen in \mintinline{rust}{html!} te schrijven. Het is belangrijk op te merken dat de macro op
+een paar punten verschilt van HTML:
 \begin{itemize}
   \item Uitdrukkingen moeten tussen accolades staan (\{ \})
   \item Er mag maar één root node zijn. Als u
@@ -837,7 +838,7 @@ eerst clonen. De reden hiervoor is het keyword \mintinline{rust}{move} die voor 
 parameters staat, \mintinline{rust}{move} zorgt
 ervoor dat alle references die gebruikt worden in de closure scope hun waarden worden verplaatst
 binnen de scope. Dus om te voorkomen dat we onze \mintinline{rust}{completed_state} nergens meer
-kunenn gebruiken clonen we eerst de state.
+kunnen gebruiken clonen we eerst de state.
 
 Daarnaast kunnen we ook een css class meegeven met de \mintinline{rust}{classes!} macro van yew, die
 conditioneel het html label zal doorstrepen al dan niet.
@@ -1100,7 +1101,7 @@ hebben:
 \end{itemize}
 
 
-Om onze code overzichtelijklijk te houden, zullen we de volgende structuur hanteren:
+Om onze code overzichtelijk te houden, zullen we de volgende structuur hanteren:
 \dirtree{%
 .1 src/.
 .2 main.rs.
@@ -1110,8 +1111,8 @@ Om onze code overzichtelijklijk te houden, zullen we de volgende structuur hante
 .2 db.rs.
 }
 
-Bij het opzetten van ons project heeft cargo een al een \mintinline{bash}{main.rs} bestand
-aangemaakt. Laten we dat bewerken en onze eerste \mintinline{rust}{"Hello World!"} route schrijven.
+Bij het opzetten van ons project heeft cargo al een \mintinline{bash}{main.rs} bestand aangemaakt.
+Laten we dat bewerken en onze eerste \mintinline{rust}{"Hello World!"} route schrijven.
 
 \begin{listing}[h]
 \begin{minted}{rust}
@@ -1166,7 +1167,7 @@ async fn add_task() -> Result<HttpResponse, Error> {
 \end{listing}
 
 In de module \mintinline{rust}{handlers} zullen we onze requests per endpoint afhandelen. Voorlopig
-gebruiken we hier nog de \mintinline{rust}{todo}! macro sinds we nog geen communicatie maken de
+gebruiken we hier nog de \mintinline{rust}{todo}! macro sinds we nog geen communicatie maken met de
 database. Laat ons dat eerst aanpakken.
 
 Onze eerste migration die we eerder hebben uitgevoerd heeft voor ons al een
@@ -1201,7 +1202,7 @@ pub struct InputTask {
 \end{listing}
 
 Nu we onze models hebben kunnen we in \mintinline{rust}{db} functies schrijven om tasks op te vragen
-en aan te maken. De functies spreken voorzich, we gebruiken diesel zijn sql implementaties om met
+en aan te maken. De functies spreken voor zich, we gebruiken diesel zijn sql implementaties om met
 onze database te communiceren.
 
 Merk op dat we bij elke functie \mintinline{rust}{schema::tasks::dsl::*} opnieuw toevoegen aan de
@@ -1238,8 +1239,8 @@ pub fn insert_new_task(t: &str, conn: &SqliteConnection)
 Nu we onze helper functies geschreven hebben kunnen we de requests afhandelen in
 \mintinline{rust}{handlers} als volgt:
 
-Elke handler functie krijgt een connection pool als parameter, die we later zullen definieren in
-main. De connection pool zal verschillende connecties met de database openhouden zodat ze efficient
+Elke handler functie krijgt een connection pool als parameter, die we later zullen definiëren in
+main. De connection pool zal verschillende connecties met de database openhouden zodat ze efficiënt
 kunnen hergebruikt worden door anderen. Om te voorkomen dat een andere thread de connectie gebruikt
 tijdens het uitvoeren van een \mintinline{rust}{db} functie blokkeren we deze thread met
 \mintinline{rust}{web::block}. Als alles goed verloopt geven we de resultaten terug, indien niet
@@ -1289,7 +1290,7 @@ Wat ons nu nog rest te doen, is onze connection pool instantiëren en de handler
 onze App. Vooraleer dat we dat doen laden we eerst ons .env bestand in het enviroment met de
 \mintinline{rust}{dotenv} crate en loggen we info over de applicatie naar \mintinline{bash}{stdout}
 met \mintinline{rust}{env_logger}. Daarna kunnen we onze connection pool opzetten met de
-\mintinline{bash}{DATABASE_URL} uit het enviroment. Ten slotte voegen we onze hanlder functies toe
+\mintinline{bash}{DATABASE_URL} uit het enviroment. Ten slotte voegen we onze handler functies toe
 aan een nieuwe service met als scope \mintinline{bash}{/api} zodat al onze routes worden ge prefixed
 met \mintinline{bash}{/api}.
 
