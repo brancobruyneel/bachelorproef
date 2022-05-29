@@ -1,5 +1,6 @@
 \documentclass[11pt,a4paper,oneside]{book}
 \usepackage{geometry}
+\usepackage[export]{adjustbox}
 
 \usepackage[dutch]{babel}
 \usepackage{blindtext}
@@ -59,7 +60,7 @@
     \newgeometry{margin=0cm}
     \begin{center}
         %%%%% Change the cover image here %%%%%
-        \includegraphics[width=18.5cm,height=18.5cm]{example-image}
+      \includegraphics[width=21cm, height=21cm]{rust_wasm.png}
     \end{center}
     \begin{adjustwidth}{1.5cm}{1.5cm}
 
@@ -88,7 +89,18 @@
     \end{adjustwidth}
 \end{titlepage}
 
+
 \newgeometry{margin=2cm}
+
+\clearpage
+
+\thispagestyle{empty}
+\ % empty page
+
+\clearpage
+
+%%%%% Set pagenumbering from here %%%%%
+\pagenumbering{arabic}
 
 \chapter*{Woord vooraf}
 Ter afsluiting van mijn opleiding Media \& Creative Technologies aan de Hogeschool West-Vlaanderen
@@ -112,6 +124,13 @@ programmeertaal heb ontdekt en het ook meteen mijn favoriete taal is geworden.
 
 Tot slot bedank ik Niek Candaele en Jonas De Meyer voor het nalezen en constructieve feedback op
 deze bachelorproef.
+
+\clearpage
+
+\thispagestyle{empty}
+\ % empty page
+
+\clearpage
 
 \chapter*{Abstract}
 Deze bachelorproef onderzoekt de vraag \enquote{Wat is de huidige status van Rust voor het bouwen
