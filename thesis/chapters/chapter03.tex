@@ -34,16 +34,21 @@ diesel.rs als backend frameworks.
 Om de huidige status van Rust voor het bouwen van webapplicaties te onderzoeken, werd er gekozen
 voor een speed typing test applicatie te maken.
 
-\includegraphics[width=\textwidth]{./figures/vim.png}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{./figures/vim.png}
+  \caption{typetest}
+\end{figure}
 
 Het is een simpele applicatie waarbij de gebruiker een willekeurig code fragment krijgt die hij zo
 snel mogelijk moet overtypen. Tijdens het typen wordt er live, zijn tijd en woorden per minuut (WPM)
 bijgehouden. Als de gebruiker het volledige fragment heeft overgetypt krijgt hij een resultaten
 pagina te zien. Daar kan hij zijn statistieken bekijken zoals: WPM, verlopen tijd, accuraatheid en
 het aantal fouten. Daarna kan de gebruiker opnieuw spelen door op de letter ‘r’ in te drukken. \\
-\begin{wrapfigure}{l}{0.5\linewidth}
+\begin{wrapfigure}{l}{0.45\linewidth}
   \centering
   \includegraphics[width=\linewidth]{./figures/result.png}
+  \caption{test resultaat}
 \end{wrapfigure}
 
 
@@ -58,7 +63,10 @@ uitdaging op zich.
 
 \section{Opbouw/structuur}
 
-\includegraphics[width=\textwidth]{./figures/structuur.png}
+\begin{figure}[h]
+  \includegraphics[width=\textwidth]{./figures/structuur.png}
+  \caption{technisch schema}
+\end{figure}
 
 De frontend van de applicatie is volledig geschreven in Rust. Dit is mogelijk gemaakt door het
 gebruik van Yew als framework. Daarbij is er Tailwindcss gebruikt als CSS framework. Tailwindcss is
@@ -84,11 +92,12 @@ code werd er diesel gebruikt als ORM framework.
 
 De startpagina is geïnspireerd door mijn favoriete editor vim. Zo krijgt u een simpele versie van
 vim te zien als editor voor het typen. Hieronder ziet u een schema van de compositie van de
-belangrijkste componenten.
+belangrijkste components.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.9\textwidth]{./figures/components.png}
+  \caption{structuur components}
 \end{figure}
 
 \mintinline{rust}{Game}: rendert op basis van de game status \mintinline{rust}{Vim} of
@@ -110,13 +119,14 @@ karkater, de correct getypte tekst, de foute getypte tekst en de resterende teks
 
 \begin{wrapfigure}{l}{0.55\textwidth}
   \includegraphics[width=\linewidth]{./figures/text.png}
+  \caption{werking typen}
 \end{wrapfigure}
 
 Bij elk keypress event wordt er gecontroleerd of de key gelijk is aan het volgende karakter. Indien
 het gelijk is wordt het huidige karakter van de cursor toegevoegd aan de string met de correcte
 karakters en de cursor schuift een karakter op. Hetzelfde geldt als men een verkeerde key indrukt
 maar de cursor wordt dan toegevoegd aan de string met de foutieve karakters. Als de gebruiker de
-“Backspace” toets indrukt kan hij zijn foute karakters verwijderen tot de string leeg is. 
+'Backspace' toets indrukt kan hij zijn foute karakters verwijderen tot de string leeg is. 
 
 \clearpage
 
@@ -189,7 +199,7 @@ pub enum Action {
 Het probleem met de \mintinline{rust}{use_reducer} hook is dat een component de hele state opneemt.
 Als de child components een variabel nodig hebben van de state, moeten die als properties worden
 doorgeven. Hier is niks mis mee tenzij u een diep genest child component hebt die afhankelijk is
-van de state. Dan heeft u “prop drilling” waarbij u vanuit de parent component de props moet
+van de state. Dan heeft u 'prop drilling' waarbij u vanuit de parent component de props moet
 doorgeven aan zijn children die dezelfde props dan doorgeven aan hun children, en zo verder tot dat
 je bij de gewenste component bent.
 
@@ -198,6 +208,7 @@ je bij de gewenste component bent.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.6\textwidth]{./figures/use_reducer.png}
+  \caption{\mintinline{rust}{use_reducer}}
 \end{figure}
 
 Dit werd opgelost door de \mintinline{rust}{use_context} hook te gebruiken samen met de

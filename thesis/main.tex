@@ -2,6 +2,8 @@
 \usepackage[a4paper]{geometry}
 \usepackage[export]{adjustbox}
 
+\usepackage{setspace}
+
 \usepackage[dutch]{babel}
 \usepackage{blindtext}
 
@@ -12,8 +14,10 @@
 \usepackage{a4wide}
 \usepackage{url}
 
+\usepackage{nameref}
 \usepackage{titlesec}
 \usepackage{titletoc}
+\usepackage{etoolbox}
 \usepackage{tcolorbox}
 \usepackage{changepage}
 
@@ -58,8 +62,10 @@
 
     \vspace{0.5em}
 
+    \begin{spacing}{1.5}
     \MakeUppercase{\huge\textbf{Wat is de huidige status van Rust voor het bouwen van
-      webapplicaties?}}
+    webapplicaties?}}
+    \end{spacing}
 
     \vspace{1em}
 
@@ -95,6 +101,7 @@
 \pagenumbering{arabic}
 
 \chapter*{Woord vooraf}
+\addcontentsline{toc}{chapter}{Woord vooraf}
 Ter afsluiting van mijn opleiding Media \& Creative Technologies aan de Hogeschool West-Vlaanderen
 te Kortrijk, schreef ik deze bachelorproef.  In het vierde semester van deze opleiding koos ik ‘AI
 Engineer’ als uitstromingsprofiel. Een semester later, koos ik bij de module ‘Research Project’ een
@@ -117,6 +124,11 @@ programmeertaal heb ontdekt en het ook meteen mijn favoriete taal is geworden.
 Tot slot bedank ik Niek Candaele en Jonas De Meyer voor het nalezen en constructieve feedback op
 deze bachelorproef.
 
+\vspace{1em}
+
+3 mei 2022,\\
+Branco Bruyneel
+
 \clearpage
 
 \thispagestyle{empty}
@@ -125,6 +137,7 @@ deze bachelorproef.
 \clearpage
 
 \chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
 Deze bachelorproef onderzoekt de vraag \enquote{Wat is de huidige status van Rust voor het bouwen
 van webapplicaties?}. Het onderzoek start met de taal Rust en WebAssembly, vervolgens wordt er 
 praktisch gekeken hoe we een webapplicatie bouwen en of het productie klaar is.
@@ -144,19 +157,18 @@ inspelen waar er snelle prestaties worden vereist.
 We kunnen concluderen dat de huidige status van Rust voor het bouwen van webapplicaties nog volop in
 ontwikelling is.
 
-
 \tableofcontents
 
-\addcontentsline{toc}{chapter}{Woord vooraf}
-\addcontentsline{toc}{chapter}{Abstract}
-\addcontentsline{toc}{chapter}{Lijst van figuren}
-\addcontentsline{toc}{chapter}{Lijst met afkortingen}
-\addcontentsline{toc}{chapter}{Verklarende woordenlijst}
-
 \listoffigures
+\addcontentsline{toc}{chapter}{Lijst van figuren}
 
 \printglossary[title=Lijst met afkortingen,toctitle=Lijst met afkortingen,type=acronym]
+\addcontentsline{toc}{chapter}{Lijst met afkortingen}
+
+\clearpage
+
 \printglossary[title=Verklarende woordenlijst,toctitle=Verklarende woordenlijst,type=main]
+\addcontentsline{toc}{chapter}{Verklarende woordenlijst}
 \glsaddallunused
 
 \include{chapters/chapter01}
