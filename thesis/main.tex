@@ -1,5 +1,5 @@
-\documentclass[11pt,a4paper,oneside]{book}
-\usepackage{geometry}
+\documentclass[11pt, oneside]{book}
+\usepackage[a4paper]{geometry}
 \usepackage[export]{adjustbox}
 
 \usepackage[dutch]{babel}
@@ -12,14 +12,6 @@
 \usepackage{a4wide}
 \usepackage{url}
 
-\usepackage[pagestyles]{titlesec}
-\titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
-\newpagestyle{mystyle}
-{\sethead[\thepage][][\chaptertitle]{}{}{\thepage}}
-\pagestyle{mystyle}
-
-
-\usepackage{eso-pic}
 \usepackage{titlesec}
 \usepackage{titletoc}
 \usepackage{tcolorbox}
@@ -60,7 +52,7 @@
     \newgeometry{margin=0cm}
     \begin{center}
         %%%%% Change the cover image here %%%%%
-      \includegraphics[width=21cm, height=21cm]{rust_wasm.png}
+      \includegraphics[width=\textwidth]{test3}
     \end{center}
     \begin{adjustwidth}{1.5cm}{1.5cm}
 
