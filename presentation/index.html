@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/night.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>RightCrowd & Rust</h2>
+          <p>Branco Bruyneel</p>
+        </section>
+        <section>
+          <section>
+            <h3>Stagebedrijf</h3>
+            <div class="r-stack">
+              <img class="fragment" src="./media/rightcrowd.png" width="400" />
+              <img class="fragment" src="./media/model.png" width="400" />
+            </div>
+            <aside class="notes">
+              <p>Australish bedrijf met een vestiging in Gent</p>
+              <p>
+                Beveligings wearables -> badgeholder die toegangskaarten kan
+                lezen & omvormen naar een hoog beveiligdsysteem
+              </p>
+
+              <p>toegang tot een bepaalde zone</p>
+
+              <p>contact-tracing & social distancing</p>
+            </aside>
+          </section>
+          <section>
+            <h3>Stageopdracht</h3>
+            <aside class="notes">
+              <p></p>
+            </aside>
+          </section>
+          <section>
+            <ul>
+              <li class="fragment">Graydon Hoare, 2010</li>
+              <li class="fragment">low-level systeemprogrammeertaal</li>
+              <li class="fragment">uniek ownership model</li>
+              <li class="fragment">
+                Command Line, Embedded, Networking, WebAssembly
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h3>
+              Wat is de huidige status van Rust voor het bouwen van
+              Webapplicaties?
+            </h3>
+          </section>
+          <section>
+            <h3>Wat is Rust?</h3>
+            <ul>
+              <li class="fragment">Graydon Hoare, 2010</li>
+              <li class="fragment">low-level systeemprogrammeertaal</li>
+              <li class="fragment">uniek ownership model</li>
+              <li class="fragment">
+                Command Line, Embedded, Networking, WebAssembly
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h3>Wat is WebAssembly & Hoe werkt het?</h3>
+            <ul>
+              <li class="fragment">Graydon Hoare, 2010</li>
+              <li class="fragment">low-level systeemprogrammeertaal</li>
+              <li class="fragment">uniek ownership model</li>
+              <li class="fragment">
+                Command Line, Embedded, Networking, WebAssembly
+              </li>
+            </ul>
+          </section>
+          <section>
+            <ul>
+              <li>Wat is WebAssembly & Hoe werkt het?</li>
+              <li>
+                Welke front- & backend frameworks zijn er ter beschikking?
+              </li>
+              <li>Hoe bouwt u een webapp in Rust?</li>
+              <li>Hoe bouwt u een API in Rust?</li>
+              <li>Is Rust productie klaar?</li>
+            </ul>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+    </script>
+  </body>
+</html>
