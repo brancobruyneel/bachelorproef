@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="dist/theme/night.css" />
 
     <!-- Theme used for syntax highlighted code -->
-    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+    <link rel="stylesheet" href="plugin/highlight/onedark.min.css" />
   </head>
   <body>
     <div class="reveal">
@@ -26,37 +26,88 @@
         <section>
           <section>
             <h3>Stagebedrijf</h3>
-            <div class="r-stack">
-              <img class="fragment" src="./media/rightcrowd.png" width="400" />
-              <img class="fragment" src="./media/model.png" width="400" />
-            </div>
+            <img class="stretch" src="./media/rightcrowd.png" />
             <aside class="notes">
-              <p>Australish bedrijf met een vestiging in Gent</p>
+              <p>australish bedrijf met een vestiging in Gent</p>
+              <p>100 - 200 werknemers</p>
               <p>
                 Beveligings wearables -> badgeholder die toegangskaarten kan
-                lezen & omvormen naar een hoog beveiligdsysteem
+                lezen & omvormen naar een hoog beveiligd toegangssysteem
               </p>
 
               <p>toegang tot een bepaalde zone</p>
-
               <p>contact-tracing & social distancing</p>
+              <p>Stagebegeleider: Karim Daghay</p>
             </aside>
           </section>
           <section>
             <h3>Stageopdracht</h3>
+            <img class="stretch" src="./media/model.png" />
+            <aside class="notes">
+              <p>
+                Om de correctheid van het systeem te controleren en voor andere
+                doeleinden worden er events gelogd
+              </p>
+              <div>
+                Een paar voorbeelden:
+                <ul>
+                  <li>
+                    Gebruiker X met wearable Y kwam in de buurt van gateway Z
+                  </li>
+                  <li>Gateway X zijn verbinding is verbroken</li>
+                  <li>Gebruiker X heeft zijn instellingen aangepast</li>
+                </ul>
+              </div>
+              <p>
+                huidige implementatie -> alle events worden opgeslaan in mongodb
+              </p>
+              <p>
+                nieuwe events service, die events op een andere manier opslaat
+              </p>
+            </aside>
+          </section>
+          <section data-background-image="./media/events.png">
             <aside class="notes">
               <p></p>
             </aside>
           </section>
           <section>
+            <h3>Plan van aanpak</h3>
             <ul>
-              <li class="fragment">Graydon Hoare, 2010</li>
-              <li class="fragment">low-level systeemprogrammeertaal</li>
-              <li class="fragment">uniek ownership model</li>
               <li class="fragment">
-                Command Line, Embedded, Networking, WebAssembly
+                Research
+                <ul>
+                  <li>ELK, KAFKA, CQRS, event sourcing</li>
+                </ul>
               </li>
+              <li class="fragment">Wekelijkse demo's</li>
+              <li class="fragment">Implementatie</li>
+              <li class="fragment">Demployment</li>
             </ul>
+          </section>
+          <section>
+            <h3>Technische overwinningen</h3>
+            <ul>
+              <li class="fragment">Node.js + Typescript & Express.js</li>
+              <li class="fragment">
+                ElasticSearch
+                <ul>
+                  <li class="fragment">Datastream</li>
+                  <li class="fragment">cloud</li>
+                </ul>
+              </li>
+              <li class="fragment">SSE + Redis</li>
+              <li class="fragment">Kubernetes</li>
+              <li class="fragment">Load testing (k6)</li>
+            </ul>
+          </section>
+          <section>
+            <img
+              src="https://media4.giphy.com/media/i21tixUQEE7TEqwmYa/giphy.gif?cid=790b76112e983cbf3658f9c6904cf9f692b9f16f8af44fde&rid=giphy.gif&ct=g"
+            />
+            <aside class="notes">
+              <p>Niek, Karim, Nicolai</p>
+            </aside>
           </section>
         </section>
         <section>
@@ -65,38 +116,225 @@
               Wat is de huidige status van Rust voor het bouwen van
               Webapplicaties?
             </h3>
+            <aside class="notes">
+              <p>bachelorproef</p>
+              <p>Interene promotor: Frederick</p>
+              <p>exterene promotor: Niek Candaele</p>
+            </aside>
           </section>
           <section>
-            <h3>Wat is Rust?</h3>
+            <h3>Rust?</h3>
             <ul>
-              <li class="fragment">Graydon Hoare, 2010</li>
+              <li class="fragment">Graydon Hoare, stabel release 2015</li>
               <li class="fragment">low-level systeemprogrammeertaal</li>
               <li class="fragment">uniek ownership model</li>
               <li class="fragment">
                 Command Line, Embedded, Networking, WebAssembly
               </li>
             </ul>
+            <aside class="notes">
+              <p>
+                Rust begon in 2006 als side project van Graydon Hoare, die
+                destijds bij Mozilla Research werkte
+              </p>
+              <p>werd uiteindelijk gesponserd in 2010</p>
+              <p>low level vergelijkbaar met C, C++</p>
+              <p>
+                wat rust uniek maakt is het ownership model, hiermee kan Rust
+                geheugen veiligheid bieden zonder snelheid te verliezen of een
+                Garbage collector te gebruiken
+              </p>
+            </aside>
           </section>
           <section>
-            <h3>Wat is WebAssembly & Hoe werkt het?</h3>
+            <h3>WebAssembly?</h3>
             <ul>
-              <li class="fragment">Graydon Hoare, 2010</li>
-              <li class="fragment">low-level systeemprogrammeertaal</li>
-              <li class="fragment">uniek ownership model</li>
+              <li class="fragment">binair instructie formaat</li>
               <li class="fragment">
-                Command Line, Embedded, Networking, WebAssembly
+                web, cross-platform
+                <ul class="fragment">
+                  <li>wasm-time</li>
+                  <li>wasi</li>
+                </ul>
+              </li>
+              <li class="fragment">
+                integers en floating-point
+                <ul class="fragment">
+                  <li>wasm-bindgen</li>
+                  <li>websys</li>
+                </ul>
               </li>
             </ul>
+            <aside class="notes">
+              <p>
+                Om Rust te kunnen uitvoeren op de browser hebben we WebAssembly
+                nodig
+              </p>
+              <p>
+                binair instructie formaat dat dient als compilatiedoel voor
+                programmeertalen, waardoor er andere talen als javascript kunnen
+                worden uitgevoerd op de browser
+              </p>
+              <p>
+                De focus van WebAssembly ligt momenteel op het web, maar het kan
+                ook worden uitgevoerd buiten de browser
+              </p>
+              <p>
+                Daarvoor heb je wel een runtime nodig zoals wasm-time en een
+                system interface om met het besturings systeem te praten (wasi)
+              </p>
+              <p>nog steeds javascript nodig om met de DOM te praten</p>
+            </aside>
           </section>
           <section>
+            <h3>Yew + Actix web</h3>
+            <aside class="notes">
+              <p>
+                Daarna heb ik onderzoek gedaan naar welke frameworks er ter
+                beschikking zijn
+              </p>
+              <p>stabiel, populairst en meeste features</p>
+            </aside>
+          </section>
+          <section>
+            <h3>Yew</h3>
+            <pre>
+              <code data-trim data-noescape class="rust stretch">
+              use yew::prelude::*;
+
+              #[function_component(]
+              fn UseState() -&gt; Html {
+                  let counter = use_state(|| 0);
+                  let onclick = {
+                      let counter = counter.clone();
+                      Callback::from(move |_| counter.set(*counter + 1))
+                  };
+
+                  html! {
+                      &lt;div&gt;
+                          &lt;button {onclick}&gt;{ "Increment value" }&lt;/button&gt;
+                          &lt;p&gt;
+                              &lt;b&gt;{ "Current value: " }&lt;/b&gt;
+                              { *counter }
+                          &lt;/p&gt;
+                      &lt;/div&gt;
+                  }
+              }
+              </code>
+            </pre>
+            <aside class="notes">
+              <p>
+                Gelijkaardig aan React, hooks, function components, state
+                management, props, ...
+              </p>
+              <p>JSX -> html! macro</p>
+              <p>trunk gebruikt voor het compileren naar wasm</p>
+            </aside>
+          </section>
+          <section>
+            <h3>Benchmarks</h3>
+            <div class="r-stack stretch">
+              <img class="fragment" src="./media/benchmarks/memory.png" />
+              <img
+                class="fragment"
+                src="./media/benchmarks/startup_metrics.png"
+              />
+            </div>
+          </section>
+          <section>
+            <h3>Actix Web</h3>
+            <pre>
+              <code data-trim data-noescape class="rust stretch">
+              use actix_web::{get, web, App, HttpServer, Responder};
+
+              #[get("/hello/{name}")]
+              async fn greet(name: web::Path&lt;String&gt;) -&gt; impl Responder {
+                  format!("Hello {name}!")
+              }
+
+              #[actix_web::main] 
+              async fn main() -&gt; std::io::Result&lt;()&gt; {
+                  HttpServer::new(|| {
+                      App::new()
+                          .route(
+                            "/hello", 
+                            web::get().to(|| async { "Hello World!" })
+                          )
+                          .service(greet)
+                  })
+                  .bind(("127.0.0.1", 8080))?
+                  .run()
+                  .await
+              }
+              </code>
+            </pre>
+            <aside class="notes">
+              <p>
+                Vrij makkelijk om mee te werken, gelijkaardig aan andere web
+                frameworks
+              </p>
+            </aside>
+          </section>
+          <section>
+            <h3>Technische demo</h3>
+          </section>
+          <section data-background-video="./media/demo.mp4">
+            <aside class="notes">
+              <p>Speedtyping applicatie</p>
+              <p>Random code snippets</p>
+              <p>
+                Statemanagement library gebruikt vergelijkbaar met Redux
+                (Yewdux)
+              </p>
+              <p>SQLite + diesel.rs als ORM</p>
+            </aside>
+          </section>
+          <section>
+            <h3>Reflectie</h3>
             <ul>
-              <li>Wat is WebAssembly & Hoe werkt het?</li>
-              <li>
-                Welke front- & backend frameworks zijn er ter beschikking?
+              <li class="fragment">
+                Razendsnel, correct & krachtig typesysteem
               </li>
-              <li>Hoe bouwt u een webapp in Rust?</li>
-              <li>Hoe bouwt u een API in Rust?</li>
-              <li>Is Rust productie klaar?</li>
+              <li class="fragment">Beperkt ecosysteem</li>
+              <li class="fragment">Steile leercruve</li>
+              <li class="fragment">Javascript nodig</li>
+            </ul>
+            <aside class="notes">
+              <p>
+                Reflectie met externe personen zoals Julius & Cecile die beide
+                core maintainers zijn van het Yew framework & professionele
+                ervaring hebben met Rust
+              </p>
+              <p>
+                Rust is correct met een krachtig typesysteem, dit betkent dat
+                alle edge cases in de code worden opgevangen. Denk maar aan het
+                unwrappen van een Option of Result type.
+              </p>
+              <p>
+                Zelfs met javascript als omweg toont Rust snelle prestaties bij
+                de benchmarks
+              </p>
+              <p>
+                Beperkt ecosysteem voor het bouwen van web applicaties. Vele web
+                frameworks hebben zelfs nog geen 1.0 versie bereikt, dus je kan
+                breaking changes verwachten
+              </p>
+              <p>
+                WebAssembly heeft nog steeds Javascript nodig om met de DOM te
+                kunnen praten.
+              </p>
+            </aside>
+          </section>
+          <section>
+            <h3>Advies</h3>
+          </section>
+          <section>
+            <h3>Conclusie</h3>
+            <ul>
+              <li></li>
+            </ul>
+            <ul>
+              <li></li>
             </ul>
           </section>
         </section>
