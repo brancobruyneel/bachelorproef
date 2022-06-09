@@ -232,16 +232,6 @@
             </aside>
           </section>
           <section>
-            <h3>Benchmarks</h3>
-            <div class="r-stack stretch">
-              <img class="fragment" src="./media/benchmarks/memory.png" />
-              <img
-                class="fragment"
-                src="./media/benchmarks/startup_metrics.png"
-              />
-            </div>
-          </section>
-          <section>
             <h3>Actix Web</h3>
             <pre>
               <code data-trim data-noescape class="rust stretch">
@@ -330,13 +320,58 @@
             <ul>
               <li>blijf javascript gebruiken</li>
               <li>(micro) services</li>
+              <li>tests</li>
+              <li>cargo-chef</li>
+              <li>wasm code optimaliseren</li>
             </ul>
+            <aside class="notes">
+              <p>
+                Javascript biedt nog altijd meer voordelen bij het bouwen van
+                een webapp.
+              </p>
+              <p>Dit is omdat JS een goede keuze is voor de meeste dingen.</p>
+              <p>snel & gemakkelijk + er is groot ecocsysteem</p>
+              <p>
+                Buiten de browser kan Rust gewoon gebruikt worden in (micro)
+                services voor het web waar prestaties van cruciaal belang zijn.
+              </p>
+              <p>
+                verreist meer werk om 'correcte' code en gehuegen veilige code
+                te schrijven maar dit zal resulteren in extra prestaties en een
+                robuust systeem
+              </p>
+            </aside>
           </section>
           <section>
             <h3>Conclusie</h3>
             <ul>
-              <li></li>
+              <li>(micro) services</li>
+              <li>gedeelte in wasm</li>
+              <li>volledige applicatie in wasm</li>
             </ul>
+            <aside class="notes">
+              <p>
+                wordt gebruikt door top bedrijven als Amazon, Microsoft, Discord
+                in (micro) services
+              </p>
+              <p>twee opties</p>
+              <p>
+                gedeelte van de applicatie in wasm, zonder de browser aan te
+                spreken hier benutten we de volledige kracht van wasm samen met
+                een low-level taal als Rust die veel efficienter is dan
+                Javascript.
+              </p>
+              <p>
+                volledige applicatie in Rust schrijven, verliest prestaties.
+                Sinds wasm nog niet direct de browser API kan aanspreken.
+                Terwijl de twee core maintainers het in productie gebruken
+                blijft het over het algemeen bij hobby projecten.
+              </p>
+              <p>
+                We kunnen dus concluderen dat de huidige status van Rust voor
+                het bouwen van webapplicaties nog volop in ontwikkeling is
+              </p>
+            </aside>
           </section>
         </section>
       </div>
